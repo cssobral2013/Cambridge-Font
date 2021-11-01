@@ -1,5 +1,38 @@
 ## Modifications since version 2.x
 
+### 10.3.4
+
+ * Fix weight of `D` under heavy weights (#1237).
+ * Fix width under Aile and Etoile:
+   - Cyrillic Letter EnGhe (`U+04A4`, `U+04A5`);
+   - Cyrillic Letter Pe With Middle Hook (`U+04A6`, `U+04A7`);
+   - Cyrillic Letter Abkhazian Ha (`U+04A8`, `U+04A9`).
+ * Improve shape of double emotion punctuations (`U+203C`, `U+2047`, `U+2048`, `U+2049`) under wide width.
+ * Add Characters
+   - Element Of with Long Horizontal Stroke (`U+22F2`);
+   - Element Of with Vertical Bar at end of Horizontal Stroke (`U+22F3`);
+   - Small Element Of with Vertical Bar at end of Horizontal Stroke (`U+22F4`);
+   - Contains with Long Horizontal Stroke (`U+22FA`);
+   - Contains with Vertical Bar at end of Horizontal Stroke (`U+22FB`);
+   - Small Contains with Vertical Bar at end of Horizontal Stroke (`U+22FC`);
+
+
+### 10.3.3
+
+ * Add support for Roman numerals (#623).
+
+
+### 10.3.2
+
+ * Add support for OpenType `frac` feature (#1230).
+ * Fix placement of `U+031C` and `U+0357`.
+
+
+### 10.3.1
+
+ * Add taller variants of Number Sign (#1222).
+
+
 ### 10.3.0
 
  * Add Greek letters and symbols:

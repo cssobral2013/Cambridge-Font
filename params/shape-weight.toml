@@ -6,7 +6,7 @@ canonicalStrokeWidthMax = 108 # sync with 900 entry below
 stroke = 70        # Primary stroke width
 contrast = 1.11    # Stroke width contrast
 sb = 44            # Primary sidebearings
-essx = 1.12        # Proportion of widen of center of "S"
+essRatio = 1.00    # Proportion of widen of center of "S"
 dotSize = 125      # Size of dots
 periodSize = 140   # Size of period
 
@@ -17,13 +17,13 @@ longjut = 175      # Length of long serifs, like that in `i`.
 smooth = 195       # Vertical arc size in capital letters.
 smallsmooth = 200  # Vertical arc size in lowercase letters.
 
-rbalance = 30
-rbalance2 = 7
-tbalance = 25
-tbalance2 = 15
-jbalance = 30
-fbalance = 3
-onebalance = 15
+rbalance = 60
+rbalance2 = 15
+tbalance = 50
+tbalance2 = 30
+jbalance = 63
+fbalance = 6
+onebalance = 30
 
 hook  = 165        # Hook depth in most letters.
 ahook = 130
@@ -42,16 +42,16 @@ vtipfineSlab = 0.9
 [shapeWeight.blend.100]
 stroke = 18
 contrast = 1.08
-sb = 50
-essx = 1.12
+sb = 72
+essRatio = 1.15
 dotSize = 53
 periodSize = 55
 
 jut = 70
 vjut = 145
 smooth = 195
-rbalance = 30
-rbalance2 = 7
+rbalance = 60
+rbalance2 = 15
 cthin = 0.9
 cthinb = 0.9
 vtipfine = 1
@@ -67,8 +67,8 @@ vtipfine = 0.9
 vtipfineSlab = 0.9
 
 [shapeWeight.blend.500]
-rbalance = 30
-rbalance2 = 7
+rbalance = 60
+rbalance2 = 15
 
 [shapeWeight.blend.600]
 # Interpolated
@@ -82,15 +82,15 @@ stroke = 96
 [shapeWeight.blend.900]
 stroke = 114
 contrast = 1.20
-sb = 32
-essx = 1.05
+sb = 30
+essRatio = 0.95
 dotSize = 180
 periodSize = 200
 
 jut = 95
 vjut = 200
 smooth = 215
-rbalance = 25
-rbalance2 = 13
+rbalance = 50
+rbalance2 = 25
 cthin = 0.75
 cthinb = 0.5

@@ -129,8 +129,8 @@ export : define [calculateMetrics para] : begin
 	define WideWidth3 : if (para.spacing >= 3) WideWidth0 Width
 	define WideWidth4 : if (para.spacing >= 4) WideWidth0 Width
 
-	define Ess : Stroke * [fallback para.essx Contrast]
-	define EssQuestion : Stroke * [fallback para.essxq Contrast]
+	define Ess : Stroke * [fallback para.essRatio Contrast]
+	define EssQuestion : Stroke * [fallback para.essRatioq Contrast]
 	define HalfStroke : Stroke / 2
 	define RightSB : Width - SB
 	define Middle : Width / 2
@@ -164,8 +164,6 @@ export : define [calculateMetrics para] : begin
 	define CorrectionOMidX : TanSlope * 0.9 * [StrokeWidthBlend 1.3 0.9]
 	define CorrectionOMidS : Stroke * CorrectionOMidX
 
-	define [MVertStrokeD hPack div] : AdviceStroke [Math.max DesignParameters.lllcrowdedness hPack] div
-	define MVertStroke : MVertStrokeD 3 1
 	define OverlayStroke : AdviceStroke 3.75
 	define OperatorStroke : AdviceStroke 2.75
 	define GeometryStroke : AdviceStroke 4
@@ -203,7 +201,7 @@ export : define [calculateMetrics para] : begin
 		RBalance2 FBalance OneBalance WideWidth0 WideWidth1 WideWidth2 WideWidth3 WideWidth4 Ess
 		EssQuestion HalfStroke RightSB Middle DotRadius PeriodRadius SideJut SmoothA SmoothB
 		SmallSmoothA SmallSmoothB CorrectionOMidX CorrectionOMidS compositeBaseAnchors AdviceStroke
-		AdviceStroke2 MVertStroke MVertStrokeD OverlayStroke OperatorStroke GeometryStroke
+		AdviceStroke2 OverlayStroke OperatorStroke GeometryStroke
 		ShoulderFine _SuperXY adviceSSmooth adviceGlottalStopSmooth shoulderMidSlope
 		StrokeWidthBlend SmoothAOf SmoothBOf SmoothAdjust MidJutSide MidJutCenter YSmoothMidR
 		YSmoothMidL]
@@ -291,11 +289,18 @@ export : define [copyFontMetrics fm1 fm2] : begin
 	set fm2.post.underlineThickness  fm1.post.underlineThickness
 
 
+class CMarkSet
+	public [new markAnchors baseAnchors] : begin
+		set this.markAnchors markAnchors
+		set this.baseAnchors baseAnchors
+	public [applyToGlyph g] : begin
+		g.copyAnchors this
+
 export : define [compositeBaseAnchors] : begin
-	local h {.}
+	local baseAnchorSink {.}
 	foreach a [items-of arguments] : foreach k [items-of [Object.keys a.baseAnchors]] : begin
-		set h.(k) : new Anchor a.baseAnchors.(k).x a.baseAnchors.(k).y a.baseAnchors.(k).type a.baseAnchors.(k).mbx a.baseAnchors.(k).mby
-	return {.baseAnchors h .isMarkSet true}
+		set baseAnchorSink.(k) : new Anchor a.baseAnchors.(k).x a.baseAnchors.(k).y a.baseAnchors.(k).type a.baseAnchors.(k).mbx a.baseAnchors.(k).mby
+	return : new CMarkSet null baseAnchorSink
 
 export : define [MarksetDiv p sbMul me] : begin
 	define width : p * me.Width
@@ -390,16 +395,24 @@ export : define DesignParameters : object
 	# Square dot
 	squareDotScalar            0.95
 
-export : define [GenDivFrame metrics] : lambda [_div _hPack _sbMul] : begin
-	local div : fallback _div 1
-	local hPack : Math.max 2 [fallback _hPack 0]
-	local sbMul : fallback _sbMul : Math.min 1 : (metrics.Width * div - hPack * [metrics.AdviceStroke hPack div]) / (2 * hPack * metrics.SB)
-	return : object
-		div div
-		width : metrics.Width * div
-		middle : metrics.Middle * div
-		sb : metrics.SB * sbMul
-		leftSB : metrics.SB * sbMul
-		rightSB : metrics.Width * div - metrics.SB * sbMul
-		mvs : metrics.MVertStrokeD hPack div
-		markSet : MarksetDiv div sbMul metrics
+export : define [GenDivFrame metrics] : begin
+	class CDivFrame
+		public [new _div _hPack _sbMul] : begin
+			local div : fallback _div 1
+			local hPack : Math.max 2 [fallback _hPack 0]
+			local sbMul : fallback _sbMul : Math.min 1 : (metrics.Width * div - hPack * [metrics.AdviceStroke hPack div]) / (2 * hPack * metrics.SB)
+
+			set this.div       div
+			set this.width   : metrics.Width * div
+			set this.middle  : metrics.Middle * div
+			set this.sb      : metrics.SB * sbMul
+			set this.leftSB  : metrics.SB * sbMul
+			set this.rightSB : metrics.Width * div - metrics.SB * sbMul
+			set this.mvs     : metrics.AdviceStroke hPack div
+			set this.markSet : MarksetDiv div sbMul metrics
+
+		public [applyToGlyph g] : begin
+			g.setWidth this.width
+			return this
+
+	return : lambda [_div _hPack _sbMul] : new CDivFrame _div _hPack _sbMul
