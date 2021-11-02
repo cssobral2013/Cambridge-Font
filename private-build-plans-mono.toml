@@ -1,4 +1,4 @@
-[buildPlans.iosevka-custom]      # <iosevka-custom> is your plan name
+[buildPlans.cambridge-sans-mono]      # <cambridge-sans-mono> is your plan name
 family = "Cambridge Sans Mono"        # Font menu family name
 spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "sans"                  # Optional; Values: `sans` or `slab`
@@ -7,11 +7,12 @@ no-cv-ss = "true"
 ###################################################################################################
 # Configure variants
 
-[buildPlans.iosevka-custom.variants.design]
+[buildPlans.cambridge-sans-mono.variants.design]
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
-a = "double-storey-serifless"
+e = "flat-crossbar"
+f = "serifless"
 g = "double-storey"
 k = "symmetric-touching-serifless"
 l = "tailed-serifed"
@@ -31,9 +32,9 @@ dollar = "open"
 cent = "open"
 percent = "rings-continuous-slash"
 
-[buildPlans.iosevka-custom.variants.italic]
+[buildPlans.cambridge-sans-mono.variants.italic]
 
-f = "tailed"
+g = "single-storey-serifless"
 
 # End variant section
 ###################################################################################################
@@ -42,13 +43,13 @@ f = "tailed"
 # Override default building slope sets
 # When this section is absent, all slopes would be built.
 
-[buildPlans.iosevka-custom.slopes.upright]
+[buildPlans.cambridge-sans-mono.slopes.upright]
 angle = 0             # Angle in degrees. Valid range [0, 15]
 shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
 menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
 
-[buildPlans.iosevka-custom.slopes.italic]
+[buildPlans.cambridge-sans-mono.slopes.italic]
 angle = 15
 shape = "italic"
 menu  = "italic"
@@ -67,7 +68,7 @@ css   = "italic"
 #             If you decide to use custom widths you have to define all the widths you plan to use,
 #             otherwise they will not be built.
 
-[buildPlans.iosevka-custom.widths.normal]
+[buildPlans.cambridge-sans-mono.widths.normal]
 shape = 600        # Unit Width, measured in 1/1000 em.
 menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
