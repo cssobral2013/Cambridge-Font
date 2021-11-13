@@ -82,3 +82,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 # End width section
 ###################################################################################################
+
+[buildPlans.cambridge-sans.metric-override]
+sb = 'default_sb * 0.7'
+essRatio = 'default_essRatio * 0.8'
