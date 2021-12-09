@@ -3,6 +3,8 @@ family = "Cambridge Slab"        # Font menu family name
 spacing = "quasi-proportional"   # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "slab"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
+no-ligation = "true"
+snapshotFeature = '"NWID" off, calt off'
 
 ###################################################################################################
 # Configure variants
@@ -42,6 +44,7 @@ percent = "rings-continuous-slash"
 [buildPlans.cambridge-slab.variants.italic]
 
 g = "single-storey-serifed"
+i = "tailed-serifed"
 
 # End variant section
 ###################################################################################################
