@@ -4,7 +4,6 @@ spacing = "quasi-proportional"   # Optional; Values: `normal`, `term`, `fontconf
 serifs = "slab"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
 no-ligation = "true"
-snapshotFeature = '"NWID" off, calt off'
 
 ###################################################################################################
 # Configure variants
@@ -22,13 +21,17 @@ g = "double-storey"
 i = "serifed"
 j = "flat-hook-serifed"
 k = "symmetric-touching-serifed"
-l = "tailed-serifed"
+l = "serifed"
+r = "compact-serifed"
 t = "flat-hook"
 w = "straight-flat-top"
+x = "straight-serifed"
+y = "straight"
 eszet = "sulzbacher-descending"
 lower-alpha = "tailed-barred"
 cyrl-capital-ka = "symmetric-touching-serifed"
 cyrl-ka = "symmetric-touching-serifed"
+cyrl-capital-u = "straight"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -44,7 +47,8 @@ percent = "rings-continuous-slash"
 [buildPlans.cambridge-slab.variants.italic]
 
 g = "single-storey-serifed"
-i = "tailed-serifed"
+i = "serifed-flat-tailed"
+l = "serifed-flat-tailed"
 
 # End variant section
 ###################################################################################################
