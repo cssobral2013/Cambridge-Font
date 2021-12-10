@@ -47,8 +47,8 @@ percent = "rings-continuous-slash"
 [buildPlans.cambridge-slab.variants.italic]
 
 g = "single-storey-serifed"
-i = "serifed-tailed"
-l = "serifed-tailed"
+i = "tailed-serifed"
+l = "tailed-serifed"
 
 # End variant section
 ###################################################################################################
