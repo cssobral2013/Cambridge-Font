@@ -1,37 +1,25 @@
-[buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
-family = "Cambridge Slab"        # Font menu family name
-spacing = "quasi-proportional"   # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
-serifs = "slab"                  # Optional; Values: `sans` or `slab`
+[buildPlans.cambridge-sans-mono]      # <cambridge-sans-mono> is your plan name
+family = "Cambridge Sans Mono"        # Font menu family name
+spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "sans"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
-no-ligation = "true"
 
 ###################################################################################################
 # Configure variants
 
-[buildPlans.cambridge-slab.variants.design]
-capital-j = "serifed"
-capital-k = "symmetric-touching-serifed"
+[buildPlans.cambridge-sans-mono.variants.design]
+capital-j = "serifless"
+capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
-capital-w = "straight-flat-top"
-capital-m = "flat-bottom"
-capital-i = "serifed"
 e = "flat-crossbar"
-f = "flat-hook-serifed"
+f = "serifless"
 g = "double-storey"
-i = "serifed"
-j = "flat-hook-serifed"
-k = "symmetric-touching-serifed"
-l = "serifed"
-r = "compact-serifed"
-t = "flat-hook"
-w = "straight-flat-top"
-x = "straight-serifed"
-y = "straight"
+k = "symmetric-touching-serifless"
+l = "tailed-serifed"
 eszet = "sulzbacher-descending"
 lower-alpha = "tailed-barred"
-cyrl-capital-ka = "symmetric-touching-serifed"
-cyrl-ka = "symmetric-touching-serifed"
-cyrl-capital-u = "straight"
+cyrl-capital-ka = "symmetric-touching-serifless"
+cyrl-ka = "symmetric-touching-serifless"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -44,11 +32,9 @@ dollar = "open"
 cent = "open"
 percent = "rings-continuous-slash"
 
-[buildPlans.cambridge-slab.variants.italic]
+[buildPlans.cambridge-sans-mono.variants.italic]
 
-g = "single-storey-serifed"
-i = "tailed-serifed"
-l = "tailed-serifed"
+g = "single-storey-serifless"
 
 # End variant section
 ###################################################################################################
@@ -57,18 +43,17 @@ l = "tailed-serifed"
 # Override default building slope sets
 # When this section is absent, all slopes would be built.
 
-[buildPlans.cambridge-slab.slopes.upright]
+[buildPlans.cambridge-sans-mono.slopes.upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
 shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
 menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
-angle = 0
 
-[buildPlans.cambridge-slab.slopes.italic]
+[buildPlans.cambridge-sans-mono.slopes.italic]
+angle = 15
 shape = "italic"
 menu  = "italic"
 css   = "italic"
-angle = 15
-
 # End slope section
 ###################################################################################################
 
@@ -83,7 +68,7 @@ angle = 15
 #             If you decide to use custom widths you have to define all the widths you plan to use,
 #             otherwise they will not be built.
 
-[buildPlans.cambridge-slab.widths.normal]
+[buildPlans.cambridge-sans-mono.widths.normal]
 shape = 600        # Unit Width, measured in 1/1000 em.
 menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
@@ -91,6 +76,6 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 # End width section
 ###################################################################################################
 
-[buildPlans.cambridge-slab.metric-override]
+[buildPlans.cambridge-sans-mono.metric-override]
 sb = 'default_sb * 0.7'
 essRatio = 'default_essRatio * 0.8'
