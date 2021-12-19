@@ -1,4 +1,4 @@
-[buildPlans.cambridge-sans]             # <cambridge-sans> is your plan name
+d[buildPlans.cambridge-sans]             # <cambridge-sans> is your plan name
 family = "Cambridge Sans"               # Font menu family name
 spacing = "quasi-proportional"          # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "sans"                         # Optional; Values: `sans` or `slab`
@@ -88,5 +88,5 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 # [buildPlans.cambridge-sans.metric-override]
-sb = 'default_sb * 0.75'
-# essRatio = 'default_essRatio * 0.88'
+sb = 'default_sb * 0.8'
+essRatio = 'default_essRatio * 0.88'

@@ -1,5 +1,29 @@
 ## Modifications since version 2.x
 
+### 11.2.2
+
+ * Add open-swash Q (#1264).
+ * Add ability to customize the width of S-related necks for different kind of letters (#1265).
+ * Add Characters
+   - NORTH WEST ARROW TO CORNER (`U+21F1`).
+   - SOUTH EAST ARROW TO CORNER (`U+21F2`).
+   - THREE RIGHTWARDS ARROWS (`U+21F6`).
+
+
+### 11.2.1
+
+ * Add top-left and bottom-right serifed variants for `K` and Cyrillic Ka (#1257).
+ * Add characters:
+   - LEFTWARDS ARROW WITH LOOP (`U+21AB`).
+   - RIGHTWARDS ARROW WITH LOOP (`U+21AC`).
+   - DOWNWARDS ZIGZAG ARROW (`U+21AF`).
+   - LEFTWARDS TRIPLE ARROW (`U+21DA`).
+   - RIGHTWARDS TRIPLE ARROW (`U+21DB`).
+   - LEFTWARDS SQUIGGLE ARROW (`U+21DC`).
+   - RIGHTWARDS SQUIGGLE ARROW (`U+21DD`).
+   - RIGHTWARDS ARROW WITH TIP DOWNWARDS (`U+2B0E`) ... LEFTWARDS ARROW WITH TIP UPWARDS (`U+2B11`).
+
+
 ### 11.2.0
 
  * Slightly reduce X-height by 0.01em foe better geometric balancing.
