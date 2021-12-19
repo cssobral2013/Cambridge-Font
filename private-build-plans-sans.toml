@@ -21,7 +21,7 @@ g = "double-storey"
 i = "serifless"
 j = "flat-hook-serifless"
 k = "symmetric-touching-serifless"
-l = "flat-tailed"
+l = "tailed"
 r = "compact"
 t = "flat-hook"
 w = "straight-flat-top"
@@ -89,4 +89,4 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-sans.metric-override]
 sb = 'default_sb * 0.7'
-essRatio = 'default_essRatio * 0.8'
+essRatio = 'default_essRatio * 0.88'
