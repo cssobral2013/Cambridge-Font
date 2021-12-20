@@ -88,5 +88,5 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-sans.metric-override]
-sb = 'default_sb * 0.7'
-essRatio = 'default_essRatio * 0.88'
+sb             = 'default_sb * 0.8'
+essRatioLower  = 'default_essRatio * 0.84'
