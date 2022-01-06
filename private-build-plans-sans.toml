@@ -80,7 +80,7 @@ angle = 15
 #             otherwise they will not be built.
 
 [buildPlans.cambridge-sans.widths.normal]
-shape = 600        # Unit Width, measured in 1/1000 em.
+shape = 530        # Unit Width, measured in 1/1000 em.
 menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
@@ -88,5 +88,5 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-sans.metric-override]
-sb             = 'default_sb * 0.8'
-essRatioLower  = 'default_essRatio * 0.84'
+sb             = 'default_sb * 0.75'
+essRatioLower  = 'default_essRatio * 0.95'
