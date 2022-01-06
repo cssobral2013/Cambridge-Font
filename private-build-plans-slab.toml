@@ -46,9 +46,14 @@ percent = "rings-continuous-slash"
 
 [buildPlans.cambridge-slab.variants.italic]
 
+f = "flat-hook-tailed"
 g = "single-storey-serifed"
 i = "tailed-serifed"
 l = "tailed-serifed"
+v = "cursive"
+w = "cursive"
+x = "cursive"
+y = "cursive"
 
 # End variant section
 ###################################################################################################
