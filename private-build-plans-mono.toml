@@ -8,7 +8,7 @@ no-cv-ss = "true"
 # Configure variants
 
 [buildPlans.cambridge-sans-mono.variants.design]
-capital-j = "serifless"
+capital-j = "descending-serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
 e = "flat-crossbar"
