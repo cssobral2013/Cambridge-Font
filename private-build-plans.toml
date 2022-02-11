@@ -63,7 +63,7 @@ angle = 0
 shape = "italic"
 menu  = "italic"
 css   = "italic"
-angle = 15
+angle = 9.4
 
 # End slope section
 ###################################################################################################
@@ -144,7 +144,7 @@ menu  = "upright"     # Slope grade used for naming.           `upright` | `obli
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
 
 [buildPlans.cambridge-sans-mono.slopes.italic]
-angle = 15
+angle = 9.4
 shape = "italic"
 menu  = "italic"
 css   = "italic"
@@ -248,7 +248,7 @@ angle = 0
 shape = "italic"
 menu  = "italic"
 css   = "italic"
-angle = 15
+angle = 9.4
 
 # End slope section
 ###################################################################################################
