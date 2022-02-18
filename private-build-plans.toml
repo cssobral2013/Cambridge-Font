@@ -92,8 +92,8 @@ sb             = 'default_sb * 0.75'
 essRatioLower  = 'default_essRatio * 0.87'
 
 
-[buildPlans.cambridge-sans-mono]      # <cambridge-sans-mono> is your plan name
-family = "Cambridge Sans Mono"        # Font menu family name
+[buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
+family = "Cambridge Mono"        # Font menu family name
 spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "sans"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
@@ -102,7 +102,7 @@ export-glyph-names = "false"
 ###################################################################################################
 # Configure variants
 
-[buildPlans.cambridge-sans-mono.variants.design]
+[buildPlans.cambridge-mono.variants.design]
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
@@ -126,7 +126,7 @@ dollar = "open"
 cent = "open"
 percent = "rings-continuous-slash"
 
-[buildPlans.cambridge-sans-mono.variants.italic]
+[buildPlans.cambridge-mono.variants.italic]
 
 g = "single-storey-serifless"
 
@@ -137,13 +137,13 @@ g = "single-storey-serifless"
 # Override default building slope sets
 # When this section is absent, all slopes would be built.
 
-[buildPlans.cambridge-sans-mono.slopes.upright]
+[buildPlans.cambridge-mono.slopes.upright]
 angle = 0             # Angle in degrees. Valid range [0, 15]
 shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
 menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
 
-[buildPlans.cambridge-sans-mono.slopes.italic]
+[buildPlans.cambridge-mono.slopes.italic]
 angle = 9.4
 shape = "italic"
 menu  = "italic"
@@ -162,15 +162,15 @@ css   = "italic"
 #             If you decide to use custom widths you have to define all the widths you plan to use,
 #             otherwise they will not be built.
 
-[buildPlans.cambridge-sans-mono.widths.normal]
+[buildPlans.cambridge-mono.widths.normal]
 shape = 600        # Unit Width, measured in 1/1000 em.
-menu  = 5          # Width grade for the font's names.
+menu  = 5         # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
 # End width section
 ###################################################################################################
 
-[buildPlans.cambridge-sans-mono.metric-override]
+[buildPlans.cambridge-mono.metric-override]
 sb             = 'default_sb * 0.75'
 essRatioLower  = 'default_essRatio * 0.87'
 
