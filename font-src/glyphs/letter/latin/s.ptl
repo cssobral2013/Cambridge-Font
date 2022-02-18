@@ -1,7 +1,7 @@
 $$include '../../../meta/macros.ptl'
 
 import [mix linreg clamp fallback] from '../../../support/utils'
-import [DollarShrinkKernel DollarShorterBar CvDecompose MathSansSerif] from "../../../support/gr"
+import [RightDependentLink RightDependentTrigger CvDecompose MathSansSerif] from "../../../support/gr"
 
 glyph-module
 
@@ -9,7 +9,7 @@ glyph-block Letter-Latin-S : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Blackboard : BBS BBD
-	glyph-block-import Letter-Shared : CreateDollarLikeComposition
+	glyph-block-import Letter-Shared : CreateRightDependentComposite
 	glyph-block-import Letter-Shared-Shapes : DToothlessRise FlatHookDepth ArcStartSerifWidth
 	glyph-block-import Letter-Shared-Shapes : SerifedArcStart_RtlLhs SerifedArcEnd_RtlRhs
 	glyph-block-import Letter-Shared-Shapes : SerifedArcStart_LtrRhs SerifedArcEnd_LtrLhs
@@ -237,17 +237,17 @@ glyph-block Letter-Latin-S : begin
 			define bot : CAP * 0.05
 			include : MarkSet.capital
 			set-base-anchor 'cvDecompose' 0 0
-			include : SStrokeImpl top bot doTS doBS [AdviceStroke2 3 3 (top - bot)] EssUpper
+			include : SStrokeImpl top bot doTS doBS [AdviceStroke2 2 3 (top - bot)] EssUpper
 			include : SAutoSlabStart doTS top Stroke Hook
 			include : SAutoSlabEnd   doBS bot Stroke Hook
-			DollarShrinkKernel.set currentGlyph "DollarKernelCap.\(suffix)"
+			RightDependentLink.set currentGlyph "cap" "DollarKernelCap.\(suffix)"
 
 		create-glyph "DollarKernelCap.\(suffix)" : glyph-proc
 			define top : CAP * 0.88
 			define bot : CAP * 0.12
 			include : MarkSet.capital
 			set-base-anchor 'cvDecompose' 0 0
-			include : SStrokeImpl top bot doTS doBS [AdviceStroke2 3 3 (top - bot)] EssUpper
+			include : SStrokeImpl top bot doTS doBS [AdviceStroke2 2 3 (top - bot)] EssUpper
 			include : SAutoSlabStart doTS top Stroke Hook
 			include : SAutoSlabEnd   doBS bot Stroke Hook
 
@@ -356,7 +356,7 @@ glyph-block Letter-Latin-S : begin
 	select-variant 'DollarKernelStd' (follow -- 'S')
 	select-variant 'DollarKernelCap' (follow -- 'S')
 	if [query-glyph 'DollarKernelStd'] : begin
-		DollarShrinkKernel.set [query-glyph 'DollarKernelStd'] 'DollarKernelCap'
+		RightDependentLink.set [query-glyph 'DollarKernelStd'] "cap" 'DollarKernelCap'
 
 	select-variant 'SSwash' 0x2C7E
 	select-variant 'sSwash' 0x23F
@@ -441,19 +441,19 @@ glyph-block Letter-Latin-S : begin
 			define top : CAP * kTop
 			define bot : CAP * kBot
 			define w : AdviceStroke 3
-			define fine : AdviceStroke 4
+			define fine : AdviceStroke [StrokeWidthBlend 3 5.5]
 
+			include : dispiro
+				widths.center w
+				flat Middle (top - HalfStroke)
+				curl Middle (CAP - overflow) [heading Upward]
+			include : dispiro
+				widths.center w
+				flat Middle overflow [heading Upward]
+				curl Middle (bot + HalfStroke)
 			if (fillType === 1) : include : VBar Middle (bot + HalfStroke) (top - HalfStroke) fine
-			if (fillType === 0 || fillType === 1) : begin
-				include : dispiro
-					widths.center w
-					flat Middle (top - HalfStroke)
-					curl Middle (CAP - overflow) [heading Upward]
-				include : dispiro
-					widths.center w
-					flat Middle overflow [heading Upward]
-					curl Middle (bot + HalfStroke)
 			if (fillType === 2) : begin
+				local cofine : AdviceStroke 4
 				local gap : (w / Stroke * EssUpper) + [Math.max ((top - bot) / 6) [AdviceStroke2 3 3 (top - bot)]]
 				local yMid : mix bot top 0.5
 				local yTermLeft : mix yMid (top - [adviceSSmooth (top - bot) (-1) w]) 0.5
@@ -461,16 +461,16 @@ glyph-block Letter-Latin-S : begin
 				include : difference
 					union
 						dispiro
-							flat Middle (CAP - overflow) [widths.center.heading w Downward]
-							curl Middle [mix bot top 0.5] [widths.center.heading fine Downward]
+							flat Middle (top - HalfStroke) [widths.center.heading cofine Downward]
+							curl Middle [mix bot top 0.5]  [widths.center.heading fine Downward]
 						dispiro
-							flat Middle overflow [widths.center.heading w Upward]
-							curl Middle [mix bot top 0.5] [widths.center.heading fine Upward]
+							flat Middle (bot + HalfStroke) [widths.center.heading cofine Upward]
+							curl Middle [mix bot top 0.5]  [widths.center.heading fine Upward]
 
 					dispiro [corner 0 yTermLeft : widths.center gap] [corner Width yTermRight]
 
-			if fShort : DollarShorterBar.set currentGlyph 'trigger'
+			if fShort : RightDependentTrigger.set currentGlyph 'cap'
 
 	select-variant 'dollar/bar' (follow -- 'dollar')
 
-	CreateDollarLikeComposition 'dollar' '$' 'DollarKernelStd' 'DollarKernelCap' 'dollar/bar'
+	CreateRightDependentComposite 'dollar' '$' 'DollarKernelStd' 'dollar/bar'

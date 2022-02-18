@@ -694,7 +694,7 @@ g = "single-storey-serifless"
 i = "serifless"
 j = "flat-hook-serifless"
 k = "straight-serifless"
-l = "tailed"
+l = "serifless"
 r = "compact"
 t = "flat-hook"
 u = "toothed"
@@ -1005,41 +1005,41 @@ menu  = 100
 css   = 100
 
 [weights.extralight]
-shape = 220
+shape = 200
 menu  = 200
 css   = 200
 
 [weights.light]
-shape = 350
+shape = 300
 menu  = 300
 css   = 300
 
 [weights.regular]
-shape = 480
+shape = 400
 menu  = 400
 css   = 400
 
 [weights.medium]
-shape = 564
+shape = 500
 menu  = 500
 css   = 500
 
 [weights.semibold]
-shape = 648
+shape = 600
 menu  = 600
 css   = 600
 
 [weights.bold]
-shape = 732
+shape = 700
 menu  = 700
 css   = 700
 
 [weights.extrabold]
-shape = 816
+shape = 800
 menu  = 800
 css   = 800
 
-[weights.black]
+[weights.heavy]
 shape = 900
 menu  = 900
 css   = 900
@@ -1051,11 +1051,11 @@ shape = "upright"
 menu  = "upright"
 css   = "normal"
 
-#[slopes.oblique]
-#angle = 9.4
-#shape = "oblique"
-#menu  = "oblique"
-#css   = "oblique"
+[slopes.oblique]
+angle = 9.4
+shape = "oblique"
+menu  = "oblique"
+css   = "oblique"
 
 [slopes.italic]
 angle = 9.4
