@@ -90,6 +90,8 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 [buildPlans.cambridge-sans.metric-override]
 sb             = 'default_sb * 0.75'
 essRatioLower  = 'default_essRatio * 0.87'
+cap            = 700
+xheight        = 504
 
 
 [buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
@@ -173,7 +175,8 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 [buildPlans.cambridge-mono.metric-override]
 sb             = 'default_sb * 0.75'
 essRatioLower  = 'default_essRatio * 0.87'
-
+cap            = 700
+xheight        = 504
 
 [buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
 family = "Cambridge Slab"        # Font menu family name
@@ -275,3 +278,5 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 [buildPlans.cambridge-slab.metric-override]
 sb             = 'default_sb * 0.75'
 essRatioLower  = 'default_essRatio * 0.87'
+cap            = 700
+xheight        = 504
