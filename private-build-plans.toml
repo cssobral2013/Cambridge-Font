@@ -16,6 +16,7 @@ capital-q = "crossing"
 capital-w = "straight-flat-top"
 capital-m = "flat-bottom"
 capital-i = "serifless"
+e = "flat-crossbar"
 f = "flat-hook"
 g = "double-storey"
 i = "serifless"
@@ -88,10 +89,14 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-sans.metric-override]
-sb             = 'default_sb * 0.75'
-essRatioLower  = 'default_essRatio * 0.87'
-cap            = 700
-xheight        = 504
+sb                    = 'default_sb * 0.75'
+essRatioLower         = 'default_essRatio * 0.87'
+cap                   = 700
+xheight               = 504
+leading               = 1000
+winMetricAscenderPad  = 253
+winMetricDescenderPad = 94
+
 
 
 [buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
@@ -108,6 +113,7 @@ export-glyph-names = "false"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
+e = "flat-crossbar"
 f = "serifless"
 g = "double-storey"
 k = "symmetric-touching-serifless"
@@ -173,10 +179,15 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-mono.metric-override]
-sb             = 'default_sb * 0.75'
-essRatioLower  = 'default_essRatio * 0.87'
-cap            = 700
-xheight        = 504
+sb                    = 'default_sb * 0.75'
+essRatioLower         = 'default_essRatio * 0.87'
+cap                   = 700
+xheight               = 504
+leading               = 1000
+winMetricAscenderPad  = 253
+winMetricDescenderPad = 94
+
+
 
 [buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
 family = "Cambridge Slab"        # Font menu family name
@@ -195,6 +206,7 @@ capital-q = "crossing"
 capital-w = "straight-flat-top"
 capital-m = "flat-bottom"
 capital-i = "serifed"
+e = "flat-crossbar"
 f = "flat-hook-serifed"
 g = "double-storey"
 i = "serifed"
@@ -276,7 +288,10 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-slab.metric-override]
-sb             = 'default_sb * 0.75'
-essRatioLower  = 'default_essRatio * 0.87'
-cap            = 700
-xheight        = 504
+sb                    = 'default_sb * 0.75'
+essRatioLower         = 'default_essRatio * 0.87'
+cap                   = 700
+xheight               = 504
+leading               = 1000
+winMetricAscenderPad  = 253
+winMetricDescenderPad = 94
