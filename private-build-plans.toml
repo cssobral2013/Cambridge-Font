@@ -92,10 +92,8 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.87'
 cap                   = 700
-xheight               = 504
-leading               = 1000
-winMetricAscenderPad  = 253
-winMetricDescenderPad = 94
+xHeight               = 504
+leading               = 1130
 
 
 
@@ -182,10 +180,8 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.87'
 cap                   = 700
-xheight               = 504
-leading               = 1000
-winMetricAscenderPad  = 253
-winMetricDescenderPad = 94
+xHeight               = 504
+leading               = 1130
 
 
 
@@ -291,7 +287,5 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.87'
 cap                   = 700
-xheight               = 504
-leading               = 1000
-winMetricAscenderPad  = 253
-winMetricDescenderPad = 94
+xHeight               = 504
+leading               = 1130
