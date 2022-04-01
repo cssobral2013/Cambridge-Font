@@ -32,6 +32,7 @@ lower-alpha = "tailed-barred"
 cyrl-capital-ka = "symmetric-touching-serifless"
 cyrl-ka = "symmetric-touching-serifless"
 cyrl-capital-u = "straight"
+zero = "unslashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -89,7 +90,6 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-sans.metric-override]
-sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.875'
 cap                   = 700
 xHeight               = 504
@@ -177,7 +177,6 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-mono.metric-override]
-sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.875'
 cap                   = 700
 xHeight               = 504
@@ -217,6 +216,7 @@ lower-alpha = "tailed-barred"
 cyrl-capital-ka = "symmetric-touching-serifed"
 cyrl-ka = "symmetric-touching-serifed"
 cyrl-capital-u = "straight"
+zero = "unslashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -282,7 +282,6 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-slab.metric-override]
-sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.875'
 cap                   = 700
 xHeight               = 504
@@ -377,7 +376,6 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-slab-mono.metric-override]
-sb                    = 'default_sb * 0.75'
 essRatioLower         = 'default_essRatio * 0.875'
 cap                   = 700
 xHeight               = 504

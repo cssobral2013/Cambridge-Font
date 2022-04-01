@@ -49,7 +49,7 @@ smallArchDepth  = 1.075
 width           = 600
 [shapeWidth.multiplies.blend.600]
 stroke          = 1.050 # Make strokes a little thicker
-sb              = 1.375
+sb              = 1.333
 jut             = 1.150
 refJut          = 1.150
 longjut         = 1.150
@@ -64,7 +64,7 @@ smallArchDepth  = 1.050
 width           = 547
 [shapeWidth.multiplies.blend.547]
 stroke          = 1.023 # Make strokes a little thicker
-sb              = 1.173
+sb              = 1.154
 jut             = 1.072
 refJut          = 1.072
 longjut         = 1.072

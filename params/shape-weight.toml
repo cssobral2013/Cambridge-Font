@@ -3,9 +3,9 @@ canonicalStrokeWidthMin = 18  # sync with 100 entry below
 canonicalStrokeWidthMax = 108 # sync with 900 entry below
 
 [shapeWeight.blend.400]
-stroke = 70        # Primary stroke width
+stroke = 72        # Primary stroke width
 contrast = 1.11    # Stroke width contrast
-sb = 64            # Primary sidebearings
+sb = 60            # Primary sidebearings
 essRatio = 1.12    # Proportion of widen of center of "S"
 dotSize = 125      # Size of dots
 periodSize = 140   # Size of period
@@ -80,9 +80,9 @@ stroke = 96
 # Interpolated
 
 [shapeWeight.blend.900]
-stroke = 114
+stroke = 126
 contrast = 1.20
-sb = 56
+sb = 42
 essRatio = 1.05
 dotSize = 180
 periodSize = 200
