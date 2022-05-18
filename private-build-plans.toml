@@ -90,8 +90,10 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-sans.metric-override]
-essRatioLower         = 'default_essRatio * 0.875'
+essRatioLower         = 'default_essRatio * 0.82'
+sb                    = 'default_sb * 0.85'
 cap                   = 700
+ascender              = 700
 xHeight               = 504
 leading               = 1215
 
@@ -177,8 +179,10 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-mono.metric-override]
-essRatioLower         = 'default_essRatio * 0.875'
+essRatioLower         = 'default_essRatio * 0.82'
+sb                    = 'default_sb * 0.85'
 cap                   = 700
+ascender              = 700
 xHeight               = 504
 leading               = 1215
 
@@ -282,8 +286,10 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-slab.metric-override]
-essRatioLower         = 'default_essRatio * 0.875'
+essRatioLower         = 'default_essRatio * 0.82'
+sb                    = 'default_sb * 0.85'
 cap                   = 700
+ascender              = 700
 xHeight               = 504
 leading               = 1215
 
@@ -376,7 +382,9 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 ###################################################################################################
 
 [buildPlans.cambridge-slab-mono.metric-override]
-essRatioLower         = 'default_essRatio * 0.875'
+essRatioLower         = 'default_essRatio * 0.82'
+sb                    = 'default_sb * 0.85'
 cap                   = 700
+ascender              = 700
 xHeight               = 504
 leading               = 1215

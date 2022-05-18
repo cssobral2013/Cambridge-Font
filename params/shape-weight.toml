@@ -3,9 +3,9 @@ canonicalStrokeWidthMin = 18  # sync with 100 entry below
 canonicalStrokeWidthMax = 108 # sync with 900 entry below
 
 [shapeWeight.blend.400]
-stroke = 72        # Primary stroke width
+stroke = 70        # Primary stroke width
 contrast = 1.11    # Stroke width contrast
-sb = 60            # Primary sidebearings
+sb = 64            # Primary sidebearings
 essRatio = 1.12    # Proportion of widen of center of "S"
 dotSize = 125      # Size of dots
 periodSize = 140   # Size of period
@@ -19,8 +19,8 @@ smallArchDepth = 200  # Vertical arc size in lowercase letters.
 
 rbalance = 60
 rbalance2 = 15
-tbalance = 50
-tbalance2 = 30
+tbalance = 45
+tbalance2 = 40
 jbalance = 63
 fbalance = 6
 onebalance = 30
@@ -80,9 +80,9 @@ stroke = 96
 # Interpolated
 
 [shapeWeight.blend.900]
-stroke = 126
+stroke = 114
 contrast = 1.20
-sb = 42
+sb = 56
 essRatio = 1.05
 dotSize = 180
 periodSize = 200
