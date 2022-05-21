@@ -12,12 +12,13 @@ export-glyph-names = "false"
 # Configure variants
 
 [buildPlans.cambridge-sans.variants.design]
+capital-d = "more-rounded-serifless"
+capital-i = "serifless"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
+capital-m = "flat-bottom"
 capital-q = "crossing"
 capital-w = "straight-flat-top"
-capital-m = "flat-bottom"
-capital-i = "serifless"
 e = "flat-crossbar"
 f = "flat-hook"
 g = "double-storey"
@@ -114,6 +115,7 @@ export-glyph-names = "false"
 # Configure variants
 
 [buildPlans.cambridge-mono.variants.design]
+capital-d = "more-rounded-serifless"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
@@ -205,6 +207,7 @@ no-ligation = "true"
 # Configure variants
 
 [buildPlans.cambridge-slab.variants.design]
+capital-d = "more-rounded-serifless"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
@@ -216,7 +219,7 @@ i = "serifed"
 j = "flat-hook-serifed"
 k = "symmetric-touching-serifed"
 l = "serifed"
-r = "compact-serifed"
+r = "serifed"
 t = "flat-hook"
 w = "straight-flat-top"
 x = "straight-serifed"
