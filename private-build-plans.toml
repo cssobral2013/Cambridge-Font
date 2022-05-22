@@ -207,7 +207,7 @@ no-ligation = "true"
 # Configure variants
 
 [buildPlans.cambridge-slab.variants.design]
-capital-d = "more-rounded-serifless"
+capital-d = "more-rounded-bilateral-serifed"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
@@ -221,7 +221,6 @@ k = "symmetric-touching-serifed"
 l = "serifed"
 r = "serifed"
 t = "flat-hook"
-w = "straight-flat-top"
 x = "straight-serifed"
 y = "straight"
 eszet = "sulzbacher-descending"
@@ -314,10 +313,11 @@ no-cv-ss = "true"
 # Configure variants
 
 [buildPlans.cambridge-slab-mono.variants.design]
+capital-d = "more-rounded-bilateral-serifed"
+capital-i = "serifed"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
-capital-i = "serifed"
 e = "flat-crossbar"
 g = "double-storey"
 i = "serifed"
