@@ -20,7 +20,7 @@ capital-m = "flat-bottom"
 capital-q = "crossing"
 capital-w = "straight-flat-top"
 e = "flat-crossbar"
-f = "flat-hook"
+f = "flat-hook-crossbar-at-x-height"
 g = "double-storey"
 i = "serifless"
 j = "flat-hook-serifless"
@@ -94,7 +94,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-sans.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.8'
+sb                    = 'default_sb * 0.75'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
@@ -120,7 +120,7 @@ capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
 e = "flat-crossbar"
-f = "serifless"
+f = "serifless-crossbar-at-x-height"
 g = "double-storey"
 k = "symmetric-touching-serifless"
 l = "tailed-serifed"
@@ -186,7 +186,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-mono.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.8'
+sb                    = 'default_sb * 0.75'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
@@ -213,7 +213,7 @@ capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
 capital-i = "serifed"
 e = "flat-crossbar"
-f = "flat-hook-serifed"
+f = "flat-hook-serifed-crossbar-at-x-height"
 g = "double-storey"
 i = "serifed"
 j = "flat-hook-serifed"
@@ -295,7 +295,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-slab.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.8'
+sb                    = 'default_sb * 0.75'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
@@ -319,6 +319,7 @@ capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
 e = "flat-crossbar"
+f = "serifed-crossbar-at-x-height"
 g = "double-storey"
 i = "serifed"
 k = "symmetric-touching-serifed"
@@ -343,7 +344,7 @@ percent = "rings-continuous-slash"
 
 [buildPlans.cambridge-slab-mono.variants.italic]
 
-f = "tailed"
+f = "tailed-crossbar-at-x-height"
 g = "single-storey-serifed"
 i = "tailed-serifed"
 l = "tailed-serifed"
@@ -394,7 +395,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-slab-mono.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.8'
+sb                    = 'default_sb * 0.75'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
