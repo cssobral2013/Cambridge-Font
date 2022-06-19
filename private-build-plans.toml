@@ -91,7 +91,7 @@ angle = 9.4
 #             otherwise they will not be built.
 
 [buildPlans.cambridge-sans.widths.normal]
-shape = 600        # Unit Width, measured in 1/1000 em.
+shape = 576        # Unit Width, measured in 1/1000 em.
 menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
@@ -100,7 +100,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-sans.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.75'
+sb                    = 'default_sb * 0.8'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
@@ -222,6 +222,8 @@ capital-d = "more-rounded-bilateral-serifed"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
+capital-m = "flat-bottom"
+capital-w = "straight-flat-top"
 capital-i = "serifed"
 e = "flat-crossbar"
 f = "flat-hook-serifed-crossbar-at-x-height"
@@ -232,6 +234,7 @@ k = "symmetric-touching-serifed"
 l = "serifed"
 r = "serifed"
 t = "flat-hook"
+w = "straight-flat-top"
 x = "straight-serifed"
 y = "straight"
 long-s = "flat-hook"
@@ -299,7 +302,7 @@ angle = 9.4
 #             otherwise they will not be built.
 
 [buildPlans.cambridge-slab.widths.normal]
-shape = 600        # Unit Width, measured in 1/1000 em.
+shape = 576        # Unit Width, measured in 1/1000 em.
 menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
@@ -308,7 +311,7 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 [buildPlans.cambridge-slab.metric-override]
 essRatioLower         = 'default_essRatio * 0.85'
-sb                    = 'default_sb * 0.75'
+sb                    = 'default_sb * 0.8'
 cap                   = 700
 ascender              = 700
 xHeight               = 504
