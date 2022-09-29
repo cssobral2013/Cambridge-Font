@@ -41,7 +41,7 @@ cyrl-capital-zhe = "symmetric-touching"
 cyrl-zhe = "symmetric-touching"
 cyrl-capital-u = "straight"
 cyrl-ef = "serifless"
-zero = "unslashed-oval"
+zero = "slashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -112,6 +112,8 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
+ArchDepth             = 'default_ArchDepth * 1.2'
+smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 
 [buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
@@ -462,7 +464,7 @@ cyrl-capital-zhe = "symmetric-touching"
 cyrl-zhe = "symmetric-touching"
 cyrl-capital-u = "straight"
 cyrl-ef = "serifed"
-zero = "unslashed-oval"
+zero = "slashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -537,6 +539,8 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
+ArchDepth             = 'default_ArchDepth * 1.2'
+smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 [buildPlans.cambridge-slab-mono] # <cambridge-slab> is your plan name
 family = "Cambridge Slab Mono"    # Font menu family name
