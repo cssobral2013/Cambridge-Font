@@ -112,7 +112,6 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
-ArchDepth             = 'default_ArchDepth * 1.2'
 smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 
@@ -216,6 +215,7 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
+smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 
 [buildPlans.cambridge-mono-one]      # <cambridge-sans-mono> is your plan name
@@ -317,6 +317,8 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
+smallArchDepth        = 'default_smallArchDepth * 1.2'
+
 
 [buildPlans.cambridge-mono-two]      # <cambridge-sans-mono> is your plan name
 family = "Cambridge Mono Two"        # Font menu family name
@@ -423,6 +425,8 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
+smallArchDepth        = 'default_smallArchDepth * 1.2'
+
 
 [buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
 family = "Cambridge Slab"        # Font menu family name
@@ -464,7 +468,7 @@ cyrl-capital-zhe = "symmetric-touching"
 cyrl-zhe = "symmetric-touching"
 cyrl-capital-u = "straight"
 cyrl-ef = "serifed"
-zero = "slashed-oval"
+zero = "unslashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -483,7 +487,7 @@ b = "toothless-corner-motion-serifed"
 f = "flat-hook-tailed-crossbar-at-x-height"
 g = "earless-corner"
 i = "serifed-flat-tailed"
-k = "symmetric-touching-serifed"
+k = "diagonal-tailed-cursive-top-left-serifed"
 l = "serifed-flat-tailed"
 q = "earless-corner-tailed"
 w = "straight-flat-top-motion-serifed"
@@ -591,6 +595,7 @@ b = "toothless-corner-motion-serifed"
 f = "flat-hook-tailed-crossbar-at-x-height"
 g = "earless-corner"
 i = "serifed-flat-tailed"
+k = "diagonal-tailed-cursive-top-left-serifed"
 l = "serifed-flat-tailed"
 q = "earless-corner-tailed"
 y = "cursive"
@@ -643,3 +648,4 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
+smallArchDepth        = 'default_smallArchDepth * 1.2'
