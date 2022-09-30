@@ -478,6 +478,7 @@ cent = "open"
 percent = "rings-continuous-slash"
 
 [buildPlans.cambridge-slab.variants.italic]
+a = "single-storey-earless-corner-tailed"
 b = "toothless-corner-motion-serifed"
 f = "flat-hook-tailed-crossbar-at-x-height"
 g = "earless-corner"
@@ -539,7 +540,6 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
-ArchDepth             = 'default_ArchDepth * 1.2'
 smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 [buildPlans.cambridge-slab-mono] # <cambridge-slab> is your plan name
@@ -586,6 +586,7 @@ percent = "rings-continuous-slash"
 
 [buildPlans.cambridge-slab-mono.variants.italic]
 
+a = "single-storey-earless-corner-tailed"
 b = "toothless-corner-motion-serifed"
 f = "flat-hook-tailed-crossbar-at-x-height"
 g = "earless-corner"
