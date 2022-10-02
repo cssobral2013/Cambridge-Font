@@ -112,7 +112,8 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
-smallArchDepth        = 'default_smallArchDepth * 1.2'
+smallArchDepth        = 'default_smallArchDepth * 1.1'
+archDepth             = 'default_archDepth * 1.3'
 
 
 [buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
