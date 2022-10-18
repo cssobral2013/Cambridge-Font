@@ -41,7 +41,7 @@ cyrl-capital-zhe = "symmetric-touching"
 cyrl-zhe = "symmetric-touching"
 cyrl-capital-u = "straight"
 cyrl-ef = "serifless"
-zero = "slashed-oval"
+zero = "unslashed-oval"
 one = "base"
 two = "straight-neck"
 three = "flat-top"
@@ -112,8 +112,6 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
-smallArchDepth        = 'default_smallArchDepth * 1.1'
-archDepth             = 'default_archDepth * 1.3'
 
 
 [buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
