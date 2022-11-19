@@ -14,6 +14,7 @@ export-glyph-names = "false"
 
 [buildPlans.cambridge-sans.variants.design]
 capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
 capital-i = "serifless"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
@@ -47,7 +48,9 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
+six  = "open-contour"
 eight = "two-circles"
+nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -118,7 +121,7 @@ symbolMid             = 301
 family = "Cambridge Mono"        # Font menu family name
 naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
 naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
-spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+spacing = "term"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "sans"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
 export-glyph-names = "false"
@@ -128,6 +131,7 @@ export-glyph-names = "false"
 
 [buildPlans.cambridge-mono.variants.design]
 capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
@@ -150,7 +154,9 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
+six = "open-contour"
 eight = "two-circles"
+nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -231,6 +237,7 @@ export-glyph-names = "false"
 
 [buildPlans.cambridge-mono-one.variants.design]
 capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
 capital-j = "serifless"
 capital-k = "symmetric-touching-serifless"
 capital-q = "crossing"
@@ -252,7 +259,9 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
+six = "open-contour"
 eight = "two-circles"
+nine = "open-contour"
 zero = "slashed-oval"
 brace = "straight"
 number-sign = "slanted"
@@ -316,7 +325,7 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
-smallArchDepth        = 'default_smallArchDepth * 1.2'
+symbolMid             = 301
 
 
 [buildPlans.cambridge-mono-two]      # <cambridge-sans-mono> is your plan name
@@ -424,7 +433,7 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
-smallArchDepth        = 'default_smallArchDepth * 1.2'
+symbolMid             = 301
 
 
 [buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
@@ -441,6 +450,7 @@ no-ligation = "true"
 
 [buildPlans.cambridge-slab.variants.design]
 capital-d = "more-rounded-bilateral-serifed"
+capital-g = "toothless-corner-inward-serifed-hooked"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
 capital-q = "crossing"
@@ -473,7 +483,9 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
+six = "open-contour"
 eight = "two-circles"
+nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -543,13 +555,12 @@ ascender              = 700
 xHeight               = 504
 leading               = 1215
 symbolMid             = 301
-smallArchDepth        = 'default_smallArchDepth * 1.2'
 
 [buildPlans.cambridge-slab-mono] # <cambridge-slab> is your plan name
 family = "Cambridge Slab Mono"    # Font menu family name
 naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
 naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
-spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+spacing = "term"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 serifs = "slab"                  # Optional; Values: `sans` or `slab`
 no-cv-ss = "true"
 
@@ -558,6 +569,7 @@ no-cv-ss = "true"
 
 [buildPlans.cambridge-slab-mono.variants.design]
 capital-d = "more-rounded-bilateral-serifed"
+capital-g = "toothless-corner-inward-serifed-hooked"
 capital-i = "serifed"
 capital-j = "serifed"
 capital-k = "symmetric-touching-serifed"
@@ -580,7 +592,9 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
+six  = "open-contour"
 eight = "two-circles"
+nine  = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -647,4 +661,4 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
-smallArchDepth        = 'default_smallArchDepth * 1.2'
+symbolMid             = 301
