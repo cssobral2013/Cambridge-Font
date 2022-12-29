@@ -1,5 +1,5 @@
 @echo off
-cd ./dist/cambridge-slab/ttf-unhinted/
+cd ./dist/cambridge-slab/ttf/
 pyftsubset --drop-tables= --unicodes=0-52f,e3f,1e00-200b,2010-2139,213b-215e,2189,a726-a7bf,ab30-fb04 cambridge-slab-thin.ttf
 pyftsubset --drop-tables= --unicodes=0-52f,e3f,1e00-200b,2010-2139,213b-215e,2189,a726-a7bf,ab30-fb04 cambridge-slab-extralight.ttf
 pyftsubset --drop-tables= --unicodes=0-52f,e3f,1e00-200b,2010-2139,213b-215e,2189,a726-a7bf,ab30-fb04 cambridge-slab-light.ttf
