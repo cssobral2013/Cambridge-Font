@@ -1,0 +1,795 @@
+[buildPlans.cambridge-sans]             # <cambridge-sans> is your plan name
+family = "Cambridge Sans"               # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "quasi-proportional"          # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "sans"                         # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+no-ligation = "true"
+snapshotFeature = {"NWID" = 0}
+export-glyph-names = "false"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-sans.variants.design]
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
+capital-i = "serifless"
+capital-j = "serifless"
+capital-k = "symmetric-touching-serifless"
+capital-m = "flat-bottom"
+capital-q = "crossing"
+capital-w = "straight-flat-top"
+e = "flat-crossbar"
+f = "flat-hook-crossbar-at-x-height"
+g = "double-storey"
+i = "serifless"
+j = "flat-hook-serifless"
+k = "symmetric-touching-serifless"
+l = "flat-tailed"
+r = "compact"
+t = "flat-hook"
+w = "straight-flat-top"
+y = "straight"
+eszet = "sulzbacher-descending"
+long-s = "flat-hook"
+lower-alpha = "tailed-barred"
+lower-iota = "flat-tailed"
+cyrl-capital-ka = "symmetric-touching-serifless"
+cyrl-ka = "symmetric-touching-serifless"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-capital-u = "straight"
+cyrl-ef = "serifless"
+zero = "unslashed-oval"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "open-contour"
+eight = "two-circles"
+nine = "open-contour"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.cambridge-sans.variants.italic]
+
+a = "single-storey-serifless"
+d = "toothed-serifless"
+g = "single-storey-serifless"
+u = "toothed"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-sans.slopes.upright]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+angle = 0
+
+[buildPlans.cambridge-sans.slopes.italic]
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+angle = 9.4
+
+# End slope section
+###################################################################################################
+
+
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-sans.widths.normal]
+shape = 600                # Unit Width, measured in 1/1000 em.
+menu  = 5                  # Width grade for the font's names.
+css   = "normal"           # "font-stretch' property of webfont CSS.
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-sans.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
+
+
+[buildPlans.cambridge-mono]      # <cambridge-sans-mono> is your plan name
+family = "Cambridge Mono"        # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "term"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "sans"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+export-glyph-names = "false"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-mono.variants.design]
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
+capital-j = "serifless"
+capital-k = "symmetric-touching-serifless"
+capital-q = "crossing"
+e = "flat-crossbar"
+f = "serifless-crossbar-at-x-height"
+g = "double-storey"
+i = "serifed"
+k = "symmetric-touching-serifless"
+l = "serifed"
+t = "standard-short-neck2"
+y = "straight"
+eszet = "sulzbacher-descending"
+lower-alpha = "tailed-barred"
+cyrl-capital-ka = "symmetric-touching-serifless"
+cyrl-ka = "symmetric-touching-serifless"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-ef = "serifless"
+zero = "slashed-oval"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "open-contour"
+eight = "two-circles"
+nine = "open-contour"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.cambridge-mono.variants.italic]
+
+a = "single-storey-serifless"
+d = "toothed-serifless"
+f = "flat-hook-tailed-crossbar-at-x-height"
+g = "single-storey-serifless"
+i = "tailed-serifed"
+l = "tailed-serifed"
+u = "toothed"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-mono.slopes.upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+
+[buildPlans.cambridge-mono.slopes.italic]
+angle = 9.4
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-mono.widths.normal]
+shape = 600        # Unit Width, measured in 1/1000 em.
+menu  = 5         # Width grade for the font's names.
+css   = "normal"   # "font-stretch' property of webfont CSS.
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-mono.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+
+
+[buildPlans.cambridge-mono-one]      # <cambridge-sans-mono> is your plan name
+family = "Cambridge Mono One"        # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "fixed"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "sans"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+export-glyph-names = "false"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-mono-one.variants.design]
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
+capital-j = "serifless"
+capital-k = "symmetric-touching-serifless"
+capital-q = "crossing"
+e = "flat-crossbar"
+g = "double-storey"
+k = "symmetric-touching-serifless"
+l = "serifed"
+t = "standard-short-neck2"
+y = "straight"
+eszet = "sulzbacher-descending"
+lower-alpha = "tailed-barred"
+cyrl-capital-ka = "symmetric-touching-serifless"
+cyrl-ka = "symmetric-touching-serifless"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-ef = "serifless"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "open-contour"
+eight = "two-circles"
+nine = "open-contour"
+zero = "slashed-oval"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.cambridge-mono-one.variants.italic]
+
+a = "single-storey-serifless"
+d = "toothed-serifless"
+f = "serifless"
+g = "single-storey-serifless"
+i = "serifed-flat-tailed"
+l = "serifed-flat-tailed"
+u = "toothed"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-mono-one.slopes.upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+
+[buildPlans.cambridge-mono-one.slopes.italic]
+angle = 9.4
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-mono-one.widths.normal]
+shape = 600        # Unit Width, measured in 1/1000 em.
+menu  = 5         # Width grade for the font's names.
+css   = "normal"   # "font-stretch' property of webfont CSS.
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-mono-one.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
+
+
+[buildPlans.cambridge-mono-two]      # <cambridge-sans-mono> is your plan name
+family = "Cambridge Mono Two"        # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "fixed"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "sans"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+export-glyph-names = "false"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-mono-two.variants.design]
+capital-d = "more-rounded-serifless"
+capital-g = "toothless-corner-serifless-hooked"
+capital-j = "serifed"
+capital-k = "symmetric-touching-serifless"
+capital-q = "horizontal-tailed"
+capital-r = "standing"
+e = "flat-crossbar"
+f = "flat-hook-crossbar-at-x-height"
+g = "single-storey-serifless"
+i = "serifed-flat-tailed"
+j = "flat-hook-serifed"
+k = "symmetric-touching-serifless"
+l = "serifed-flat-tailed"
+t = "flat-hook"
+y = "straight"
+eszet = "longs-s-lig"
+long-s = "flat-hook"
+lower-alpha = "tailed-barred"
+cyrl-capital-u = "straight"
+cyrl-capital-ka = "symmetric-touching-serifless"
+cyrl-ka = "symmetric-touching-serifless"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-ef = "serifless"
+one = "base"
+two = "straight-neck"
+three = "two-arcs"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "closed-contour"
+seven = "straight-serifless"
+eight = "two-circles"
+nine = "closed-contour"
+zero = "unslashed-oval"
+number-sign = "slanted"
+ampersand = "et-toothless-corner"
+caret = "high"
+brace = "straight"
+at = "fourfold"
+question = "corner-flat-hooked"
+asterisk = "hex-high"
+percent = "rings-continuous-slash"
+punctuation-dot = "square"
+diacritic-dot = "square"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-mono-two.slopes.upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+
+[buildPlans.cambridge-mono-two.slopes.italic]
+angle = 9.4
+shape = "oblique"
+menu  = "italic"
+css   = "italic"
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-mono-two.widths.normal]
+shape = 600        # Unit Width, measured in 1/1000 em.
+menu  = 5         # Width grade for the font's names.
+css   = "normal"   # "font-stretch' property of webfont CSS.
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-mono-two.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
+
+
+[buildPlans.cambridge-slab]      # <cambridge-slab> is your plan name
+family = "Cambridge Slab"        # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "quasi-proportional"   # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "slab"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+no-ligation = "true"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-slab.variants.design]
+capital-c = "bilateral-inward-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-g = "toothless-corner-inward-serifed-hooked"
+capital-j = "serifed"
+capital-k = "symmetric-touching-serifed"
+capital-q = "crossing"
+capital-m = "flat-bottom"
+capital-s = "bilateral-inward-serifed"
+capital-w = "straight-flat-top"
+capital-i = "serifed"
+c = "unilateral-inward-serifed"
+f = "flat-hook-serifed-crossbar-at-x-height"
+g = "double-storey"
+i = "serifed"
+j = "flat-hook-serifed"
+k = "symmetric-touching-serifed"
+l = "serifed"
+s = "bilateral-inward-serifed"
+t = "flat-hook"
+w = "straight-flat-top"
+y = "straight"
+long-s = "flat-hook"
+eszet = "sulzbacher-descending"
+lower-alpha = "tailed-barred"
+lower-iota = "flat-tailed"
+cyrl-capital-ka = "symmetric-touching-serifed"
+cyrl-ka = "symmetric-touching-serifed"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-capital-u = "straight"
+cyrl-ef = "serifed"
+zero = "unslashed-oval"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+eight = "two-circles"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.cambridge-slab.variants.italic]
+a = "single-storey-earless-corner-tailed"
+b = "toothless-corner-motion-serifed"
+f = "flat-hook-tailed-crossbar-at-x-height"
+g = "earless-corner"
+i = "serifed-flat-tailed"
+k = "diagonal-tailed-cursive-top-left-serifed"
+l = "serifed-flat-tailed"
+q = "earless-corner-tailed"
+w = "straight-flat-top-motion-serifed"
+y = "cursive"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-slab.slopes.upright]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+angle = 0
+
+[buildPlans.cambridge-slab.slopes.italic]
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+angle = 9.4
+
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-slab.widths.normal]
+shape = 576                # Unit Width, measured in 1/1000 em.
+menu  = 5                  # Width grade for the font's names.
+css   = "normal"           # "font-stretch' property of webfont CSS.
+
+
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-slab.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
+
+[buildPlans.cambridge-slab-mono] # <cambridge-slab> is your plan name
+family = "Cambridge Slab Mono"    # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "term"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "slab"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.cambridge-slab-mono.variants.design]
+capital-c = "bilateral-inward-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-g = "toothless-corner-inward-serifed-hooked"
+capital-i = "serifed"
+capital-j = "serifed"
+capital-k = "symmetric-touching-serifed"
+capital-q = "crossing"
+capital-s = "bilateral-inward-serifed"
+c = "unilateral-inward-serifed"
+f = "serifed-crossbar-at-x-height"
+g = "double-storey"
+i = "serifed"
+k = "symmetric-touching-serifed"
+l = "serifed"
+s = "bilateral-inward-serifed"
+y = "straight"
+eszet = "sulzbacher-descending"
+lower-alpha = "tailed-barred"
+cyrl-capital-ka = "symmetric-touching-serifed"
+cyrl-ka = "symmetric-touching-serifed"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-ef = "serifed"
+zero = "slashed-oval"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "open-contour"
+eight = "two-circles"
+nine = "open-contour"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.cambridge-slab-mono.variants.italic]
+
+a = "single-storey-earless-corner-tailed"
+b = "toothless-corner-motion-serifed"
+f = "tailed-crossbar-at-x-height"
+g = "earless-corner"
+i = "serifed-flat-tailed"
+k = "diagonal-tailed-cursive-top-left-serifed"
+l = "serifed-flat-tailed"
+q = "earless-corner-tailed"
+y = "cursive"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.cambridge-slab-mono.slopes.upright]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+angle = 0
+
+[buildPlans.cambridge-slab-mono.slopes.italic]
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+angle = 9.4
+
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.cambridge-slab-mono.widths.normal]
+shape = 600        # Unit Width, measured in 1/1000 em.
+menu  = 5          # Width grade for the font's names.
+css   = "normal"   # "font-stretch' property of webfont CSS.
+
+# End width section
+###################################################################################################
+
+[buildPlans.cambridge-slab-mono.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
+
+[buildPlans.zapus-slab]      # <cambridge-slab> is your plan name
+family = "Zapus Slab"        # Font menu family name
+naming.manufacturer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+naming.designer = "Belleve Invis (font), Cristiano Sobral (main changes)"
+spacing = "quasi-proportional"   # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+serifs = "slab"                  # Optional; Values: `sans` or `slab`
+no-cv-ss = "true"
+no-ligation = "true"
+
+###################################################################################################
+# Configure variants
+
+[buildPlans.zapus-slab.variants.design]
+capital-c = "bilateral-inward-serifed"
+capital-d = "more-rounded-bilateral-serifed"
+capital-g = "toothless-corner-inward-serifed-hooked"
+capital-j = "serifed"
+capital-k = "symmetric-touching-serifed"
+capital-q = "crossing"
+capital-m = "flat-bottom"
+capital-s = "bilateral-inward-serifed"
+capital-w = "straight-flat-top"
+capital-i = "serifed"
+c = "unilateral-inward-serifed"
+f = "flat-hook-serifed-crossbar-at-x-height"
+g = "double-storey"
+i = "serifed"
+j = "flat-hook-serifed"
+k = "symmetric-touching-serifed"
+l = "serifed"
+s = "bilateral-inward-serifed"
+t = "flat-hook"
+w = "straight-flat-top"
+y = "straight"
+long-s = "flat-hook"
+eszet = "sulzbacher-descending"
+lower-alpha = "tailed-barred"
+lower-iota = "flat-tailed"
+cyrl-capital-ka = "symmetric-touching-serifed"
+cyrl-ka = "symmetric-touching-serifed"
+cyrl-capital-zhe = "symmetric-touching"
+cyrl-zhe = "symmetric-touching"
+cyrl-capital-u = "straight"
+cyrl-ef = "serifed"
+zero = "unslashed-oval"
+one = "base"
+two = "straight-neck"
+three = "flat-top"
+four = "closed"
+five = "oblique-upper-left-bar"
+six = "open-contour"
+eight = "two-circles"
+nine = "open-contour"
+brace = "straight"
+number-sign = "slanted"
+dollar = "open"
+cent = "open"
+percent = "rings-continuous-slash"
+
+[buildPlans.zapus-slab.variants.italic]
+a = "single-storey-earless-corner-tailed"
+b = "toothless-corner-motion-serifed"
+f = "flat-hook-tailed-crossbar-at-x-height"
+g = "earless-corner"
+i = "serifed-flat-tailed"
+k = "diagonal-tailed-cursive-top-left-serifed"
+l = "serifed-flat-tailed"
+q = "earless-corner-tailed"
+w = "straight-flat-top-motion-serifed"
+y = "cursive"
+
+# End variant section
+###################################################################################################
+
+###################################################################################################
+# Override default building slope sets
+# When this section is absent, all slopes would be built.
+
+[buildPlans.zapus-slab.slopes.upright]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+angle = 0
+
+[buildPlans.zapus-slab.slopes.italic]
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+angle = 9.4
+
+# End slope section
+###################################################################################################
+
+###################################################################################################
+# Override default building widths
+# When buildPlans.<plan name>.widths is absent, all widths would built and mapped to
+# default values.
+# IMPORTANT : Currently "shape" property only supports numbers between 434 and 664 (inclusive),
+#             while "menu" only supports integers between 1 and 9 (inclusive).
+#             The "shape" parameter specifies the unit width, measured in 1/1000 em. The glyphs'
+#             width are equal to, or a simple multiple of the unit width.
+#             If you decide to use custom widths you have to define all the widths you plan to use,
+#             otherwise they will not be built.
+
+[buildPlans.zapus-slab.widths.normal]
+shape = 576                # Unit Width, measured in 1/1000 em.
+menu  = 5                  # Width grade for the font's names.
+css   = "normal"           # "font-stretch' property of webfont CSS.
+
+
+
+# End width section
+###################################################################################################
+
+[buildPlans.zapus-slab.metric-override]
+essRatioLower         = 'default_essRatio * 0.85'
+sb                    = 'default_sb * 0.8'
+cap                   = 700
+ascender              = 700
+xHeight               = 504
+leading               = 1215
+symbolMid             = 301
