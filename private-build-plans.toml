@@ -48,9 +48,7 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
-six = "open-contour"
 eight = "two-circles"
-nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -100,7 +98,7 @@ angle = 9.4
 #             otherwise they will not be built.
 
 [buildPlans.cambridge-sans.widths.normal]
-shape = 600                # Unit Width, measured in 1/1000 em.
+shape = 576                # Unit Width, measured in 1/1000 em.
 menu  = 5                  # Width grade for the font's names.
 css   = "normal"           # "font-stretch' property of webfont CSS.
 
@@ -156,9 +154,7 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
-six = "open-contour"
 eight = "two-circles"
-nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -171,8 +167,8 @@ a = "single-storey-serifless"
 d = "toothed-serifless"
 f = "flat-hook-tailed-crossbar-at-x-height"
 g = "single-storey-serifless"
-i = "tailed-serifed"
-l = "tailed-serifed"
+i = "serifed-flat-tailed"
+l = "serifed-flat-tailed"
 u = "toothed"
 
 # End variant section
@@ -505,7 +501,7 @@ k = "diagonal-tailed-cursive-top-left-serifed"
 l = "serifed-flat-tailed"
 q = "earless-corner-tailed"
 w = "straight-flat-top-motion-serifed"
-y = "cursive"
+y = "cursive-motion-serifed"
 
 # End variant section
 ###################################################################################################
@@ -600,9 +596,7 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
-six = "open-contour"
 eight = "two-circles"
-nine = "open-contour"
 brace = "straight"
 number-sign = "slanted"
 dollar = "open"
@@ -619,7 +613,7 @@ i = "serifed-flat-tailed"
 k = "diagonal-tailed-cursive-top-left-serifed"
 l = "serifed-flat-tailed"
 q = "earless-corner-tailed"
-y = "cursive"
+y = "cursive-motion-serifed"
 
 # End variant section
 ###################################################################################################
@@ -740,7 +734,7 @@ k = "diagonal-tailed-cursive-top-left-serifed"
 l = "serifed-flat-tailed"
 q = "earless-corner-tailed"
 w = "straight-flat-top-motion-serifed"
-y = "cursive"
+y = "cursive-motion-serifed"
 
 # End variant section
 ###################################################################################################
