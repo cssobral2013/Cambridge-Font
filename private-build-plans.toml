@@ -218,6 +218,7 @@ cap                   = 700
 ascender              = 700
 xHeight               = 504
 leading               = 1215
+symbolMid             = 301
 
 
 [buildPlans.cambridge-mono-one]      # <cambridge-sans-mono> is your plan name
@@ -256,9 +257,7 @@ two = "straight-neck"
 three = "flat-top"
 four = "closed"
 five = "oblique-upper-left-bar"
-six = "open-contour"
 eight = "two-circles"
-nine = "open-contour"
 zero = "slashed-oval"
 brace = "straight"
 number-sign = "slanted"
