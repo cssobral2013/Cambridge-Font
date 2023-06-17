@@ -285,47 +285,57 @@ glyph-block Symbol-Arrow : for-width-kinds WideWidth1
 		include : side x1 y1 x2 y2 arrowSw size
 		include : ArrowBar x1 y1 x2 y2 halfArrowSw 1.75
 
-	define [DoubleArrowBarShape w x1 y1 x2 y2] : glyph-proc
-		include : PointingTo x1 y1 x2 y2 : lambda [mag] : glyph-proc
-			local p : (mag - o - w / 2 + O) / mag
+	define [ArrowBarMaskOut d] : spiro-outline
+		corner O  0
+		corner (2 * d + O) (2 * d)
+		corner (-2 * d + O) (2 * d)
+		corner (-2 * d + O) (-2 * d)
+		corner (2 * d + O) (-2 * d)
+
+	define [DoubleArrowBarShape w x1 y1 x2 y2] : begin
+		return : PointingTo x1 y1 x2 y2 : lambda [mag] : begin
 			local fine : Math.min (w / 3) arrowSw
 			local coFine : w / 2 - fine / 2
-
-			include : dispiro
-				widths.center fine
-				flat (mag * (1 - p)) (+coFine)
-				curl mag (+coFine)
-
-			include : dispiro
-				widths.center fine
-				flat (mag * (1 - p)) (-coFine)
-				curl mag (-coFine)
+			return : difference
+				union
+					dispiro [widths.center fine] [flat 0 (+coFine)] [curl mag (+coFine)]
+					dispiro [widths.center fine] [flat 0 (-coFine)] [curl mag (-coFine)]
+				ArrowBarMaskOut coFine
 
 	define [DoubleArrowShape w] : lambda [x1 y1 x2 y2 size] : glyph-proc
 		include : ArrowHead x1 y1 x2 y2 size
 		include : DoubleArrowBarShape w x1 y1 x2 y2
 
-	define [TripleArrowBarShape w x1 y1 x2 y2] : glyph-proc
-		local fine : Math.min (w / 4) arrowSw
-
-		include : ArrowBar x1 y1 x2 y2 (fine / 2)
-		include : PointingTo x1 y1 x2 y2 : lambda [mag] : glyph-proc
-			local p : (mag - o - w / 2 + O) / mag
+	define [TripleArrowBarShape w x1 y1 x2 y2] : begin
+		return : PointingTo x1 y1 x2 y2 : lambda [mag] : begin
+			local fine : Math.min (w / 4) arrowSw
 			local coFine : w / 2 - fine / 2
-
-			include : dispiro
-				widths.center fine
-				flat (mag * (1 - p)) (+coFine)
-				curl mag (+coFine)
-
-			include : dispiro
-				widths.center fine
-				flat (mag * (1 - p)) (-coFine)
-				curl mag (-coFine)
+			return : difference
+				union
+					dispiro [widths.center fine] [flat 0 (+coFine)] [curl mag (+coFine)]
+					dispiro [widths.center fine] [flat 0 0]         [curl mag 0]
+					dispiro [widths.center fine] [flat 0 (-coFine)] [curl mag (-coFine)]
+				ArrowBarMaskOut coFine
 
 	define [TripleArrowShape w] : lambda [x1 y1 x2 y2 size] : glyph-proc
 		include : ArrowHead x1 y1 x2 y2 size
 		include : TripleArrowBarShape w x1 y1 x2 y2
+
+	define [QuadrupleArrowBarShape w x1 y1 x2 y2] : begin
+		return : PointingTo x1 y1 x2 y2 : lambda [mag] : begin
+			local fine : Math.min (w / 5) arrowSw
+			local coFine : w / 2 - fine / 2
+			return : difference
+				union
+					dispiro [widths.center fine] [flat 0 (+coFine)] [curl mag (+coFine)]
+					dispiro [widths.center fine] [flat 0 (+coFine / 3)] [curl mag (+coFine / 3)]
+					dispiro [widths.center fine] [flat 0 (-coFine / 3)] [curl mag (-coFine / 3)]
+					dispiro [widths.center fine] [flat 0 (-coFine)] [curl mag (-coFine)]
+				ArrowBarMaskOut coFine
+
+	define [QuadrupleArrowShape w] : lambda [x1 y1 x2 y2 size] : glyph-proc
+		include : ArrowHead x1 y1 x2 y2 size
+		include : QuadrupleArrowBarShape w x1 y1 x2 y2
 
 	define [dhArrowShape x1 y1 x2 y2 size] : glyph-proc
 		local mag : Math.hypot (y2 - y1) (x2 - x1)
@@ -466,23 +476,23 @@ glyph-block Symbol-Arrow : for-width-kinds WideWidth1
 		define bendT : SymbolMid + bendArrowHeadSize * 2
 		define bendB : SymbolMid - bendArrowHeadSize * 2
 
-		define [VBR x1 y1 x2 y2] : VBar.r  x1 y1 y2 arrowSw
-		define [VBL x1 y1 x2 y2] : VBar.l   x1 y1 y2 arrowSw
-		define [HBT x1 y1 x2 y2] : HBar.t    x1 x2 y1 arrowSw
-		define [HBB x1 y1 x2 y2] : HBar.b x1 x2 y1 arrowSw
+		define [VBS x1 y1 x2 y2] : VBar.m x1 y1 (y2 - 0.5 * arrowSw) arrowSw
+		define [VBE x1 y1 x2 y2] : VBar.m x1 y1 (y2 + 0.5 * arrowSw) arrowSw
+		define [HBS x1 y1 x2 y2] : HBar.m x1 (x2 - 0.5 * arrowSw) y1 arrowSw
+		define [HBE x1 y1 x2 y2] : HBar.m x1 (x2 + 0.5 * arrowSw) y1 arrowSw
 
-		MkAngleArrow ArrowShape VBR [MangleName 'Arrow-up-angle-bend-left'] [MangleUnicode 0x21b0] bendR arrowBot bendR (arrowTop - bendArrowHeadSize) bendL (arrowTop - bendArrowHeadSize) bendArrowHeadSize
-		MkAngleArrow ArrowShape VBL [MangleName 'Arrow-up-angle-bend-right'] [MangleUnicode 0x21b1] bendL arrowBot bendL (arrowTop - bendArrowHeadSize) bendR (arrowTop - bendArrowHeadSize) bendArrowHeadSize
-		MkAngleArrow ArrowShape VBR [MangleName 'Arrow-down-angle-bend-left'] [MangleUnicode 0x21b2] bendR arrowTop bendR (arrowBot + bendArrowHeadSize) bendL (arrowBot + bendArrowHeadSize) bendArrowHeadSize
-		MkAngleArrow ArrowShape VBL [MangleName 'Arrow-down-angle-bend-right'] [MangleUnicode 0x21b3] bendL arrowTop bendL (arrowBot + bendArrowHeadSize) bendR (arrowBot + bendArrowHeadSize) bendArrowHeadSize
+		MkAngleArrow ArrowShape VBE [MangleName 'Arrow-up-angle-bend-left'] [MangleUnicode 0x21b0] bendR arrowBot bendR (arrowTop - bendArrowHeadSize) bendL (arrowTop - bendArrowHeadSize) bendArrowHeadSize
+		MkAngleArrow ArrowShape VBE [MangleName 'Arrow-up-angle-bend-right'] [MangleUnicode 0x21b1] bendL arrowBot bendL (arrowTop - bendArrowHeadSize) bendR (arrowTop - bendArrowHeadSize) bendArrowHeadSize
+		MkAngleArrow ArrowShape VBS [MangleName 'Arrow-down-angle-bend-left'] [MangleUnicode 0x21b2] bendR arrowTop bendR (arrowBot + bendArrowHeadSize) bendL (arrowBot + bendArrowHeadSize) bendArrowHeadSize
+		MkAngleArrow ArrowShape VBS [MangleName 'Arrow-down-angle-bend-right'] [MangleUnicode 0x21b3] bendL arrowTop bendL (arrowBot + bendArrowHeadSize) bendR (arrowBot + bendArrowHeadSize) bendArrowHeadSize
 
-		MkAngleArrow ArrowShape HBT [MangleName 'Arrow-right-angle-bend-down'] [MangleUnicode 0x2B0E] arrowSB SymbolMid (arrowRSB - bendArrowHeadSize) SymbolMid (arrowRSB - bendArrowHeadSize) bendB bendArrowHeadSize
-		MkAngleArrow ArrowShape HBB [MangleName 'Arrow-right-angle-bend-up'] [MangleUnicode 0x2B0F] arrowSB SymbolMid (arrowRSB - bendArrowHeadSize) SymbolMid (arrowRSB - bendArrowHeadSize) bendT bendArrowHeadSize
-		MkAngleArrow ArrowShape HBT [MangleName 'Arrow-left-angle-bend-down'] [MangleUnicode 0x2B10] arrowRSB SymbolMid (arrowSB + bendArrowHeadSize) SymbolMid (arrowSB + bendArrowHeadSize) bendB bendArrowHeadSize
-		MkAngleArrow ArrowShape HBB [MangleName 'Arrow-left-angle-bend-up'] [MangleUnicode 0x2B11] arrowRSB SymbolMid (arrowSB + bendArrowHeadSize) SymbolMid (arrowSB + bendArrowHeadSize) bendT bendArrowHeadSize
+		MkAngleArrow ArrowShape HBE [MangleName 'Arrow-right-angle-bend-down'] [MangleUnicode 0x2B0E] arrowSB SymbolMid (arrowRSB - bendArrowHeadSize) SymbolMid (arrowRSB - bendArrowHeadSize) bendB bendArrowHeadSize
+		MkAngleArrow ArrowShape HBE [MangleName 'Arrow-right-angle-bend-up'] [MangleUnicode 0x2B0F] arrowSB SymbolMid (arrowRSB - bendArrowHeadSize) SymbolMid (arrowRSB - bendArrowHeadSize) bendT bendArrowHeadSize
+		MkAngleArrow ArrowShape HBS [MangleName 'Arrow-left-angle-bend-down'] [MangleUnicode 0x2B10] arrowRSB SymbolMid (arrowSB + bendArrowHeadSize) SymbolMid (arrowSB + bendArrowHeadSize) bendB bendArrowHeadSize
+		MkAngleArrow ArrowShape HBS [MangleName 'Arrow-left-angle-bend-up'] [MangleUnicode 0x2B11] arrowRSB SymbolMid (arrowSB + bendArrowHeadSize) SymbolMid (arrowSB + bendArrowHeadSize) bendT bendArrowHeadSize
 
-		MkAngleArrow ArrowShape HBT [MangleName 'Arrow-right-angle-down'] [MangleUnicode 0x21b4] arrowSB arrowTop (arrowRSB - arrowHeadSize) arrowTop (arrowRSB - arrowHeadSize) arrowBot arrowHeadSize
-		MkAngleArrow ArrowShape VBR [MangleName 'Arrow-down-angle-left'] [MangleUnicode 0x21b5] arrowRSB arrowTop arrowRSB (arrowBot + arrowHeadSize) arrowSB (arrowBot + arrowHeadSize) arrowHeadSize
+		MkAngleArrow ArrowShape HBE [MangleName 'Arrow-right-angle-down'] [MangleUnicode 0x21b4] arrowSB arrowTop (arrowRSB - arrowHeadSize) arrowTop (arrowRSB - arrowHeadSize) arrowBot arrowHeadSize
+		MkAngleArrow ArrowShape VBS [MangleName 'Arrow-down-angle-left'] [MangleUnicode 0x21b5] arrowRSB arrowTop arrowRSB (arrowBot + arrowHeadSize) arrowSB (arrowBot + arrowHeadSize) arrowHeadSize
 
 	do "Half-head Arrows"
 		MkArrow [HalfArrowShape RHSHalfArrowHead] [MangleName 'arrowLeftHR']  [MangleUnicode 0x21BC] arrowRSB SymbolMid arrowSB SymbolMid
@@ -666,6 +676,13 @@ glyph-block Symbol-Arrow : for-width-kinds WideWidth1
 		MkArrow [TripleArrowShape dasw] [MangleName 'tripleArrowRight']   [MangleUnicode 0x21DB] arrowSB SymbolMid arrowRSB SymbolMid
 		MkArrow [TripleArrowShape dasw] [MangleName 'tripleArrowUp']      [MangleUnicode 0x290A] arrowMidX arrowBot arrowMidX arrowTop
 		MkArrow [TripleArrowShape dasw] [MangleName 'tripleArrowDown']    [MangleUnicode 0x290B] arrowMidX arrowTop arrowMidX arrowBot
+
+	do "Quadruple-line Arrows"
+		define dasw doubleArrowStemWidth
+		MkArrow [QuadrupleArrowShape dasw] [MangleName 'quadrupleArrowUp']      [MangleUnicode 0x27F0] arrowMidX arrowBot arrowMidX arrowTop
+		MkArrow [QuadrupleArrowShape dasw] [MangleName 'quadrupleArrowDown']    [MangleUnicode 0x27F1] arrowMidX arrowTop arrowMidX arrowBot
+		MkArrow [QuadrupleArrowShape dasw] [MangleName 'quadrupleArrowLeft']    [MangleUnicode 0x2B45] arrowRSB SymbolMid arrowSB SymbolMid
+		MkArrow [QuadrupleArrowShape dasw] [MangleName 'quadrupleArrowRight']   [MangleUnicode 0x2B46] arrowSB SymbolMid arrowRSB SymbolMid
 
 	do "Barred Arrows"
 		MkArrow ArrowShape [MangleName 'arrowLeftK']    null arrowRSB SymbolMid (arrowSB + fine) SymbolMid
