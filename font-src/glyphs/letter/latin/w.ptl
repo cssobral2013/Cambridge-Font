@@ -89,7 +89,7 @@ glyph-block Letter-Latin-W : begin
 			[Just FORM-ASYMMETRIC]   0.3
 			[Just FORM-CYRL-OMEGA]   0.265
 
-		local botMixOffset : 0.5 * HVContrast * wCo2
+		local botMixOffset : HSwToV : 0.5 * wCo2
 		local xBot1 : [if bodyType O 0] + [mix (df.leftSB + botMixOffset) (df.rightSB - botMixOffset) pxBot1]
 		local xBot2 : df.width - xBot1
 		local topWithoutSerif : if SLAB (top - Stroke) top
@@ -139,11 +139,11 @@ glyph-block Letter-Latin-W : begin
 				flat df.leftSB top [heading Downward]
 				curl df.leftSB (top * (1 - dim.curlyStraightSegLength)) [heading Downward]
 				quadControls 0 0.3 6 unimportant
-				g4   (dim.xBot1 - 0.5 * HVContrast * dim.wCoCr) 0 [widths.lhs.heading dim.fineOuterCr Downward]
+				g4   (dim.xBot1 - [HSwToV : 0.5 * dim.wCoCr]) 0 [widths.lhs.heading dim.fineOuterCr Downward]
 			_ : dispiro
 				widths.lhs dim.strokeOuterCr
 				flat (df.leftSB + O * 2) top [heading Downward]
-				g4   (dim.xBot1 - 0.5 * HVContrast * dim.wCoCr) 0 [widths.lhs.heading dim.fineOuterCr Downward]
+				g4   (dim.xBot1 - [HSwToV : 0.5 * dim.wCoCr]) 0 [widths.lhs.heading dim.fineOuterCr Downward]
 
 		include : tagged 'strokeUp2' : match bodyType
 			([Just FORM-CURLY] || [Just FORM-CYRL-OMEGA]) : dispiro
@@ -151,11 +151,11 @@ glyph-block Letter-Latin-W : begin
 				flat df.rightSB top [heading Downward]
 				curl df.rightSB (top * (1 - dim.curlyStraightSegLength)) [heading Downward]
 				quadControls 0 0.3 6 unimportant
-				g4   (dim.xBot2 + 0.5 * HVContrast * dim.wCoCr) 0 [widths.rhs.heading dim.fineOuterCr Downward]
+				g4   (dim.xBot2 + [HSwToV : 0.5 * dim.wCoCr]) 0 [widths.rhs.heading dim.fineOuterCr Downward]
 			_ : dispiro
 				widths.rhs dim.strokeOuterCr
 				flat (df.rightSB - O * 2) top [heading Downward]
-				g4   (dim.xBot2 + 0.5 * HVContrast * dim.wCoCr) 0 [widths.rhs.heading dim.fineOuterCr Downward]
+				g4   (dim.xBot2 + [HSwToV : 0.5 * dim.wCoCr]) 0 [widths.rhs.heading dim.fineOuterCr Downward]
 
 		local kTopShift : match bodyType
 			[Just FORM-DOUBLE-V]     0
@@ -164,8 +164,8 @@ glyph-block Letter-Latin-W : begin
 			__                       1
 		local k1 0.5
 		local k2 : 1 - k1
-		local shiftT  : kTopShift * HVContrast * (0.5 * dim.wCoCr - 0.5 * dim.fineInnerCrTop)
-		local shiftB  :             HVContrast * (0.5 * dim.wCoCr - 0.5 * dim.fineOuterCr   )
+		local shiftT  : HSwToV : kTopShift * (0.5 * dim.wCoCr - 0.5 * dim.fineInnerCrTop)
+		local shiftB  : HSwToV               (0.5 * dim.wCoCr - 0.5 * dim.fineOuterCr   )
 
 		include : tagged 'strokeUp1' : difference
 			dispiro
@@ -189,8 +189,8 @@ glyph-block Letter-Latin-W : begin
 
 		include : tagged 'strokeDown2' : match bodyType
 			[Just FORM-CYRL-OMEGA] : dispiro
-				flat (dim.xLeft2 - 0.5 * HVContrast * dim.strokeOuter) dim.wMidHeight [widths.lhs.heading dim.strokeOuter Downward]
-				curl (dim.xLeft2 - 0.5 * HVContrast * dim.strokeOuter) (dim.wMidHeight * (1 - dim.curlyStraightSegLength)) [heading Downward]
+				flat (dim.xLeft2 - [HSwToV : 0.5 * dim.strokeOuter]) dim.wMidHeight [widths.lhs.heading dim.strokeOuter Downward]
+				curl (dim.xLeft2 - [HSwToV : 0.5 * dim.strokeOuter]) (dim.wMidHeight * (1 - dim.curlyStraightSegLength)) [heading Downward]
 				quadControls 0 0.3 6 unimportant
 				g4 (dim.xBot2 - shiftB)   0               [widths.center.heading dim.fineOuterCr    Downward]
 			_ : dispiro
@@ -200,8 +200,8 @@ glyph-block Letter-Latin-W : begin
 
 		local oSlabPos : if bodyType (O * 2) 0
 
-		local sf  : SerifFrame top 0 df.leftSB df.rightSB
-		local sfm : SerifFrame top 0 (df.leftSB + oSlabPos) (df.rightSB - oSlabPos)
+		local sf  : SerifFrame top 0 df.leftSB df.rightSB (hSplit -- 3)
+		local sfm : SerifFrame top 0 (df.leftSB + oSlabPos) (df.rightSB - oSlabPos) (hSplit -- 3)
 
 		include : match slabType
 			[Just SERIFS-NONE]   : glyph-proc
@@ -214,9 +214,9 @@ glyph-block Letter-Latin-W : begin
 			[Just SERIFS-ASYMMETRIC-ALL] : composite-proc sfm.lt.outer sfm.rt.full
 			[Just SERIFS-CURSIVE]    : NeedSlab SLAB sf.lt.outer
 			[Just SERIFS-CYRL-OMEGA] : begin
-				local jut : Math.min Jut (0.5 * HVContrast * dim.strokeOuter + 0.375 * (dim.xLeft2 - df.leftSB - 1.5 * HVContrast * dim.strokeOuter))
+				local jut : Math.min Jut ([HSwToV : 0.5 * dim.strokeOuter] + 0.375 * (dim.xLeft2 - df.leftSB - [HSwToV : 1.5 * dim.strokeOuter]))
 				NeedSlab SLAB : composite-proc
-					HSerif.mtAsymmetric (df.leftSB + 0.5 * HVContrast * dim.strokeOuter) dim.wMidHeight jut jut
+					HSerif.mtAsymmetric (df.leftSB + [HSwToV : 0.5 * dim.strokeOuter]) dim.wMidHeight jut jut
 					HSerif.mtAsymmetric dim.xLeft2 dim.wMidHeight jut jut
 
 	define [WHooktopShape df top bodyType serifsType] : glyph-proc
@@ -230,17 +230,16 @@ glyph-block Letter-Latin-W : begin
 
 		include : dispiro
 			widths.rhs dim.strokeOuter
-			straight.down.start df.rightSB (top - Hook) [heading Downward]
+			straight.down.start df.rightSB (top - TailY - 0.5 * dim.strokeOuter - O) [heading Downward]
 			quadControls 0 0.3 6 unimportant
-			g4 (dim.xBot2 + 0.5 * HVContrast * dim.wCoCr) 0 [widths.rhs.heading dim.fineOuterCr Downward]
+			g4 (dim.xBot2 + [HSwToV : 0.5 * dim.wCoCr]) 0 [widths.rhs.heading dim.fineOuterCr Downward]
 
 		include : VerticalHook.r
 			x -- df.rightSB
-			y -- (top - Hook)
-			xDepth -- (HookX * 0.65)
-			yDepth -- (-Hook + 0.5 * dim.strokeOuter)
+			y -- (top - TailY - 0.5 * dim.strokeOuter - O)
+			xDepth -- TailX
+			yDepth -- (-TailY)
 			sw -- dim.strokeOuter
-
 
 	define [WVertSides df top bodyType slabType] : glyph-proc
 		include : new-glyph : glyph-proc
@@ -263,11 +262,11 @@ glyph-block Letter-Latin-W : begin
 
 		include : dispiro
 			widths.rhs
-			flat df.rightSB (top - Hook) [heading Downward]
-			curl df.rightSB [Math.min (0.8 * top) (top - Hook - 0.1)] [heading Downward]
+			flat df.rightSB (top - TailY - HalfStroke - O) [heading Downward]
+			curl df.rightSB [Math.min (0.8 * top) (top - TailY - HalfStroke - 0.1)] [heading Downward]
 			straight.down.end df.rightSB 0 [widths.rhs.heading [AdviceStroke 4 df.div] Downward]
 
-		include : VerticalHook.r df.rightSB (top - Hook) (HookX * 0.65) (-Hook + HalfStroke)
+		include : VerticalHook.r df.rightSB (top - TailY - HalfStroke - O) TailX (-TailY)
 
 
 	define [WCursiveImplImpl fHookTop df top bodyType slabType] : glyph-proc
@@ -286,17 +285,17 @@ glyph-block Letter-Latin-W : begin
 			flat x1 top [heading Downward]
 			curl x1 (fine + rInY) [heading Downward]
 			arcvh 16
-			g4 [Math.min ([mix (x1 + fine * HVContrast) (df.middle - fine / 2 * HVContrast) 0.5] - (fine - mfine) * HVContrast) (x1 + fine * HVContrast + rInY)] O [heading {.x (TanSlope + (0.5 * (fine - mfine) / fine)) .y 1}]
+			g4 [Math.min ([mix (x1 + [HSwToV fine]) (df.middle - fine / 2 * HVContrast) 0.5] - (fine - mfine) * HVContrast) (x1 + [HSwToV fine] + rInY)] O [heading {.x (TanSlope + (0.5 * (fine - mfine) / fine)) .y 1}]
 			archv 16
 			flat (df.middle + (mfine - fine / 2) * HVContrast) y3 [widths.heading mfine 0 Upward]
 			curl (df.middle + (mfine - fine / 2) * HVContrast) y4 [heading Upward]
 
 		if fHookTop
 		: then : begin
-			include : VerticalHook.r df.rightSB (top - Hook) (HookX * 0.65) (-Hook + 0.5 * fine) fine
+			include : VerticalHook.r df.rightSB (top - TailY - 0.5 * fine - O) TailX (-TailY) fine
 			include : dispiro
 				widths.rhs fine
-				flat (df.width - x1) (top - Hook) [heading Downward]
+				flat (df.width - x1) (top - TailY - 0.5 * fine - O) [heading Downward]
 				curl (df.width - x1) y3           [heading Downward]
 				arcvh 16
 				g4 ([mix (df.width - x1) (df.middle - fine / 2 * HVContrast) 0.5] + fine * CorrectionOMidX) O
@@ -350,35 +349,31 @@ glyph-block Letter-Latin-W : begin
 
 	foreach { suffix { {implT hookTopImplT bodyType} slabType } } [pairs-of WConfig] : do
 		create-glyph "W.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : implT df CAP bodyType slabType
 
 		create-glyph "w.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : implT df XH bodyType slabType
 
 		create-glyph "ww.\(suffix)": glyph-proc
-			local df : DivFrame 1 3
-			local gap : CAP * 0.05
-			set-width df.width
+			local df : include : DivFrame 1 3
 			include : df.markSet.capital
+
+			local gap : CAP * 0.05
 			include : implT df (CAP / 2 - gap / 2) bodyType slabType
 			include : ApparentTranslate 0 (CAP / 2 + gap)
 			include : implT df (CAP / 2 - gap / 2) bodyType slabType
 
 		if hookTopImplT : create-glyph "WHookTop.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : hookTopImplT df CAP bodyType slabType
 
 		if hookTopImplT : create-glyph "wHookTop.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : hookTopImplT df XH bodyType slabType
 

@@ -21,7 +21,7 @@ function assignSubRank(glyphStore) {
 // "Fixed" subfamilies are properly built.
 function validateMonospace(para, glyphStore) {
 	let awSet = new Set();
-	for (const [u, g] of glyphStore.encodedEntries()) {
+	for (const [u, n, g] of glyphStore.encodedEntries()) {
 		const aw = Math.round(g.advanceWidth || 0);
 		if (aw > 0) awSet.add(aw);
 	}
@@ -35,7 +35,7 @@ function validateMonospace(para, glyphStore) {
 export function finalizeFont(cache, para, glyphStore, excludedCodePoints, restFont) {
 	assignGrAndCodeRank(glyphStore, Nwid, Wwid);
 	assignSubRank(glyphStore);
-	glyphStore = gcFont(glyphStore, excludedCodePoints, restFont, {});
+	glyphStore = gcFont(glyphStore, excludedCodePoints, restFont);
 	glyphStore = finalizeGlyphs(cache, para, glyphStore);
 	validateMonospace(para, glyphStore);
 	return glyphStore;

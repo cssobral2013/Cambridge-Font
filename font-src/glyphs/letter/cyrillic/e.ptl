@@ -47,7 +47,7 @@ glyph-block Letter-Cyrillic-E : begin
 			define dfSub : DivFrame divSub 2
 
 			local lf : CLetterForm dfSub sty styBot top 0 (ada -- ada) (adb -- adb) (sw -- df.mvs)
-			include : WithTransform [ApparentTranslate (Width * (df.div - divSub)) 0] : lf.full
+			include : with-transform [ApparentTranslate (Width * (df.div - divSub)) 0] : lf.full
 
 			include : Iotified.full df top
 				hBarRight -- [mix df.leftSB df.rightSB (3 / 4)]
@@ -55,14 +55,12 @@ glyph-block Letter-Cyrillic-E : begin
 				fCapital -- fCapital
 
 		create-glyph "cyrl/EIotified.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : IotifiedEShape true df CAP ArchDepthA ArchDepthB
 
 		create-glyph "cyrl/eIotified.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : IotifiedEShape false df XH SmallArchDepthA SmallArchDepthB
 

@@ -33,8 +33,8 @@ glyph-block Symbol-Punctuation-Asterisk : begin
 				local s : Math.sin ((2 * j / sides + rot) * Math.PI)
 				local c : Math.cos ((2 * j / sides + rot) * Math.PI)
 				include : dispiro
-					flat Middle SymbolMid [widths fine fine]
-					curl (Middle + radius * s) (SymbolMid + radius * c) [widths final final]
+					flat Middle SymbolMid [widths.center : 2 * fine]
+					curl (Middle + radius * s) (SymbolMid + radius * c) [widths.center : 2 * final]
 
 		if high : create-glyph (name + '.' + high) : composite-proc
 			refer-glyph (name + '.' + sMid)
@@ -53,8 +53,8 @@ glyph-block Symbol-Punctuation-Asterisk : begin
 			ApparentTranslate 0 (yLow - SymbolMid)
 
 		if dual : create-glyph (dual + '.' + sMid) : composite-proc
-			WithTransform [ApparentTranslate 0 (yHigh_DT - SymbolMid)] : refer-glyph (name + '.' + sMid)
-			WithTransform [ApparentTranslate 0 (yLow_DT - SymbolMid)]  : refer-glyph (name + '.' + sMid)
+			with-transform [ApparentTranslate 0 (yHigh_DT - SymbolMid)] : refer-glyph (name + '.' + sMid)
+			with-transform [ApparentTranslate 0 (yLow_DT - SymbolMid)]  : refer-glyph (name + '.' + sMid)
 
 		if triple : for-width-kinds WideWidth1
 			local scale : Math.sqrt (MosaicWidthScalar / 2)

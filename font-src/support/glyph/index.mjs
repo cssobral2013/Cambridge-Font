@@ -1,3 +1,5 @@
+import * as util from "util";
+
 import { Anchor } from "../geometry/anchor.mjs";
 import * as Geom from "../geometry/index.mjs";
 import { Point, Vec2 } from "../geometry/point.mjs";
@@ -21,6 +23,14 @@ export class Glyph {
 		// Tracking
 		this._m_dependencyManager = null;
 		this.ctxTag = null;
+	}
+
+	[util.inspect.custom](depth, options) {
+		return options.stylize(this.toString(), "special");
+	}
+
+	toString() {
+		return `<Glyph ${this._m_identifier}>`;
 	}
 
 	get identifier() {
@@ -180,6 +190,11 @@ export class Glyph {
 			if (isNaN(mbx - 0) || isNaN(mby - 0))
 				throw new Error(`NaN found in anchor coord for ${id}`);
 			this.baseAnchors[id] = new Anchor(mbx, mby).transform(this.gizmo);
+		}
+	}
+	copyBaseAnchorIfAbsent(to, from) {
+		if (this.baseAnchors[from] && !this.baseAnchors[to]) {
+			this.baseAnchors[to] = new Anchor(this.baseAnchors[from].x, this.baseAnchors[from].y);
 		}
 	}
 	clearAnchors() {

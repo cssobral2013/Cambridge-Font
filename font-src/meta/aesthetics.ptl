@@ -65,8 +65,9 @@ export : define [calculateMetrics para] : begin
 	define SHook para.shook
 	define RHook para.rhook
 	define JHook para.jhook
-	define FHook para.fhook
 	define HookX para.hookx
+	define TailX para.tailX
+	define TailY para.tailY
 	define ArchDepth para.archDepth
 	define SmallArchDepth para.smallArchDepth
 
@@ -94,8 +95,8 @@ export : define [calculateMetrics para] : begin
 	define Jut para.jut
 	define LongJut para.longjut
 	define VJut para.vjut
-	define MidJutSide   : Math.max Jut : mix (0.5 * Stroke * HVContrast) LongJut 0.5
-	define MidJutCenter : Math.max Jut : mix (0.5 * Stroke * HVContrast) LongJut 0.6
+	define MidJutSide   : Math.max Jut : mix ([HSwToV : 0.5 * Stroke]) LongJut 0.5
+	define MidJutCenter : Math.max Jut : mix ([HSwToV : 0.5 * Stroke]) LongJut 0.6
 	define AccentStackOffset para.accentStackOffset
 	define AccentWidth       para.accentWidth
 	define AccentClearance   para.accentClearance
@@ -137,7 +138,7 @@ export : define [calculateMetrics para] : begin
 	define Middle : Width / 2
 	define DotRadius : DotSize / 2
 	define PeriodRadius : PeriodSize / 2
-	define SideJut : Jut - HalfStroke * HVContrast
+	define SideJut : Jut - [HSwToV HalfStroke]
 	define VJutStroke : AdviceStroke 3.5
 
 	define [StrokeWidthBlend min max sw] : linreg para.canonicalStrokeWidthMin min para.canonicalStrokeWidthMax max [fallback sw Stroke]
@@ -152,7 +153,8 @@ export : define [calculateMetrics para] : begin
 		local smOfSma : ada + delta
 		local smOfSmb : adb - delta
 		local yNotAdjusted : mix top bot (smOfSmb / (smOfSma + smOfSmb))
-		return : yNotAdjusted - delta
+		return : yNotAdjusted - delta * [Math.min 1 ((top - bot) / (ada + adb))]
+	set YSmoothMidR.cr : function [c r _ada _adb] : YSmoothMidR (c + r) (c - r) _ada _adb
 	define [YSmoothMidL top bot _ada _adb] : begin
 		local ada : fallback _ada ArchDepthA
 		local adb : fallback _adb ArchDepthB
@@ -160,7 +162,9 @@ export : define [calculateMetrics para] : begin
 		local smOfSma : ada + delta
 		local smOfSmb : adb - delta
 		local yNotAdjusted : mix top bot (smOfSma / (smOfSma + smOfSmb))
-		return : yNotAdjusted + delta
+		return : yNotAdjusted + delta * [Math.min 1 ((top - bot) / (ada + adb))]
+	set YSmoothMidL.cr : function [c r _ada _adb] : YSmoothMidL (c + r) (c - r) _ada _adb
+
 	define ArchDepthA : ArchDepth - TanSlope * SmoothAdjust
 	define ArchDepthB : ArchDepth + TanSlope * SmoothAdjust
 	define SmallArchDepthA : SmallArchDepth - TanSlope * SmoothAdjust
@@ -196,8 +200,8 @@ export : define [calculateMetrics para] : begin
 		DesignParameters UPM HalfUPM Width SB CAP XH Ascender Descender Contrast SymbolMid
 		ParenTop ParenBot OperTop OperBot TackTop TackBot PlusTop PlusBot PictTop PictBot BgOpTop
 		BgOpBot Italify Upright Scale Translate ApparentTranslate Rotate GlobalTransform TanSlope
-		HVContrast Upward Downward Rightward Leftward O OX
-		OXHook Hook AHook SHook RHook JHook FHook HookX ArchDepth SmallArchDepth Stroke DotSize
+		HVContrast Upward Downward Rightward Leftward O OX OXHook Hook AHook SHook RHook JHook
+		HookX TailX TailY ArchDepth SmallArchDepth Stroke DotSize
 		PeriodSize HBarPos OverlayPos LongJut Jut VJut VJutStroke AccentStackOffset AccentWidth
 		AccentClearance AccentHeight CThin CThinB SLAB TailAdjX TailAdjY IBalance IBalance2
 		JBalance JBalance2 TBalance TBalance2 RBalance RBalance2 FBalance OneBalance WideWidth0
@@ -298,6 +302,7 @@ class CMarkSet
 		set this.markAnchors markAnchors
 		set this.baseAnchors baseAnchors
 	public [applyToGlyph g] : begin
+		g.clearAnchors
 		g.copyAnchors this
 
 export : define [compositeBaseAnchors] : begin
@@ -315,18 +320,18 @@ define [MarksetDiv p sbMul me] : begin
 		* (anchor.x * me.GlobalTransform.xx + anchor.y * me.TanSlope + me.GlobalTransform.x)
 		* (anchor.x * me.GlobalTransform.xy + anchor.y * me.GlobalTransform.yy + me.GlobalTransform.y)
 
-	define [MarkAbove zone]        {.baseAnchors {.above       [ta : new Anchor middle  zone.top                  ]}}
-	define [MarkBelow zone]        {.baseAnchors {.below       [ta : new Anchor middle  zone.bot                  ]}}
-	define [MarkTopLeft zone]      {.baseAnchors {.topLeft     [ta : new Anchor leftSB  zone.top                  ]}}
-	define [MarkTopRight zone]     {.baseAnchors {.topRight    [ta : new Anchor rightSB zone.top                  ]}}
-	define [MarkBottomLeft zone]   {.baseAnchors {.bottomLeft  [ta : new Anchor leftSB zone.bot                  ]}}
-	define [MarkBottomRight zone]  {.baseAnchors {.bottomRight [ta : new Anchor rightSB zone.bot                  ]}}
+	define [MarkAbove zone]        {.baseAnchors {.above       [ta : new Anchor middle  zone.top]}}
+	define [MarkBelow zone]        {.baseAnchors {.below       [ta : new Anchor middle  zone.bot]}}
+	define [MarkTopLeft zone]      {.baseAnchors {.topLeft     [ta : new Anchor leftSB  zone.top]}}
+	define [MarkTopRight zone]     {.baseAnchors {.topRight    [ta : new Anchor rightSB zone.top]}}
+	define [MarkBottomLeft zone]   {.baseAnchors {.bottomLeft  [ta : new Anchor leftSB  zone.bot]}}
+	define [MarkBottomRight zone]  {.baseAnchors {.bottomRight [ta : new Anchor rightSB zone.bot]}}
 
 	define markTieAbove            {.baseAnchors {.tieAbove    [ta : new Anchor width   (me.XH + me.AccentStackOffset * 1.38)]}}
-	define markTieBelow            {.baseAnchors {.tieBelow    [ta : new Anchor width   me.Descender              ]}}
+	define markTieBelow            {.baseAnchors {.tieBelow    [ta : new Anchor width   me.Descender                         ]}}
 
 	define [buildStandardMarkSet zone] : lambda [] : begin
-		if (this.baseAnchors) : begin
+		if (this && this.baseAnchors) : begin
 			throw : new Error "A mark set is now a function. Please call it before inclusion"
 		local a : compositeBaseAnchors
 			MarkAbove       zone
@@ -337,10 +342,17 @@ define [MarksetDiv p sbMul me] : begin
 			MarkBottomRight zone
 			begin markTieAbove
 			begin markTieBelow
+
+		# Overlay on stems
 		set a.baseAnchors.overlay : new Anchor
 			* [mix a.baseAnchors.below.x a.baseAnchors.above.x me.OverlayPos]
 			* [mix a.baseAnchors.below.y a.baseAnchors.above.y me.OverlayPos]
+		# Slash over entire letter
 		set a.baseAnchors.slash : new Anchor
+			* [mix a.baseAnchors.below.x a.baseAnchors.above.x 0.5]
+			* [mix a.baseAnchors.below.y a.baseAnchors.above.y 0.5]
+		# Horizontal or near-horizontal strike on letter counter or bowl
+		set a.baseAnchors.strike : new Anchor
 			* [mix a.baseAnchors.below.x a.baseAnchors.above.x 0.5]
 			* [mix a.baseAnchors.below.y a.baseAnchors.above.y 0.5]
 		return a
@@ -354,7 +366,7 @@ define [MarksetDiv p sbMul me] : begin
 		oper    : buildStandardMarkSet {.top me.OperTop  .bot me.OperBot}
 		tack    : buildStandardMarkSet {.top me.TackTop  .bot me.TackBot}
 		plus    : buildStandardMarkSet {.top me.PlusTop  .bot me.PlusBot}
-		if      : buildStandardMarkSet {.top me.Ascender .bot me.Descender}
+		bp      : buildStandardMarkSet {.top me.Ascender .bot me.Descender}
 		capDesc : buildStandardMarkSet {.top me.CAP      .bot me.Descender}
 
 export : define DesignParameters : object

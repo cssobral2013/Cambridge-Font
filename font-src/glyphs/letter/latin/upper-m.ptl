@@ -8,8 +8,7 @@ glyph-module
 glyph-block Letter-Latin-Upper-M : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Letter-Shared-Shapes : SerifFrame CyrTailDescender VerticalHook
-
+	glyph-block-import Letter-Shared-Shapes : SerifFrame CyrTailDescender PalatalHook
 
 	define FORM-FLAT      0
 	define FORM-HANGING   1
@@ -29,6 +28,11 @@ glyph-block Letter-Latin-Upper-M : begin
 		local xLeftTop  : df.leftSB  + top * sidesSlope
 		local xRightTop : df.rightSB - top * sidesSlope
 
+		local fHasBottomInnerSerif : match slabType
+			[Just SLAB-FULL]     true
+			[Just SLAB-AUTO]     SLAB
+			__                   false
+
 		local swSideBot : match form
 			[Just FORM-SAN-SMALL] : AdviceStroke 2.5  df.div
 			[Just FORM-SAN]       : AdviceStroke 2.5  df.div
@@ -46,7 +50,7 @@ glyph-block Letter-Latin-Upper-M : begin
 			[Just FORM-SAN]       : top * 0.55
 			[Just FORM-TURN-W]    : top * 0.45
 			[Just FORM-HANGING]   : top * 0.3 / (kMidHang * kMidHang)
-			__                    : if SLAB Stroke 0
+			__                    : if fHasBottomInnerSerif swSideBot 0
 		local kMidShift : match form
 			[Just FORM-FLAT] 0.75
 			__               0.5
@@ -64,14 +68,14 @@ glyph-block Letter-Latin-Upper-M : begin
 			curl [mix df.rightSB xRightTop 0.2] (top * 0.2) [heading Upward]
 			straight.up.end xRightTop top [widths.heading swSideTop 0 Upward]
 		include : dispiro
-			flat (xLeftTop + kMidShift * swSideTop * HVContrast) top [widths.lhs.heading swMiddle Downward]
-			curl (df.middle - 0.5 * swMiddleShrunk * HVContrast) middleY [widths.lhs.heading swMiddleShrunk Downward]
+			flat (xLeftTop + kMidShift * [HSwToV swSideTop]) top [widths.lhs.heading swMiddle Downward]
+			curl (df.middle - [HSwToV : 0.5 * swMiddleShrunk]) middleY [widths.lhs.heading swMiddleShrunk Downward]
 		include : dispiro
-			flat (xRightTop - kMidShift * swSideTop * HVContrast) top [widths.rhs.heading swMiddle Downward]
-			curl (df.middle + 0.5 * swMiddleShrunk * HVContrast) middleY [widths.rhs.heading swMiddleShrunk Downward]
+			flat (xRightTop - kMidShift * [HSwToV swSideTop]) top [widths.rhs.heading swMiddle Downward]
+			curl (df.middle + [HSwToV : 0.5 * swMiddleShrunk]) middleY [widths.rhs.heading swMiddleShrunk Downward]
 
-		local sfT : SerifFrame top 0 xLeftTop  xRightTop  (swRef -- swSideBot)
-		local sfB : SerifFrame top 0 df.leftSB df.rightSB (swRef -- swSideBot)
+		local sfT : SerifFrame top 0 xLeftTop  xRightTop  (swRef -- swSideBot) (hSplit -- 3) (fForceSymmetric -- (form !== FORM-FLAT))
+		local sfB : SerifFrame top 0 df.leftSB df.rightSB (swRef -- swSideBot) (hSplit -- 3) (fForceSymmetric -- (form !== FORM-FLAT))
 		include : match slabType
 			[Just SLAB-NONE] : no-shape
 			[Just SLAB-FULL] : composite-proc sfT.lt.outer sfT.rt.outer sfB.lb.full sfB.rb.full
@@ -82,6 +86,8 @@ glyph-block Letter-Latin-Upper-M : begin
 				if para.isItalic [no-shape]   sfT.rt.outer
 				if para.isItalic sfB.lb.outer sfB.lb.full
 				if para.isItalic sfB.rb.outer sfB.rb.full
+
+		return : object [swSideBot]
 
 	define [CyrSoftEmShape] : with-params [top df form slabType slanted] : glyph-proc
 		local subDf : df.slice 4 3
@@ -121,46 +127,40 @@ glyph-block Letter-Latin-Upper-M : begin
 
 	foreach { suffix { slanted form slab } } [Object.entries MConfig] : do
 		create-glyph "M.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : MShape CAP df form slab slanted
 
-		create-glyph "MLTail.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
-			include : df.markSet.capDesc
-			include : MShape CAP df form slab slanted
+		create-glyph "Meng.\(suffix)" : glyph-proc
+			local df : include : DivFrame para.diversityM 3
+			include : df.markSet.capital
+			local ret_M : include : MShape CAP df form slab slanted
 			eject-contour 'serifRB'
-			include : VerticalHook.r df.rightSB 0 (-HookX) Hook (sw -- df.mvs)
+			include : PalatalHook.rExt df.rightSB 0 (sw -- ret_M.swSideBot)
 
 		create-glyph "smcpM.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : MShape XH df form slab slanted
 
 		create-glyph "smcpMWithDescender.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.p
 			include : MShape XH df form slab slanted
 
 		create-glyph "cyrl/EmSoft.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : CyrSoftEmShape CAP df form slab slanted
 
 		create-glyph "cyrl/emSoft.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : CyrSoftEmShape XH df form slab slanted
 
 	select-variant 'M' 'M'
 	link-reduced-variant 'M/sansSerif' 'M' MathSansSerif
-	select-variant 'MLTail' 0x2C6E (follow -- 'M')
+	select-variant 'Meng' 0x2C6E (follow -- 'M')
 	select-variant 'smcpM' 0x1D0D (follow -- 'M')
 	select-variant 'cyrl/em' 0x43C (shapeFrom -- 'smcpM')
 	alias 'grek/Mu' 0x39C 'M'
@@ -192,8 +192,8 @@ glyph-block Letter-Latin-Upper-M : begin
 		include : MarkSet.capital
 		include : VBar.l df.leftSB 0 CAP bbs
 		include : BBBarRight df.rightSB  0 CAP (bbd -- bbd) (bbs -- bbs)
-		local xLeft : df.leftSB + 0.5 * bbs * HVContrast
-		local xRight : df.rightSB - bbd - 0.5 * bbs * HVContrast
+		local xLeft : df.leftSB + [HSwToV : 0.5 * bbs]
+		local xRight : df.rightSB - bbd - [HSwToV : 0.5 * bbs]
 		local xMiddle : mix xLeft xRight 0.5
 		include : HBar.t xLeft (xLeft + kDiag * bbd) CAP bbs
 		include : intersection

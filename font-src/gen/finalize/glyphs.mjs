@@ -4,7 +4,6 @@ import * as CurveUtil from "../../support/geometry/curve-util.mjs";
 import * as Geom from "../../support/geometry/index.mjs";
 import { Point } from "../../support/geometry/point.mjs";
 import { Transform } from "../../support/geometry/transform.mjs";
-import { mix } from "../../support/utils.mjs";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,17 +39,6 @@ function regulateCompositeGlyph(glyphStore, memo, g) {
 	for (const sr of refs) {
 		const gn = glyphStore.queryNameOf(sr.glyph);
 		if (!gn) return memoSet(memo, g, false);
-	}
-
-	// De-doppelganger
-	while (refs.length === 1 && regulateCompositeGlyph(glyphStore, memo, refs[0].glyph)) {
-		const sr = refs[0];
-		const targetRefs = sr.glyph.geometry.asReferences();
-		g.clearGeometry();
-		for (const tr of targetRefs) {
-			g.includeGeometry(new Geom.ReferenceGeometry(tr.glyph, tr.x + sr.x, tr.y + sr.y));
-		}
-		refs = g.geometry.asReferences();
 	}
 
 	return memoSet(memo, g, true);

@@ -4,19 +4,19 @@ extern Map
 extern Set
 
 define MarkClasses {
-	'above' 'tieAbove' 'topLeft' 'topRight' 'grekUpperTonos' 'aboveBraceL' 'aboveBraceR'
-	'below' 'tieBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf' 'belowBraceL' 'belowBraceR'
+	'above' 'tieAbove' 'leaningAbove' 'topLeft' 'topRight' 'grekUpperTonos' 'aboveBraceL' 'aboveBraceR'
+	'below' 'tieBelow' 'leaningBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf' 'belowBraceL' 'belowBraceR'
 
-	'overlay' 'slash'
+	'overlay' 'slash' 'strike'
 	'cvDecompose' 'enclosureInner' 'enclosureInnerFirstHalf' 'enclosureInnerSecondHalf'
 	'fracBuildUp'
 }
 
 define MarkInteractions : new Map : list
-	list 'aboveBraceL' {'aboveBraceL' 'above' 'tieAbove' 'topLeft' 'topRight' 'grekUpperTonos'}
-	list 'aboveBraceR' {'aboveBraceR' 'above' 'tieAbove' 'topLeft' 'topRight' 'grekUpperTonos'}
-	list 'belowBraceL' {'belowBraceL' 'below' 'tieBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf'}
-	list 'belowBraceR' {'belowBraceR' 'below' 'tieBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf'}
+	list 'aboveBraceL' {'aboveBraceL' 'above' 'tieAbove' 'leaningAbove' 'topLeft' 'topRight' 'grekUpperTonos'}
+	list 'aboveBraceR' {'aboveBraceR' 'above' 'tieAbove' 'leaningAbove' 'topLeft' 'topRight' 'grekUpperTonos'}
+	list 'belowBraceL' {'belowBraceL' 'below' 'tieBelow' 'leaningBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf'}
+	list 'belowBraceR' {'belowBraceR' 'below' 'tieBelow' 'leaningBelow' 'bottomLeft' 'bottomRight' 'trailing' 'lf'}
 
 
 define MkmkStackingLimit : new Set { 'above' 'below' }

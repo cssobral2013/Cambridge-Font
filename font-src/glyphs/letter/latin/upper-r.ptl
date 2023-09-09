@@ -10,14 +10,14 @@ glyph-block Letter-Latin-Upper-R : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Latin-Upper-P : PShape RevPShape PBarPosY PRotundaShape BBPShape PShapeOutline
 	glyph-block-import Letter-Blackboard : BBS BBD
-	glyph-block-import Letter-Shared-Shapes : RightwardTailedBar VerticalHook
+	glyph-block-import Letter-Shared-Shapes : RightwardTailedBar RetroflexHook
 
 	define LEG-SHAPE-CURLY    0
 	define LEG-SHAPE-STRAIGHT 1
 	define LEG-SHAPE-STANDING 2
 
 	define [RLegTerminalX legShape right sw] : right - [if legShape (OX * 2) 0]
-	define [RSlabExtraShift slab sw] : if slab (-Jut / 2 + 0.5 * sw * HVContrast) 0
+	define [RSlabExtraShift slab sw] : if slab (-Jut / 2 + [HSwToV : 0.5 * sw]) 0
 	define [RLegDiagCor top bottom left right extraShift sw] : DiagCor (top - bottom) (right - left - extraShift) 0 sw
 
 	define [RStandingLegFine sw] : sw * CThinB
@@ -26,9 +26,9 @@ glyph-block Letter-Latin-Upper-R : begin
 
 	define [RLegShape-Straight] : with-params [top bottom left right charTop slab sw extraShift] : glyph-proc
 		local shift : RSlabExtraShift slab sw
-		local xLeftTop : Math.max (PShape.BarPos + sw * HVContrast) (left - 0.5 * sw * HVContrast + shift)
+		local xLeftTop : Math.max (PShape.BarPos + [HSwToV sw]) (left - [HSwToV : 0.5 * sw] + shift)
 		local xRightBottom : [RLegTerminalX LEG-SHAPE-STRAIGHT right sw] + shift
-		local xRightBottomSerifStart : xRightBottom - 0.25 * sw * HVContrast
+		local xRightBottomSerifStart : xRightBottom - [HSwToV : 0.25 * sw]
 		include : intersection
 			Rect top bottom (-Width) [if slab xRightBottomSerifStart (2 * Width)]
 			dispiro
@@ -44,7 +44,7 @@ glyph-block Letter-Latin-Upper-R : begin
 			Rect top bottom (-Width) (2 * Width)
 			dispiro
 				widths.center sw
-				g4.up.start (xRightBottom - 0.5 * sw * HVContrast) bottom [heading Upward]
+				g4.up.start (xRightBottom - [HSwToV : 0.5 * sw]) bottom [heading Upward]
 				quadControls 0 0.4 8
 				g4 left top
 		if slab : begin
@@ -74,8 +74,8 @@ glyph-block Letter-Latin-Upper-R : begin
 	define [RevRLegShape-Straight] : with-params [top bottom left right charTop slab sw extraShift] : glyph-proc
 		local shift : RSlabExtraShift slab sw
 		local xLeftBottom : [RevRLegTerminalX LEG-SHAPE-STRAIGHT left sw] - shift
-		local xLeftBottomSerifStart : xLeftBottom + 0.25 * sw * HVContrast
-		local xRightTop : Math.min (RightSB - PShape.BarPos - sw * HVContrast) (right + 0.5 * sw * HVContrast - shift)
+		local xLeftBottomSerifStart : xLeftBottom + [HSwToV : 0.25 * sw]
+		local xRightTop : Math.min (RightSB - PShape.BarPos - [HSwToV sw]) (right + [HSwToV : 0.5 * sw] - shift)
 
 		include : intersection
 			Rect top bottom [if slab xLeftBottomSerifStart (-Width)] (2 * Width)
@@ -91,7 +91,7 @@ glyph-block Letter-Latin-Upper-R : begin
 			Rect top 0 (-Width) (2 * Width)
 			dispiro
 				widths.center sw
-				g4.up.start (xLeftBottom + 0.5 * sw * HVContrast) bottom [heading Upward]
+				g4.up.start (xLeftBottom + [HSwToV : 0.5 * sw]) bottom [heading Upward]
 				quadControls 0 0.4 8
 				g4 right top
 		if slab : begin
@@ -134,7 +134,7 @@ glyph-block Letter-Latin-Upper-R : begin
 		local legTop : RLegTop top Stroke bp
 		local right (RightSB - O - [if slab (Jut / 8) 0])
 		local cor : RLegDiagCor legTop 0 endX right 0 Stroke
-		local endX1 : endX - [if legShape (HalfStroke * cor * HVContrast) HalfStroke] + [if legShape [RSlabExtraShift SLAB Stroke] 0]
+		local endX1 : endX - [if legShape (HalfStroke * [HSwToV cor]) HalfStroke] + [if legShape [RSlabExtraShift SLAB Stroke] 0]
 		include : PRotundaShape top (mul -- mul) (bp -- bp) (overshoot -- O) (slab -- false) (endX -- endX1) (hook -- hook)
 		include : difference
 			RLegShapes.(legShape) legTop 0 endX right top (slab === PShape.SlabSymmetric) Stroke 0
@@ -153,10 +153,8 @@ glyph-block Letter-Latin-Upper-R : begin
 			eject-contour 'serifRB'
 			include : tagged 'strokeR' : RightwardTailedBar (Width - SB * mul) 0 top
 
-	define [ROverlayAnchor] : glyph-proc
-		set-base-anchor 'overlay'
-			SB + Stroke * HVContrast
-			PBarPosY CAP Stroke : RBarPos CAP SLAB
+	define [StrikeAnchor] : glyph-proc
+		set-base-anchor 'strike' Middle [mix [PBarPosY CAP Stroke : RBarPos CAP SLAB] CAP 0.5]
 
 	define RConfig : SuffixCfg.weave
 		object # Leg shape
@@ -183,12 +181,16 @@ glyph-block Letter-Latin-Upper-R : begin
 
 		create-glyph "R.\(suffix)" : glyph-proc
 			include : MarkSet.capital
-			include : ROverlayAnchor
+			include : StrikeAnchor
 			include : RShape legShape CAP (slab -- slabs) (bp -- bpCap) (open -- fOpen)
+
+		if (!fOpen) : create-glyph "RBar.\(suffix)" : glyph-proc
+			include [refer-glyph "R.\(suffix)"] AS_BASE ALSO_METRICS
+			include : HBar.m [mix 0 SB 0.3] (SB - O) ((CAP - Stroke) * [RBarPos CAP SLAB] + Stroke * 0.25)
 
 		create-glyph "smcpR.\(suffix)" : glyph-proc
 			include : MarkSet.e
-			include : ROverlayAnchor
+			include : StrikeAnchor
 			include : RShape legShape XH (slab -- slabs) (bp -- bpXH) (open -- fOpen)
 
 		if (!fMotion && !fOpen) : create-glyph "RRotunda.\(suffix)" : glyph-proc
@@ -201,12 +203,12 @@ glyph-block Letter-Latin-Upper-R : begin
 
 		create-glyph "cyrl/Ya.\(suffix)" : glyph-proc
 			include : MarkSet.capital
-			include : ROverlayAnchor
+			include : StrikeAnchor
 			include : RevRShape legShape CAP (slab -- revSlabs) (bp -- bpCap) (open -- fOpen)
 
 		create-glyph "cyrl/ya.\(suffix)" : glyph-proc
 			include : MarkSet.e
-			include : ROverlayAnchor
+			include : StrikeAnchor
 			include : RevRShape legShape XH (slab -- revSlabs) (bp -- bpXH) (tailedShape -- fTailed) (open -- fOpen)
 
 		create-glyph "Yr.\(suffix)" : glyph-proc
@@ -228,7 +230,7 @@ glyph-block Letter-Latin-Upper-R : begin
 			define bp : RBarPos CAP 0
 			include : intersection
 				Rect CAP 0 SB Width
-				WithTransform [Translate (-Width / 8) 0]
+				with-transform [Translate (-Width / 8) 0]
 					PShape CAP (bp -- bp) (withBar -- false)
 			local right : RightSB - O - [if legShape 0 (Width / 16)]
 			include : RLegShapes.(legShape) [RLegTop CAP Stroke bp] 0 (Width * 0.375) right CAP (slabs === PShape.SlabSymmetric) Stroke 0
@@ -239,6 +241,9 @@ glyph-block Letter-Latin-Upper-R : begin
 
 	select-variant 'R' 'R'
 	link-reduced-variant 'R/sansSerif' 'R' MathSansSerif
+
+	select-variant 'RBar' 0x24C
+
 	select-variant 'smcpR' 0x280 (follow -- 'R')
 	turned 'turnSmapR' 0x1D1A 'smcpR' Middle (XH / 2)
 
@@ -254,16 +259,10 @@ glyph-block Letter-Latin-Upper-R : begin
 
 	select-variant 'currency/indianRupeeSign' 0x20B9 (follow -- 'RRotunda')
 
-	derive-glyphs 'RBar' 0x24C 'R' : lambda [src gr] : glyph-proc
-		include [refer-glyph src] AS_BASE ALSO_METRICS
-		include : HBar.m [mix 0 SB 0.3] (SB - O) ((CAP - Stroke) * [RBarPos CAP SLAB] + Stroke * 0.25)
-
 	derive-glyphs 'RRTail' 0x2C64 'R' : lambda [src gr] : glyph-proc
-		include : MarkSet.capDesc
-		include : ROverlayAnchor
-		include [refer-glyph src]
+		include [refer-glyph src] AS_BASE ALSO_METRICS
 		eject-contour 'serifLB'
-		include : VerticalHook.l SB 0 HookX Hook
+		include : RetroflexHook.lExt SB 0
 
 	create-glyph 'mathbb/R' 0x211D : glyph-proc
 		define [SingleLeg] : RLegShape-Straight ((CAP - BBS) * HBarPos) 0 Middle (RightSB - O) CAP false BBS (BBD / 2)
@@ -273,7 +272,7 @@ glyph-block Letter-Latin-Upper-R : begin
 		include : difference
 			union
 				SingleLeg
-				WithTransform [ApparentTranslate (-BBD) 0] [SingleLeg]
-				HBar.b (terminalX - BBD - BBS * HVContrast) (terminalX - BBS * HVContrast) 0 BBS
+				with-transform [ApparentTranslate (-BBD) 0] [SingleLeg]
+				HBar.b (terminalX - BBD - [HSwToV BBS]) (terminalX - [HSwToV BBS]) 0 BBS
 			PShapeOutline CAP (sw -- BBS) (mul -- 1) (overshoot -- O) (offset -- 1)
 			MaskLeft (SB + BBD)

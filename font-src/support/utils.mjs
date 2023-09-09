@@ -80,3 +80,61 @@ export class $NamedParameterPair$ {
 		this.right = r;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const MatchUtil = {
+	never() {
+		return false;
+	},
+	equal(x) {
+		return y => y === x;
+	},
+	negate(f) {
+		return x => !f(x);
+	},
+	both(a, b) {
+		return x => a(x) && b(x);
+	},
+	either(a, b) {
+		return x => a(x) || b(x);
+	}
+};
+export function constant(x) {
+	return () => x;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const ArrayUtil = {
+	mapIndexToItems(a, indexes) {
+		let answer = [];
+		for (const item of indexes) answer.push(a[item]);
+		return answer;
+	},
+	insertSliceAt(a, i, b) {
+		a.splice(i, 0, ...b);
+	},
+	// Convert character array to array of ranges. Input may be unsorted.
+	// The output ranges has both ends inclusive.
+	toRanges(chars) {
+		chars.sort((a, b) => a - b);
+
+		const ranges = [];
+		let range = null;
+
+		for (const ch of chars) {
+			if (!range) {
+				range = [ch, ch];
+				ranges.push(range);
+			} else if (ch === range[1] + 1) {
+				range[1] = ch;
+			} else {
+				range = [ch, ch];
+				ranges.push(range);
+			}
+		}
+
+		return ranges;
+	}
+};

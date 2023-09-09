@@ -17,14 +17,12 @@ glyph-block Letter-Greek-Arachaic-Sampi : begin
 		if (fDoSerifs && SLAB) : include : HSerif.mb df.middle 0 MidJutSide
 
 	create-glyph 'grek/SampiArchaic' 0x372 : glyph-proc
-		local df : DivFrame para.diversityM 3
-		set-width df.width
+		local df : include : DivFrame para.diversityM 3
 		include : df.markSet.capital
 		include : SampiShape df CAP 0 true
 
 	create-glyph 'grek/sampiArchaic' 0x373 : glyph-proc
-		local df : DivFrame para.diversityM 3
-		set-width df.width
+		local df : include : DivFrame para.diversityM 3
 		include : df.markSet.p
 		include : SampiShape df XH Descender false
 
@@ -35,10 +33,10 @@ glyph-block Letter-Greek-Sampi : begin
 		include : MarkSet.capital
 		define sw   : AdviceStroke 3
 		define fine : AdviceStroke 4.25
-		define rightStrokeShift : 0.45 * sw * HVContrast
-		define leftStrokeShift : 0.45 * fine * HVContrast
+		define rightStrokeShift : HSwToV : 0.45 * sw
+		define leftStrokeShift : HSwToV : 0.45 * fine
 		define [LeftSideMask] : spiro-outline
-			corner (RightSB - HalfStroke * HVContrast + O) 0
+			corner (RightSB - [HSwToV HalfStroke] + O) 0
 			corner Middle CAP
 			corner (-2 * Width) CAP
 			corner (-2 * Width) 0
@@ -51,7 +49,7 @@ glyph-block Letter-Greek-Sampi : begin
 			ExtLineCenter 2 fine [mix SB RightSB 0.45] 0 ([mix SB RightSB 0.95] - leftStrokeShift) CAP
 
 		if SLAB : include : difference
-			HSerif.mb (RightSB - 0.5 * sw * HVContrast) 0 Jut
+			HSerif.mb (RightSB - [HSwToV : 0.5 * sw]) 0 Jut
 			LeftSideMask
 
 	create-glyph 'grek/sampi' 0x3E1 : glyph-proc

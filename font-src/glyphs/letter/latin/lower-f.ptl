@@ -8,7 +8,7 @@ glyph-module
 glyph-block Letter-Latin-Lower-F : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Letter-Shared : CreateAccentedComposition
+	glyph-block-import Mark-Adjustment : LeaningAnchor
 	glyph-block-import Letter-Shared-Shapes : FlatHookDepth DiagonalTailL DiagonalTailStdDepth
 	glyph-block-import Letter-Shared-Shapes : LetterBarOverlay PalatalHook
 
@@ -27,13 +27,13 @@ glyph-block Letter-Latin-Lower-F : begin
 		include : HSerif.mb df.middle 0 (LongJut * df.div)
 		set-base-anchor 'palatalHookPos' (df.middle + LongJut * df.div + HalfStroke * TanSlope) 0
 
-	define [StdFShapeT sink offset barleft sw] : sink
+	define [StdFShapeT sink df offset barleft sw] : sink
 		widths.lhs sw
-		g4 [Math.max (barleft + offset + 2.125 * sw * HVContrast) (RightSB + RBalance2 - (OX - O) - offset)] (Ascender - Hook * 0.75)
+		g4 [Math.max (barleft + offset + [HSwToV : 2.125 * sw]) (df.rightSB + RBalance2 - (OX - O) - offset)] (Ascender - Hook * 0.75)
 		hookstart (Ascender - O - offset) (tight -- true)
-		flat (barleft + offset) (CAP - ArchDepthA * 0.8)
+		flat (barleft + offset) (Ascender - ArchDepthA * 0.8)
 		[if offset corner curl] (barleft + offset) 0 [heading Downward]
-		if offset {[corner (RightSB + RBalance2 - (OX - O) - offset) 0]} {}
+		if offset {[corner (df.rightSB + RBalance2 - (OX - O) - offset) 0]} {}
 
 	define [SmallFDownExtension barLeft] : VBar.l barLeft 0.1 (Descender * 0.9)
 
@@ -49,7 +49,7 @@ glyph-block Letter-Latin-Lower-F : begin
 
 	glyph-block-export SmallFDiagonalTail
 	define [SmallFDiagonalTail df barLeft] : begin
-		local xBarMiddle : barLeft + HalfStroke * HVContrast
+		local xBarMiddle : barLeft + [HSwToV HalfStroke]
 		return : dispiro
 			flat xBarMiddle 0.1 [widths.center.heading Stroke Downward]
 			DiagonalTailL df xBarMiddle Descender [DiagonalTailStdDepth df Stroke] Stroke
@@ -58,24 +58,25 @@ glyph-block Letter-Latin-Lower-F : begin
 	define [StdSmallFBarLeftPos barAtCenter] : [mix SB RightSB : if barAtCenter 0.45 0.35] - Stroke * [if barAtCenter 0.45 0.25] * HVContrast
 
 	glyph-block-export StdSmallFBarLeftPos0
-	define [StdSmallFBarLeftPos0] : [mix SB RightSB 0.35] - Stroke * 0.25 * HVContrast
+	define [StdSmallFBarLeftPos0] : [mix SB RightSB 0.35] - [HSwToV : 0.25 * Stroke]
 
 	define [StandardSmallFShape df m bh counterHook] : glyph-proc
 		local barAtCenter : (counterHook === CH-HOOK) || (counterHook === CH-DIAGONAL-HOOK)
 		local barLeft0 : StdSmallFBarLeftPos0
 		local barLeft : StdSmallFBarLeftPos barAtCenter
 
-		set-base-anchor 'overlay' (barLeft + 0.5 * Stroke * HVContrast) (bh / 2)
+		include : LeaningAnchor.Above.Hook barLeft (df.rightSB + barLeft - barLeft0)
+		set-base-anchor 'overlay' (barLeft + [HSwToV : 0.5 * Stroke]) (bh / 2)
 
-		include : StdFShapeT dispiro 0 barLeft0 Stroke
+		include : StdFShapeT dispiro df 0 barLeft0 Stroke
 		include : Translate (barLeft - barLeft0) 0
-		include : HCrossBar.top SB [mix SB RightSB m] bh
+		include : HCrossBar.top SB [mix df.leftSB df.rightSB m] bh
 
 		match counterHook
 			[Just CH-NONE] : include : SetPalatalHookPos barLeft
 			[Just CH-EXTENSION] : include : SmallFDownExtension barLeft
 			[Just CH-HOOK] : begin
-				local barRight : barLeft + Stroke * HVContrast
+				local barRight : barLeft + [HSwToV Stroke]
 				local crossRight : mix df.width df.rightSB m
 				local counterHookLeft : Math.max SB : barRight - (crossRight - barLeft)
 				include : SmallFDownHook df barRight counterHookLeft
@@ -100,11 +101,12 @@ glyph-block Letter-Latin-Lower-F : begin
 		local crossLeft : mix 0 df.leftSB m
 		local crossRight : mix df.width df.rightSB m
 		local barLeft : if barAtCenter
-			df.middle - HalfStroke * HVContrast
-			[mix crossLeft crossRight 0.42] - Stroke * 0.375 * HVContrast
+			df.middle - [HSwToV HalfStroke]
+			[mix crossLeft crossRight 0.42] - [HSwToV : 0.375 * Stroke]
 		local hd : FlatHookDepth df
 
-		set-base-anchor 'overlay' (barLeft + 0.5 * Stroke * HVContrast) (bh / 2)
+		set-base-anchor 'overlay' (barLeft + [HSwToV : 0.5 * Stroke]) (bh / 2)
+		include : LeaningAnchor.Above.Hook barLeft (crossRight + topHookExt)
 
 		include : dispiro
 			widths.lhs
@@ -119,7 +121,7 @@ glyph-block Letter-Latin-Lower-F : begin
 			[Just CH-NONE] : include : SetPalatalHookPos barLeft
 			[Just CH-EXTENSION] : include : SmallFDownExtension barLeft
 			[Just CH-HOOK] : begin
-				local barRight : barLeft + Stroke * HVContrast
+				local barRight : barLeft + [HSwToV Stroke]
 				local crossRight : mix df.width df.rightSB m
 				local counterHookLeft : barRight - (crossRight - barLeft)
 				include : SmallFDownHook df barRight counterHookLeft
@@ -145,9 +147,9 @@ glyph-block Letter-Latin-Lower-F : begin
 		function [body] : object # hooks
 			serifless                         { [if body pNarrowSide 0.95]    CH-NONE          'b'  }
 			serifed                           { [if body pNarrowSide 0.95]    CH-SERIF         'b'  }
-			extended                          { [if body pNarrowSide 0.95]    CH-EXTENSION     'if' }
-			tailed                            { [if body pNarrowSide 1]       CH-HOOK          'if' }
-			diagonalTailed                    { [if body pNarrowSide 1]       CH-DIAGONAL-HOOK 'if' }
+			extended                          { [if body pNarrowSide 0.95]    CH-EXTENSION     'bp' }
+			tailed                            { [if body pNarrowSide 1]       CH-HOOK          'bp' }
+			diagonalTailed                    { [if body pNarrowSide 1]       CH-DIAGONAL-HOOK 'bp' }
 		object # crossbar
 			""                                fbar
 			crossbarAtXHeight                 XH
@@ -157,6 +159,7 @@ glyph-block Letter-Latin-Lower-F : begin
 			set-width df.width
 			include : df.markSet.(mk)
 			include : Body df pBar yBar ch
+			currentGlyph.copyBaseAnchorIfAbsent 'leaningAbove' 'above'
 
 		create-glyph "fPalatalHook.\(suffix)" : glyph-proc
 			include [refer-glyph "f.\(suffix)"] AS_BASE ALSO_METRICS
@@ -179,17 +182,14 @@ glyph-block Letter-Latin-Lower-F : begin
 	select-variant 'f/phoneticLeft' (shapeFrom -- 'f')
 	select-variant 'fPalatalHook' 0x1D82 (follow -- 'f/tailless')
 
-	CreateAccentedComposition 'fBar' 0xA799 'f' 'barOver'
-	CreateAccentedComposition 'fTildeOver' 0x1D6E 'f' 'tildeOver'
-
 	glyph-block-import Letter-Blackboard : BBS BBD
 	create-glyph 'mathbb/f' 0x1D557 : glyph-proc
 		include : MarkSet.b
-		local barLeft : [mix SB RightSB 0.35] - BBD * 0.25 * HVContrast
-		include : StdFShapeT dispiro 0 barLeft BBS
+		local barLeft : [mix SB RightSB 0.35] - [HSwToV : 0.25 * BBD]
+		include : StdFShapeT dispiro [DivFrame 1] 0 barLeft BBS
 		include : intersection
 			VBar.l (barLeft + BBD) 0 Ascender BBS
-			StdFShapeT spiro-outline 1 barLeft BBS
+			StdFShapeT spiro-outline [DivFrame 1] 1 barLeft BBS
 		include : difference
 			HCrossBar.top SB [mix SB RightSB 0.95] fbar BBS
 			Rect Ascender 0 barLeft (barLeft + BBD)

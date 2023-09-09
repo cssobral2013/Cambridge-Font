@@ -17,7 +17,7 @@ glyph-block Letter-Latin-Lower-DB-QP : begin
 		local adb : subDf.archDepthB SmallArchDepth df.mvs
 
 		include : OBarLeft.roundedTop
-			left      -- df.middle - 0.5 * df.mvs * HVContrast
+			left      -- df.middle - [HSwToV : 0.5 * df.mvs]
 			right     -- df.rightSB
 			yTerminal -- 0
 			sw        -- df.mvs
@@ -25,7 +25,7 @@ glyph-block Letter-Latin-Lower-DB-QP : begin
 			adb       -- adb
 		include : FlipAround df.middle (XH / 2)
 		include : OBarLeft.rounded
-			left      -- df.middle - 0.5 * df.mvs * HVContrast
+			left      -- df.middle - [HSwToV : 0.5 * df.mvs]
 			right     -- df.rightSB
 			yTerminal -- (XH / 2)
 			sw        -- df.mvs
@@ -33,8 +33,7 @@ glyph-block Letter-Latin-Lower-DB-QP : begin
 			adb       -- adb
 
 	create-glyph 'db' 0x238 : glyph-proc
-		local df : DivFrame para.diversityM 3
-		set-width df.width
+		local df : include : DivFrame para.diversityM 3
 		include : df.markSet.b
 		include : DbCenterShape df
 		include : VBar.m df.middle XH Ascender df.mvs
@@ -42,8 +41,7 @@ glyph-block Letter-Latin-Lower-DB-QP : begin
 			include : HSerif.lt (df.middle - df.mvs / 2 * HVContrast) Ascender SideJut
 
 	create-glyph 'qp' 0x239 : glyph-proc
-		local df : DivFrame para.diversityM 3
-		set-width df.width
+		local df : include : DivFrame para.diversityM 3
 		include : df.markSet.p
 		include : DbCenterShape df
 		include : FlipAround df.middle (XH / 2)

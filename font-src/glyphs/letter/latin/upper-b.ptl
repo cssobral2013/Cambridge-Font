@@ -9,7 +9,7 @@ glyph-block Letter-Latin-Upper-B : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Shared-Metrics : BowlXDepth
-	glyph-block-import Letter-Shared-Shapes : ShoulderMidKnotRhs LetterBarOverlay SerifFrame
+	glyph-block-import Letter-Shared-Shapes : ShoulderMidKnotRhs LetterBarOverlay SerifFrame LeftHook
 	glyph-block-import Letter-Blackboard : BBS BBD
 
 	define BArcMix           0.93
@@ -49,15 +49,19 @@ glyph-block Letter-Latin-Upper-B : begin
 			flat (curvleft + CorrectionOMidX * stroke) offset
 			curl (barleft - O) offset [heading Leftward]
 
+		return : object bowl
+
 
 	define [BShape] : with-params [top [stroke : AdviceStroke2 2 3 top] [barPos BBarPos] [topArcShift 0] [topArcInnerShift 0] [serifTop false] [serifBot false]] : glyph-proc
-		include : BShapeArcsT dispiro top
+		include : VBar.l SB 0 top stroke
+		local dims : include : BShapeArcsT dispiro top
 			offset -- 0
 			stroke -- stroke
 			barPos -- barPos
 			topArcShift -- topArcShift
 			topArcInnerShift -- topArcInnerShift
-		include : VBar.l SB 0 top stroke
+
+		set-base-anchor 'strike' Middle (dims.bowl - 0.5 * stroke)
 
 		local sf : SerifFrame.fromDf [DivFrame 1] top 0
 		if serifTop : include sf.lt.outer
@@ -73,8 +77,8 @@ glyph-block Letter-Latin-Upper-B : begin
 
 	define [InterruptShape bp top sw st sb] : begin
 		local bowl : top * bp + sw * (1 - bp)
-		local gap : Math.max ((RightSB - SB - 2 * sw * HVContrast) * 0.15) [AdviceStroke 10]
-		return : VBar.l (SB + sw * HVContrast) (bowl - 1 * sw + O) (bowl + 0 * sw - O) gap
+		local gap : Math.max ((RightSB - SB - [HSwToV : 2 * sw]) * 0.15) [AdviceStroke 10]
+		return : VBar.l (SB + [HSwToV sw]) (bowl - 1 * sw + O) (bowl + 0 * sw - O) gap
 
 	define [StdShape top sw st sb] : BShape top (stroke -- sw) (serifTop -- st) (serifBot -- sb)
 	define [StdShapeInterrupted top sw st sb] : difference [StdShape top sw st sb] [InterruptShape BBarPos top sw st sb]
@@ -97,15 +101,19 @@ glyph-block Letter-Latin-Upper-B : begin
 	define [BOverlayStroke top bp] : begin
 		local stroke : AdviceStroke2 2 3 top
 		return : LetterBarOverlay.l.in SB stroke (top * bp - 0.5 * stroke)
-			space -- { 0 (RightSB - Stroke * HVContrast) }
+			space -- { 0 (RightSB - [HSwToV Stroke]) }
+
+	define [BOverlayBar top bp] : begin
+		local stroke : AdviceStroke2 2 3 top
+		return : HBar.m [mix 0 SB 0.3] [mix Width RightSB 0.3] (top * bp)
 
 	define [BahtBar sw] : VBar.m [mix SB RightSB 0.48] (CAP - Descender / 2) (Descender / 2) sw
 	define [BitcoinBar sw] : begin
 		local xMid : mix SB RightSB 0.48
 		local gap : Math.max [AdviceStroke 4] ((RightSB - SB) / 6)
 		return : union
-			VBar.m (xMid - (gap + sw * HVContrast) / 2) (CAP - Descender / 2) (Descender / 2) sw
-			VBar.m (xMid + (gap + sw * HVContrast) / 2) (CAP - Descender / 2) (Descender / 2) sw
+			VBar.m (xMid - (gap + [HSwToV sw]) / 2) (CAP - Descender / 2) (Descender / 2) sw
+			VBar.m (xMid + (gap + [HSwToV sw]) / 2) (CAP - Descender / 2) (Descender / 2) sw
 
 	define BConfig : SuffixCfg.weave
 		object # body
@@ -129,6 +137,10 @@ glyph-block Letter-Latin-Upper-B : begin
 			include [refer-glyph "B.\(suffix)"] AS_BASE ALSO_METRICS
 			include : BOverlayStroke CAP bp
 
+		create-glyph "BBar.\(suffix)" : glyph-proc
+			include [refer-glyph "B.\(suffix)"] AS_BASE ALSO_METRICS
+			include : BOverlayBar CAP bp
+
 		create-glyph "currency/baht.\(suffix)" : union
 			body CAP currencySw ts bs
 			intersection [BahtBar : AdviceStroke 5] [mask CAP : AdviceStroke2 2 3 CAP]
@@ -141,6 +153,10 @@ glyph-block Letter-Latin-Upper-B : begin
 		create-glyph "smcpB.\(suffix)" : glyph-proc
 			include : MarkSet.e
 			include : body XH [AdviceStroke2 2 3 XH] ts bs
+
+		create-glyph "smcpBBar.\(suffix)" : glyph-proc
+			include [refer-glyph "smcpB.\(suffix)"] AS_BASE ALSO_METRICS
+			include : BOverlayBar XH bp
 
 		create-glyph "latn/Beta.\(suffix)" : glyph-proc
 			include : MarkSet.capDesc
@@ -163,8 +179,8 @@ glyph-block Letter-Latin-Upper-B : begin
 	select-variant 'smcpB' 0x299
 	alias 'cyrl/ve.upright' null 'smcpB'
 
-	derive-composites 'BBar' null 'B' 'longBarOver'
-	derive-composites 'smcpBBar' 0x1D03 'smcpB' 'longBarOver'
+	select-variant 'BBar'
+	select-variant 'smcpBBar' 0x1D03 (follow -- 'BBar')
 
 	create-glyph 'mathbb/B' 0x1D539 : glyph-proc
 		include : MarkSet.capital
@@ -186,8 +202,8 @@ glyph-block Letter-Latin-Upper-B : begin
 		local stroke : AdviceStroke2 2 3 top
 		local mid : mix RightSB SB 0.65
 		local midy : top * HBarPos
-		local adb : top - [mix (midy + stroke / 2) (top - O - stroke) (ArchDepthA / (ArchDepthA + ArchDepthB))] + TanSlope * HVContrast * stroke
-		local ada : [mix (stroke + O) (midy - stroke / 2) (ArchDepthA / (ArchDepthA + ArchDepthB))] - TanSlope * HVContrast * stroke
+		local adb : top - [mix (midy + stroke / 2) (top - O - stroke) (ArchDepthA / (ArchDepthA + ArchDepthB))] + [HSwToV TanSlope] * stroke
+		local ada : [mix (stroke + O) (midy - stroke / 2) (ArchDepthA / (ArchDepthA + ArchDepthB))] - [HSwToV TanSlope] * stroke
 		local fine : stroke * CThin
 		include : dispiro
 			widths.lhs fine
@@ -208,33 +224,7 @@ glyph-block Letter-Latin-Upper-B : begin
 			flat Middle (midy + (fine - stroke / 2)) [widths.heading fine 0 Leftward]
 			curl mid (midy + (fine - stroke / 2)) [widths.heading fine 0 Leftward]
 
-	define [ClosedEpsilonShape top] : glyph-proc
-		local stroke : AdviceStroke2 2 3 top
-		local mid : mix SB RightSB 0.65
-		local midy : top * HBarPos
-		local ada : top - [mix (midy + stroke / 2) (top - O - stroke) (ArchDepthB / (ArchDepthA + ArchDepthB))] - TanSlope * HVContrast * stroke
-		local adb : [mix (stroke + O) (midy - stroke / 2) (ArchDepthB / (ArchDepthA + ArchDepthB))] + TanSlope * HVContrast * stroke
-		local fine : stroke * CThin
-		include : dispiro
-			widths.rhs fine
-			flat mid (midy - (fine - stroke / 2)) [heading Leftward]
-			curl Middle (midy - (fine - stroke / 2)) [heading Leftward]
-			archv
-			g4   (SB + (OX - O)) (top - ada) [widths.rhs stroke]
-			arcvh
-			g4   (Middle - stroke * 0.06 - CorrectionOMidS) (top - O)
-			archv
-			flat (RightSB - O) (top - SmallArchDepthB)
-			curl (RightSB - O) SmallArchDepthA
-			arcvh
-			g4   (Middle - stroke * 0.06 + CorrectionOMidS) O
-			archv
-			g4   (SB + (OX - O) + O * 2) (adb)
-			arcvh
-			flat Middle (midy + (fine - stroke / 2)) [widths.heading 0 fine Rightward]
-			curl mid (midy + (fine - stroke / 2)) [widths.heading 0 fine Rightward]
-
-	create-glyph 'closeturnepsilon' 0x25E : glyph-proc
+	create-glyph 'cyrl/ve.italic' : glyph-proc
 		include : MarkSet.e
 		include : ItalicCyrveShape XH
 
@@ -243,20 +233,15 @@ glyph-block Letter-Latin-Upper-B : begin
 		include : ItalicCyrveShape Ascender
 
 	alias 'cyrl/ve.BGR' null 'grek/betaSymbol'
-	alias 'cyrl/ve.italic' null 'closeturnepsilon'
-
-	create-glyph 'closeepsilon' 0x29A : glyph-proc
-		include : MarkSet.e
-		include : ClosedEpsilonShape XH
 
 	create-glyph 'grek/beta' 0x3B2 : glyph-proc
-		include : MarkSet.if
+		include : MarkSet.bp
 		define pBar 0.55
 		define fine : Stroke * CThin
 		define yMiddle : [mix 0 Ascender pBar] - Stroke * 0.7 # Bottom edge
 		define ada : ArchDepthAOf (ArchDepth * 0.75) Width
 		define adb : ArchDepthBOf (ArchDepth * 0.75) Width
-		define xMidLeft : mix (SB + Stroke * HVContrast) (RightSB - Stroke * HVContrast) 0.3
+		define xMidLeft : mix (SB + [HSwToV Stroke]) (RightSB - [HSwToV Stroke]) 0.3
 		define xMidArc  : Math.max [mix xMidLeft RightSB 0.1] [mix SB RightSB 0.5]
 		include : dispiro
 			widths.rhs
@@ -284,3 +269,43 @@ glyph-block Letter-Latin-Upper-B : begin
 
 	derive-composites 'latn/beta' 0xA7B5 'grek/beta'
 		if SLAB [SerifFrame.fromDf [DivFrame 1] XH Descender].lb.fullSide [no-shape]
+
+	create-glyph 'cyrl/veRounded' 0x1C80 : glyph-proc
+		include : MarkSet.e
+		local fine : AdviceStroke 4
+		local r0 : 0.2 * (RightSB - SB)
+
+		local ry : r0 + 0.25 * fine
+		local rx : r0 + 0.25 * [HSwToV fine]
+
+		local cx : RightSB - rx
+		local cyt : XH - 1.375 * ry
+		local cyb : XH - cyt
+
+		include : dispiro
+			g4 (cx + rx - OX) [YSmoothMidR.cr cyt ry] [widths.lhs fine]
+			arcvh
+			g4 (cx - CorrectionOMidX * fine) (cyt + ry - O)
+			archv
+			g4 (cx - rx + OX) [YSmoothMidL.cr cyt ry]
+			arcvh
+			g4 (cx + CorrectionOMidX * fine) (cyt - ry + O)
+			archv
+			g4 (cx + rx - OX) [YSmoothMidR.cr cyt ry]
+			arcvh
+			g4 (Middle - CorrectionOMidS) (XH - O) [widths.lhs]
+			archv
+			flat SB (XH - SmallArchDepthA)
+			curl SB (0  + SmallArchDepthB)
+			arcvh
+			g4 (Middle + CorrectionOMidS) O
+			archv
+			g4 (cx + rx - OX) [YSmoothMidR.cr cyb ry] [widths.lhs fine]
+			arcvh
+			g4 (cx - CorrectionOMidX * fine) (cyb + ry - O)
+			archv
+			g4 (cx - rx + OX) [YSmoothMidL.cr cyb ry]
+			arcvh
+			g4 (cx + CorrectionOMidX * fine) (cyb - ry + O)
+			archv
+			g4 (cx + rx - OX) [YSmoothMidR.cr cyb ry]

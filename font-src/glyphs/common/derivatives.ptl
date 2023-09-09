@@ -48,7 +48,9 @@ glyph-block Common-Derivatives : begin
 		alias name unicode (name + '.upright')
 
 	glyph-block-export query-glyph
-	define [query-glyph id] : return : glyphStore.queryByName id
+	define [query-glyph id] : begin
+		if [not id] : return nothing
+		return : glyphStore.queryByName id
 
 	glyph-block-export refer-glyph
 	define [refer-glyph id] : lambda [copyAnchors copyWidth] : begin
@@ -145,8 +147,8 @@ glyph-block Common-Derivatives : begin
 				include this.gizmo
 
 	glyph-block-export link-reduced-variant
-	define [link-reduced-variant] : with-params [dstGid srcGid gr follow] : begin
-		if [not : query-glyph dstGid] : select-variant dstGid (shapeFrom -- srcGid) (follow -- [fallback follow dstGid])
+	define [link-reduced-variant] : with-params [dstGid srcGid gr follow shapeFrom] : begin
+		if [not : query-glyph dstGid] : select-variant dstGid (shapeFrom -- [fallback shapeFrom srcGid]) (follow -- [fallback follow dstGid])
 		if (gr && [query-glyph srcGid]) : gr.set [query-glyph srcGid] dstGid
 
 	glyph-block-export alias-reduced-variant

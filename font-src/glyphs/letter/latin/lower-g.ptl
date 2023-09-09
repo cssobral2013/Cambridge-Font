@@ -8,8 +8,9 @@ glyph-module
 glyph-block Letter-Latin-Lower-G : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
+	glyph-block-import Mark-Adjustment : ExtendAboveBaseAnchors
 	glyph-block-import Letter-Shared-Shapes : OBarLeft OBarRight DToothlessRise DMBlend
-	glyph-block-import Letter-Shared-Shapes : FlatHookDepth PalatalHook VerticalHook CurlyTail
+	glyph-block-import Letter-Shared-Shapes : FlatHookDepth CurlyTail PalatalHook TopHook
 
 	define [OverlayW bw] : glyph-proc
 		define l : mix 0 SB 0.3
@@ -31,7 +32,7 @@ glyph-block Letter-Latin-Lower-G : begin
 		include : dispiro
 			g4.left.start [mix SB RightSB 0.4] gtipy [widths 0 (Stroke * CThin)]
 			g4 ([mix SB RightSB 0.0575] + Stroke * 0.85) [mix groundy gtipy 0.5] [widths.rhs (Stroke * [mix CThin 1 0.5])]
-			flat [mix SB RightSB 0.435] groundy [widths 0 Stroke]
+			flat [mix SB RightSB 0.435] groundy [widths.rhs Stroke]
 			curl [mix RightSB SB 0.435] groundy
 			archv 4
 			g4 grightx [mix (Descender + O) groundy (1.06 * SmallArchDepthA / (SmallArchDepthA + SmallArchDepthB))]
@@ -49,6 +50,7 @@ glyph-block Letter-Latin-Lower-G : begin
 			corner gm  XH
 
 		set-base-anchor 'overlay' Middle [mix (Descender + O) groundy 0.5]
+		set-base-anchor 'strike' Middle (XH / 2)
 
 		create-forked-glyph 'gBar.doubleStorey' : OverlayW obwDoubleStorey
 
@@ -64,7 +66,7 @@ glyph-block Letter-Latin-Lower-G : begin
 		include : dispiro
 			g4.left.start [mix SB RightSB 0.4] gtipy [widths 0 (Stroke * CThin)]
 			g4 ([mix SB RightSB 0.0575] + Stroke * 0.85) [mix groundy gtipy 0.5] [widths.rhs (Stroke * [mix CThin 1 0.5])]
-			flat [mix SB RightSB 0.435] groundy [widths 0 Stroke]
+			flat [mix SB RightSB 0.435] groundy [widths.rhs Stroke]
 			curl [mix RightSB SB 0.435] groundy
 			archv 4
 			g4 grightx [mix (Descender + O) groundy (1.06 * SmallArchDepthA / (SmallArchDepthA + SmallArchDepthB))]
@@ -78,6 +80,7 @@ glyph-block Letter-Latin-Lower-G : begin
 			corner gm  XH
 
 		set-base-anchor 'overlay' Middle [mix (Descender + O) groundy 0.5]
+		set-base-anchor 'strike' Middle (XH / 2)
 
 		create-forked-glyph 'gBar.openDoubleStorey' : OverlayW obwDoubleStorey
 
@@ -103,7 +106,7 @@ glyph-block Letter-Latin-Lower-G : begin
 				curl xTerminal Descender
 		export : define [CrossedHook df y0] : begin
 			local fine : AdviceStroke 3.5 df.div
-			local m1 : df.rightSB - df.mvs * HVContrast
+			local m1 : df.rightSB - [HSwToV df.mvs]
 			local rinner : (-Descender - 2 * fine) / 3
 			local x2 : mix df.rightSB m1 0.25
 			local y2 : Descender + O
@@ -113,12 +116,23 @@ glyph-block Letter-Latin-Lower-G : begin
 				curl df.rightSB (Descender + SmallArchDepthA)
 				CurlyTail fine rinner m1 Descender df.leftSB x2 y2
 
+		export : define [ScriptCutBody df top] : glyph-proc
+			include : SeriflessBody df top
+			include : spiro-outline
+				corner df.rightSB                     top
+				corner df.rightSB                     (top - Stroke / 2)
+				corner (df.rightSB - [HSwToV Stroke]) (top - Stroke / 2)
+
 		export : define [SeriflessBody df top] : glyph-proc
 			include : OBarRight.shape (top -- top) (left -- df.leftSB) (right -- df.rightSB) (sw -- df.mvs)
 
 		export : define [SerifedBody df top] : glyph-proc
 			include : SeriflessBody df top
 			include : tagged 'serifRT' : HSerif.rt df.rightSB top SideJut
+
+		export : define [AutoSerifedBody df top] : glyph-proc
+			include : SeriflessBody df top
+			if SLAB : include : tagged 'serifRT' : HSerif.rt df.rightSB top SideJut
 
 		export : define [EarlessCornerBody df top] : glyph-proc
 			include : OBarLeft.toothless
@@ -146,15 +160,18 @@ glyph-block Letter-Latin-Lower-G : begin
 		object # ear/serif
 			serifless             { SingleStorey.SeriflessBody      0                      }
 			serifed               { SingleStorey.SerifedBody        0                      }
+			autoSerifed           { SingleStorey.AutoSerifedBody    0                      }
 			earlessCorner         { SingleStorey.EarlessCornerBody  DToothlessRise         }
 			earlessCornerHTB      { SingleStorey.EarlessCornerBody  0                      }
 			earlessRounded        { SingleStorey.EarlessRoundedBody (XH - SmallArchDepthA) }
 			earlessRoundedHTB     { SingleStorey.EarlessRoundedBody 0                      }
+			scriptCut             { SingleStorey.ScriptCutBody      (Stroke / 2)           }
 
 	foreach { suffix { hookShape {bodyShape hookStart} } } [Object.entries SingleStoreyConfig] : do
 		create-glyph "g.\(suffix)" : glyph-proc
 			include : MarkSet.p
 			set-base-anchor 'overlay' Middle (XH / 2)
+			set-base-anchor 'strike' Middle (XH / 2)
 			define df : DivFrame 1
 			include : bodyShape df XH
 			include : hookShape df (XH - hookStart)
@@ -194,6 +211,7 @@ glyph-block Letter-Latin-Lower-G : begin
 	link-reduced-variant 'g/sansSerif' 'g' MathSansSerif
 	turned 'turng' 0x1D77 'g' Middle [mix Descender XH 0.5]
 	select-variant "gBar" 0x1E5 (follow -- 'g')
+	select-variant 'g/single' null (shapeFrom -- 'g')
 
 	select-variant 'gScript/hookTopBase' null (shapeFrom -- 'g')
 	select-variant 'gScript' 0x261 (shapeFrom -- 'g') (follow -- 'gScript')
@@ -201,18 +219,17 @@ glyph-block Letter-Latin-Lower-G : begin
 	select-variant 'gPalatalHook' 0x1D83 (follow -- 'gScript')
 	select-variant 'gScriptCrossedTail' 0xAB36
 
-
-	alias 'cyrl/de.SRB' null 'gScript'
-	alias 'cyrl/de.BGR' null 'gScript'
+	alias 'cyrl/de.BGR' null 'g/single'
+	alias 'cyrl/de.SRB' null 'g/single'
 
 	derive-composites 'gScriptHookTop' 0x260 'gScript/hookTopBase'
-		VerticalHook.r RightSB XH HookX (-Hook) nothing
+		TopHook.rBarOuter RightSB 0 XH
 
 	glyph-block-import Letter-Blackboard : BBS BBD BBBarRight
 	create-glyph 'mathbb/g' 0x1D558 : glyph-proc
 		include : MarkSet.p
 		include : intersection
-			OShapeOutline.NoOvershoot XH 0 SB (RightSB - BBD - BBS * HVContrast)
+			OShapeOutline.NoOvershoot XH 0 SB (RightSB - BBD - [HSwToV BBS])
 			VBar.l (SB + BBD + OX) 0 XH BBS
 		include : OBarRight.shape
 			left -- SB

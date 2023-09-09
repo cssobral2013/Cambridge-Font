@@ -701,15 +701,17 @@ u = "toothed-serifless"
 w = "straight-flat-top-serifless"
 y = "straight-serifless"
 long-s = "flat-hook-serifless"
-eszet = "longs-s-lig"
+eszet = "longs-s-lig-serifless"
 lower-iota = "flat-tailed"
 lower-lambda = "straight-turn"
 cyrl-ef = "serifless"
 cyrl-capital-ka = "symmetric-connected-serifless"
 cyrl-ka = "symmetric-connected-serifless"
+cyrl-em = "flat-bottom-serifless"
 cyrl-capital-u = "straight-serifless"
 at = "fourfold"
 percent = "rings-continuous-slash"
+micro-sign = "toothed-serifless"
 
 # Letterform control for U+1D670 ... U+1D6A3
 [buildPlans.iosevka-aile.derivingVariants.mathtt.design]
@@ -733,15 +735,17 @@ u = "toothed-serifless"
 w = "straight-flat-top-serifless"
 y = "straight-serifless"
 long-s = "flat-hook-serifless"
-eszet = "longs-s-lig"
+eszet = "longs-s-lig-serifless"
 lower-iota = "flat-tailed"
 lower-lambda = "straight-turn"
 cyrl-ef = "serifless"
 cyrl-capital-ka = "symmetric-connected-serifless"
 cyrl-ka = "symmetric-connected-serifless"
+cyrl-em = "flat-bottom-serifless"
 cyrl-capital-u = "straight-serifless"
 at = "fourfold"
 percent = "rings-continuous-slash"
+micro-sign = "toothed-serifless"
 
 [buildPlans.iosevka-aile.widths.normal]
 shape = 600
@@ -760,15 +764,16 @@ snapshotFeature = {"NWID" = 0}
 export-glyph-names = true
 
 [buildPlans.iosevka-etoile.variants.design]
-at = 'fourfold'
-capital-w = 'straight-flat-top-serifed'
+capital-w = "straight-flat-top-serifed"
 f = "flat-hook-serifed"
-j = 'flat-hook-serifed'
+j = "flat-hook-serifed"
 t = "flat-hook"
-w = 'straight-flat-top-serifed'
+w = "straight-flat-top-serifed"
+at = "fourfold"
 
 [buildPlans.iosevka-etoile.variants.italic]
 f = "flat-hook-tailed"
+w = "straight-flat-top-motion-serifed"
 
 [buildPlans.iosevka-etoile.widths.normal]
 shape = 600

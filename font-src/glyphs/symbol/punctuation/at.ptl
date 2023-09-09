@@ -41,17 +41,16 @@ glyph-block Symbol-Punctuation-At : begin
 				flat RightSB (obot + ada)
 				curl RightSB (top - ArchDepthB)
 				arcvh
-				g4   [ArchXAdjust.top Middle sw] (top - O) [widths Stroke 0]
+				g4   [ArchXAdjust.top Middle sw] (top - O) [widths.lhs Stroke]
 				archv
-				flat SB (top - ArchDepthA) [widths sw 0]
+				flat SB (top - ArchDepthA) [widths.lhs sw]
 				curl SB (bot + ArchDepthB)
 				arcvh
 				flat [ArchXAdjust.bot Middle sw] (bot + O) [widths Stroke 0 ]
 				curl (RightSB - HalfStroke + TanSlope * sw) (bot + O)
 
 	define [FourFoldShape height fSolidInner] : glyph-proc
-		local df : DivFrame para.diversityM [if fSolidInner 3.25 4]
-		set-width df.width
+		local df : include : DivFrame para.diversityM [if fSolidInner 3.25 4]
 
 		local top : SymbolMid + height / 2
 		local bot : SymbolMid - height / 2
@@ -89,14 +88,14 @@ glyph-block Symbol-Punctuation-At : begin
 					curl m1 (obot + adbInner)
 					arcvh
 				flat df.middle obot
-				curl (df.rightSB - [Math.max ((m2 - m1) / 2) (sw * 1.5 * HVContrast)]) obot
+				curl (df.rightSB - [Math.max ((m2 - m1) / 2) ([HSwToV : 1.5 * sw])]) obot
 				archv
 				flat df.rightSB (obot + [Math.max adaInner (sw * 1.5)])
 				curl df.rightSB (top - adb)
 				arcvh
-				g4   [ArchXAdjust.top df.middle sw] (top - O) [widths swh 0]
+				g4   [ArchXAdjust.top df.middle sw] (top - O) [widths.lhs swh]
 				archv
-				flat df.leftSB (top - ada) [widths sw 0]
+				flat df.leftSB (top - ada) [widths.lhs sw]
 				curl df.leftSB (bot + adb)
 				arcvh
 				flat [ArchXAdjust.bot df.middle sw] (bot + O) [widths swh 0 ]
@@ -150,9 +149,9 @@ glyph-block Symbol-Punctuation-At : begin
 
 		include : dispiro
 			widths.lhs (sw * shrink)
-			straight.down.start (m1 - sw * shrink * HVContrast) (atTurnBot + ada) [heading Downward]
+			straight.down.start (m1 - sw * [HSwToV shrink]) (atTurnBot + ada) [heading Downward]
 			arcvh
-			g4 [ArchXAdjust.bot [mix (m1 - sw * HVContrast) RightSB 0.5] sw] (atTurnBot + O) [widths.lhs sw]
+			g4 [ArchXAdjust.bot [mix (m1 - [HSwToV sw]) RightSB 0.5] sw] (atTurnBot + O) [widths.lhs sw]
 			archv
 			flat RightSB (atTurnBot + ada)
 			curl RightSB (top - ArchDepthB)

@@ -57,16 +57,27 @@ glyph-block Letter-Greek-Pi : begin
 	derive-composites 'cyrl/PeDescender' 0x524 'cyrl/Pe' [CyrDescender.rSideJut RightSB 0]
 	derive-composites 'cyrl/peDescender.upright' null 'cyrl/pe.upright' [CyrDescender.rSideJut RightSB 0]
 
-	create-glyph 'grek/pi' 0x3C0 : glyph-proc
-		include : MarkSet.e
-		include : PiShape [DivFrame 1] XH 0 (doSerif -- false) (shrinkRate -- (1/6 - 0.25 * Stroke * HVContrast / (RightSB - SB))) (tailed -- true)
+	define SmallPiShrink : 1/6 - [HSwToV : 0.25 * Stroke] / (RightSB - SB)
+
+	define SmallPiConfig : object
+		smallCap { {0             SLAB  } false }
+		tailless { {SmallPiShrink false } false }
+		tailed   { {SmallPiShrink false } true  }
+
+	foreach { suffix { { shrink slab } tail } } [pairs-of SmallPiConfig] : do
+		create-glyph "grek/pi.\(suffix)" : glyph-proc
+			define df : include : DivFrame 1
+			include : df.markSet.e
+			include : PiShape df XH 0 (shrinkRate -- shrink) (doSerif -- slab) (tailed -- tail)
+
+	select-variant 'grek/pi' 0x3C0
 
 	create-glyph 'mathbb/grek/pi' 0x213C : glyph-proc
 		include : MarkSet.e
 		include : MathBBPiShape [DivFrame 1] XH 0 (shrinkRate -- 0.06)
 
 	define [CyrlPeHookShape df top] : glyph-proc
-		local xm : df.middle + 0.5 * df.mvs * HVContrast
+		local xm : df.middle + [HSwToV : 0.5 * df.mvs]
 		include : HBar.t df.leftSB xm top df.mvs
 		include : VBar.l df.leftSB 0 (top - df.mvs / 2) df.mvs
 		include : VBar.r xm 0 (top - df.mvs / 2) df.mvs
@@ -87,34 +98,11 @@ glyph-block Letter-Greek-Pi : begin
 				include sf.rb.outer
 
 	create-glyph 'cyrl/PeMidHook' 0x4A6 : glyph-proc
-		define df : DivFrame para.diversityM 3
-		set-width df.width
+		define df : include : DivFrame para.diversityM 3
 		include : df.markSet.capDesc
 		include : CyrlPeHookShape df CAP
 
 	create-glyph 'cyrl/peMidHook.upright' : glyph-proc
-		define df : DivFrame para.diversityM 3
-		set-width df.width
+		define df : include : DivFrame para.diversityM 3
 		include : df.markSet.p
 		include : CyrlPeHookShape df XH
-
-	create-glyph 'cyrl/peMidHook.italic' : glyph-proc
-		define df : DivFrame para.diversityM 3
-		set-width df.width
-		include : df.markSet.p
-		local xm : df.middle + 0.5 * df.mvs * HVContrast
-		include : VBar.l df.leftSB 0 XH df.mvs
-		include : nShoulder
-			left   -- df.leftSB + df.mvs * HVContrast
-			right  -- xm
-			top    -- XH
-			bottom -- 0
-			ada    -- ArchDepthA
-			adb    -- ArchDepthB
-			stroke -- df.mvs
-		include : MidHook.m df XH
-
-		if SLAB : begin
-			local sf : [SerifFrame.fromDf df XH 0].slice 0 1
-			include sf.lt.outer
-			include sf.rb.outer

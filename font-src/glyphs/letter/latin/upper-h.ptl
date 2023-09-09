@@ -13,7 +13,8 @@ glyph-block Letter-Latin-Upper-H : begin
 	glyph-block-import Letter-Blackboard : BBS BBD
 	glyph-block-import Letter-Shared : SetGrekUpperTonos
 	glyph-block-import Letter-Shared-Shapes : SerifFrame RightwardTailedBar
-	glyph-block-import Letter-Shared-Shapes : CyrDescender CyrTailDescender VerticalHook MidHook UpwardHookShape
+	glyph-block-import Letter-Shared-Shapes : LeftHook MidHook EngHook UpwardHookShape
+	glyph-block-import Letter-Shared-Shapes : CyrDescender CyrTailDescender PalatalHook
 
 	define SLAB-NONE                   0
 	define SLAB-TOP-LEFT               1
@@ -69,14 +70,14 @@ glyph-block Letter-Latin-Upper-H : begin
 		include : VBar.l df.leftSB 0 top df.mvs
 		include : HBar.m SB df.middle (top / 2)
 		include : UpwardHookShape
-			left -- df.middle - df.mvs * 0.5 * HVContrast
+			left -- df.middle - [HSwToV : 0.5 * df.mvs]
 			right -- df.rightSB
 			ybegin -- top
 			yend -- yend
 			ada -- (SmallArchDepthA * 0.6 * df.div)
 			adb -- (SmallArchDepthB * 0.6 * df.div)
 			sw -- df.mvs
-		include : HSerifs slabType top 0 df.leftSB (df.middle + 0.5 * df.mvs * HVContrast) df.mvs
+		include : HSerifs slabType top 0 df.leftSB (df.middle + [HSwToV : 0.5 * df.mvs]) df.mvs
 
 		local sf2 : [SerifFrame.fromDf df yend 0].slice 1 2
 		if (slabType === SLAB-ALL || slabType === SLAB-TAILED-CYRILLIC) : include sf2.rt.full
@@ -154,32 +155,27 @@ glyph-block Letter-Latin-Upper-H : begin
 			eject-contour 'serifLB'
 
 		create-glyph "cyrl/EnGhe.\(suffix)" : glyph-proc
-			define df : DivFrame para.diversityM 3
-			set-width df.width
+			define df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : EnGheShape Body df CAP slabType enGheVSlab
 
 		create-glyph "cyrl/enghe.\(suffix)" : glyph-proc
-			define df : DivFrame para.diversityM 3
-			set-width df.width
+			define df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : EnGheShape Body df XH slabType enGheVSlab
 
 		create-glyph "Hwair.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : HwairShape df CAP XH slabType
 
 		create-glyph "cyrl/NjeKomi.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.capital
 			include : HwairShape df CAP (CAP / 2) slabType
 
 		create-glyph "cyrl/njeKomi.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
 			include : df.markSet.e
 			include : HwairShape df XH (XH / 2) slabType
 
@@ -197,19 +193,19 @@ glyph-block Letter-Latin-Upper-H : begin
 			include : OverlayStrokeShape XH slabType
 
 		create-glyph "cyrl/EnMidHook.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			local xm : df.middle + 0.5 * df.mvs * HVContrast
-			include : MarkSet.capDesc
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
+			include : df.markSet.capDesc
+
+			local xm : df.middle + [HSwToV : 0.5 * df.mvs]
 			include : Body df.leftSB xm CAP df.mvs
 			include : HSerifs slabType CAP 0 df.leftSB xm df.mvs
 			include : MidHook.m df CAP
 
 		create-glyph "cyrl/enMidHook.\(suffix)" : glyph-proc
-			local df : DivFrame para.diversityM 3
-			local xm : df.middle + 0.5 * df.mvs * HVContrast
-			include : MarkSet.p
-			set-width df.width
+			local df : include : DivFrame para.diversityM 3
+			include : df.markSet.p
+
+			local xm : df.middle + [HSwToV : 0.5 * df.mvs]
 			include : Body df.leftSB xm XH df.mvs
 			include : HSerifs slabType XH 0 df.leftSB xm df.mvs
 			include : MidHook.m df XH
@@ -217,10 +213,12 @@ glyph-block Letter-Latin-Upper-H : begin
 
 	select-variant 'H' 'H'
 	link-reduced-variant 'H/sansSerif' 'H' MathSansSerif
+	select-variant 'H/descenderBase' (shapeFrom -- 'H')
 	select-variant 'grek/Eta' 0x397 (follow -- 'H')
 	select-variant 'HTurned' 0xA78D (follow -- 'H')
 	link-reduced-variant 'grek/Eta/sansSerif' 'grek/Eta' MathSansSerif (follow -- 'H/sansSerif')
-	alias 'cyrl/En' 0x41D 'H'
+	select-variant 'cyrl/En' 0x41D (shapeFrom -- 'H') (follow -- 'H')
+	select-variant 'cyrl/En/descenderBase' (shapeFrom -- 'H') (follow -- 'H/descenderBase')
 	select-variant 'leftHalfH' 0x2C75
 	select-variant 'rightHalfH' 0xA7F5
 	alias 'grek/Heta' 0x370 'leftHalfH'
@@ -233,12 +231,12 @@ glyph-block Letter-Latin-Upper-H : begin
 	select-variant 'cyrl/en.BGR' (shapeFrom -- 'smcpH')
 	alias 'grek/heta' 0x371 'leftHalfSmcpH.serifless'
 
-	derive-composites 'HDescender' 0x2C67 'H' [CyrDescender.rSideJut RightSB 0]
+	derive-composites 'HDescender' 0x2C67 'H/descenderBase' [CyrDescender.rSideJut RightSB 0]
 
-	derive-composites 'cyrl/EnDescender' 0x4A2 'cyrl/En' [CyrDescender.rSideJut RightSB 0]
+	derive-composites 'cyrl/EnDescender' 0x4A2 'cyrl/En/descenderBase' [CyrDescender.rSideJut RightSB 0]
 	derive-composites 'cyrl/enDescender' 0x4A3 'cyrl/en/descenderBase' [CyrDescender.rSideJut RightSB 0]
 
-	derive-composites 'cyrl/EnTail' 0x4C9 'cyrl/En' [CyrTailDescender.rSideJut RightSB 0]
+	derive-composites 'cyrl/EnTail' 0x4C9 'cyrl/En/descenderBase' [CyrTailDescender.rSideJut RightSB 0]
 	derive-composites 'cyrl/enTail' 0x4CA 'cyrl/en/descenderBase' [CyrTailDescender.rSideJut RightSB 0]
 
 	select-variant 'cyrl/EnGhe' 0x4A4 (follow -- 'H')
@@ -269,7 +267,7 @@ glyph-block Letter-Latin-Upper-H : begin
 		include : HBar.b (RightSB - BBD) RightSB 0 BBS
 
 	derive-glyphs 'HCedilla' 0x1E28 'H' : lambda [src gr] : glyph-proc
-		local shift : Width + SB - Middle + HalfStroke * HVContrast
+		local shift : Width + SB - Middle + [HSwToV HalfStroke]
 		include [refer-glyph 'cedillaBelow']
 		include : Translate shift 0
 		include [refer-glyph src]
@@ -281,27 +279,24 @@ glyph-block Letter-Latin-Upper-H : begin
 		include : MarkSet.capDesc
 		include : refer-glyph src
 		eject-contour 'serifRB'
-		include : VerticalHook.r RightSB 0 (-HookX) Hook
+		include : EngHook RightSB 0 Descender
 
 	define [DProcSmallHeng src sel] : glyph-proc
 		include : MarkSet.p
 		include : refer-glyph src
 		eject-contour 'serifRB'
-		include : VerticalHook.r RightSB 0 (-HookX) Hook
+		include : EngHook RightSB 0 Descender
 
-	derive-glyphs 'Heng' 0xA726 'H' DProcCapitalHeng
-	derive-glyphs 'HengSmcp' null 'smcpH' DProcSmallHeng
-	derive-glyphs 'cyrl/EnHook' 0x4C7 'cyrl/En' DProcCapitalHeng
+	derive-glyphs 'Heng' 0xA726 'H/descenderBase' DProcCapitalHeng
+	derive-glyphs 'cyrl/EnHook' 0x4C7 'cyrl/En/descenderBase' DProcCapitalHeng
 	derive-glyphs 'cyrl/enHook' 0x4C8 'cyrl/en/descenderBase' DProcSmallHeng
 
 	derive-glyphs 'cyrl/EnLHook' 0x528 'cyrl/En' : lambda [src srl] : glyph-proc
-		include : MarkSet.capDesc
-		include [refer-glyph src] AS_BASE
+		include [refer-glyph src] AS_BASE ALSO_METRICS
 		eject-contour 'serifLB'
-		include : VerticalHook.l SB 0 (-HookX) Hook
+		include : PalatalHook.lExt SB 0
 
 	derive-glyphs 'cyrl/enLHook' 0x529 'cyrl/en' : lambda [src srl] : glyph-proc
-		include : MarkSet.p
-		include [refer-glyph src] AS_BASE
+		include [refer-glyph src] AS_BASE ALSO_METRICS
 		eject-contour 'serifLB'
-		include : VerticalHook.l SB 0 (-HookX) Hook
+		include : PalatalHook.lExt SB 0

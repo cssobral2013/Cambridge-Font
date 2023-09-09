@@ -28,7 +28,7 @@ glyph-block Symbol-Currency : begin
 		define xBarLeft : [mix SB RightSB 0.2] - Stroke * 0.1
 		define [BaseShape] : glyph-proc
 			local xBarLeft : [mix SB RightSB 0.2] - Stroke * 0.1
-			local hookEndX : Math.max (xBarLeft + Stroke * 2.25 * HVContrast) [mix SB RightSB 0.95]
+			local hookEndX : Math.max (xBarLeft + [HSwToV : 2.25 * Stroke]) [mix SB RightSB 0.95]
 			include : union
 				dispiro
 					g4 hookEndX (CAP - Hook * 0.85) [widths.lhs]
@@ -53,24 +53,31 @@ glyph-block Symbol-Currency-Letter-Derived : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 
+	derive-composites 'currency/colonSign' 0x20A1 'C' 'dblLongSlash'
+	derive-composites 'currency/millSign' 0x20A5 'm' 'shortSlash'
+
 	create-glyph 'currency/overlay/NS' : glyph-proc
 		define sw : Math.min OverlayStroke : AdviceStroke2 2 4 CAP
 		define gap : Math.max (CAP / 8) (sw / 2)
 		include : HBar.b [mix 0 SB 0.5] [mix Width RightSB 0.5] (CAP / 2 + gap / 2) sw
 		include : HBar.t    [mix 0 SB 0.5] [mix Width RightSB 0.5] (CAP / 2 - gap / 2) sw
 
+	derive-composites 'currency/nairaSign' 0x20A6 'currency/nairaSignBase' 'currency/overlay/NS'
+	derive-composites 'currency/hryvniaSign' 0x20B4 'revS' 'currency/overlay/NS'
+
 	create-glyph 'currency/overlay/W' : glyph-proc
 		local df : DivFrame para.diversityM 3
 		include : HOverlayBar [mix SB 0 0.7] [mix df.rightSB df.width 0.7] (CAP * 0.6)
 		include : HOverlayBar [mix SB 0 0.7] [mix df.rightSB df.width 0.7] (CAP * 0.35)
 
-	derive-composites 'currency/nairaSign' 0x20A6 'currency/nairaSignBase' 'currency/overlay/NS'
-	derive-composites 'currency/hryvniaSign' 0x20B4 'revS' 'currency/overlay/NS'
 	derive-composites 'currency/wonSign' 0x20A9 'W' 'currency/overlay/W'
 
+	derive-composites 'currency/dongSign' 0x20AB 'dcroat' 'sbRsbUnderlineBelow'
+	derive-composites 'currency/kipSign' 0x20AD 'K' 'hStrike'
+
 	create-glyph 'currency/tugrikOverride' : let
-		l : mix (Middle - HalfStroke * HVContrast) SB       0.75
-		r : mix (Middle + HalfStroke * HVContrast) RightSB  0.75
+		l : mix (Middle - [HSwToV HalfStroke]) SB       0.75
+		r : mix (Middle + [HSwToV HalfStroke]) RightSB  0.75
 		kSlope 0.05
 		intersection [Rect 0 CAP l r] : union
 			ExtLineCenter 4 OverlayStroke l (CAP * (0.6 - kSlope)) r (CAP * (0.6 + kSlope))
@@ -78,32 +85,8 @@ glyph-block Symbol-Currency-Letter-Derived : begin
 
 	derive-composites 'currency/tugrikSign' 0x20AE 'T' 'currency/tugrikOverride'
 
-	create-glyph 'longAlmostVerticalSlash' : glyph-proc
-		set-width 0
-		set-mark-anchor 'slash' 0 0
-		include : dispiro
-			widths.center OverlayStroke
-			flat (CAP * 0.1) (CAP * 0.6)
-			flat (CAP * -0.1) (CAP * -0.6)
-
-	create-glyph 'doubleLongAlmostVerticalSlash' : glyph-proc
-		set-width 0
-		set-mark-anchor 'slash' 0 0
-
-		local sw : AdviceStroke 7
-		local gap : sw + [Math.min sw (0.1 * (RightSB - SB))]
-		include : dispiro
-			widths.center sw
-			flat (CAP * 0.1 + 0.5 * gap) (CAP * 0.6)
-			flat (CAP * -0.1 + 0.5 * gap) (CAP * -0.6)
-		include : dispiro
-			widths.center sw
-			flat (CAP * 0.1 - 0.5 * gap) (CAP * 0.6)
-			flat (CAP * -0.1 - 0.5 * gap) (CAP * -0.6)
-
-	derive-composites 'currency/colonSign' 0x20A1 'C' 'doubleLongAlmostVerticalSlash'
-	derive-composites 'currency/guaraniSign' 0x20B2 'G' 'longAlmostVerticalSlash'
-	derive-composites 'currency/cediSign' 0x20B5 'C' 'longAlmostVerticalSlash'
+	derive-composites 'currency/guaraniSign' 0x20B2 'G' 'longVStrokeOver'
+	derive-composites 'currency/cediSign' 0x20B5 'C' 'longVStrokeOver'
 
 glyph-block Symbol-Letter : begin
 	glyph-block-import CommonShapes
@@ -172,8 +155,10 @@ glyph-block Symbol-Letter : begin
 	alias 'Ohm' 0x2126 'grek/Omega'
 	turned 'Mho' 0x2127 'Ohm' Middle (CAP / 2)
 	turned 'turniota' 0x2129 'grek/iota' HalfAdvance (XH / 2)
+	alias 'letterLike/kelvinSign' 0x212A 'K'
 
 	create-glyph 'estimated' 0x212E : glyph-proc
+		include : MarkSet.capital
 		local fineArc : CAP * 0.0300
 		local fineBar : CAP * 0.0278
 		local thickBarWidth : (0.183 / [Math.sqrt 0.9]) * [Math.sqrt (CAP * (RightSB - SB))]
@@ -194,6 +179,7 @@ glyph-block Symbol-Letter : begin
 				Rect (CAP * 0.5) (CAP * 0.208) Middle Width
 
 	create-glyph 'mathAleph' 0x2135 : glyph-proc
+		include : MarkSet.capital
 		define p 0.3
 		include : XStrand true false SB CAP RightSB 0 0.1 0.4 0.28
 		include : intersection
@@ -216,27 +202,28 @@ glyph-block Symbol-Letter : begin
 				corner SB CAP
 
 	create-glyph 'mathBeth' 0x2136 : glyph-proc
+		include : MarkSet.capital
 		define pX 0.7
 		define pY 0.8
 		define turnX : mix SB RightSB pY
 		include : dispiro
 			widths.rhs
 			flat SB CAP
-			curl [Math.min (turnX - Stroke * 1.5 * HVContrast) [mix SB turnX pX]] CAP
+			curl [Math.min (turnX - [HSwToV : 1.5 * Stroke]) [mix SB turnX pX]] CAP
 			archv
 			flat turnX [Math.min (CAP - Stroke * 1.5) [mix 0 CAP pY]]
 			curl turnX 0
 		include : HBar.b SB RightSB 0
 
 	create-glyph 'mathGimel' 0x2137 : glyph-proc
-		local df : DivFrame para.diversityF
+		local df : include : DivFrame para.diversityF
 		local hd : FlatHookDepth df
 
 		local xStart : mix df.leftSB df.rightSB 0.1
-		local xVertBar : [mix df.leftSB df.rightSB 0.625] + 0.375 * HVContrast * Stroke
+		local xVertBar : [mix df.leftSB df.rightSB 0.625] + [HSwToV : 0.375 * Stroke]
 		local yBranch : mix 0 CAP 0.5
 
-		set-width df.width
+		include : df.markSet.capital
 
 		include : intersection [MaskAbove 0] : dispiro [widths.rhs]
 			flat xStart CAP
@@ -249,21 +236,27 @@ glyph-block Symbol-Letter : begin
 
 		include : dispiro [widths.rhs]
 			g4.down.start xVertBar yBranch
-			g4 (df.leftSB + 0.2 * HVContrast * Stroke) O
+			g4 (df.leftSB + [HSwToV : 0.2 * Stroke]) O
 
 	create-glyph 'mathDalet' 0x2138 : glyph-proc
+		include : MarkSet.capital
 		include : HBar.t SB RightSB CAP
 		include : VBar.r [mix SB RightSB 0.75] 0 CAP
 
 	create-glyph 'informationSource' 0x2139 : glyph-proc
+		include : MarkSet.b
 		local sw : UnicodeWeightGrade 9 1
 		include : VBar.m Middle 0 XH sw
-		include : HSerif.lt     (Middle - sw / 2 * HVContrast) XH (LongJut / 2)
-		include : HSerif.lb  (Middle - sw / 2 * HVContrast) 0  (LongJut / 2)
+		include : HSerif.lt (Middle - sw / 2 * HVContrast) XH (LongJut / 2)
+		include : HSerif.lb (Middle - sw / 2 * HVContrast) 0  (LongJut / 2)
 		include : HSerif.rb (Middle + sw / 2 * HVContrast) 0  (LongJut / 2)
 		include : DotAt Middle (XH + AccentStackOffset) (DotRadius * sw / Stroke)
 
+	turned 'turnG/sansSerif' 0x2141 'G/sansSerif' Middle (CAP / 2)
+	turned 'turnL/sansSerif' 0x2142 'L/sansSerif' Middle (CAP / 2)
 	turned 'revL/sansSerif' 0x2143 'grek/Gamma/sansSerif' Middle (CAP / 2)
+	turned 'turnY/sansSerif' 0x2144 'Y/sansSerif' Middle (CAP / 2)
+
 	turned 'turnAmpersand' 0x214B 'ampersand' Middle (CAP / 2)
 
 	do "Tironian Et"
@@ -282,7 +275,7 @@ glyph-block Symbol-Letter : begin
 				dispiro
 					widths.rhs
 					flat RightSB (XH - O - Stroke)
-					curl (Middle + 0.125 * Stroke * HVContrast) O
+					curl (Middle + [HSwToV : 0.125 * Stroke]) O
 
 		create-glyph 'TironianEt' 0x2E52 : glyph-proc
 			include : TironianEtTopBarShape CAP
@@ -298,10 +291,10 @@ glyph-block Symbol-Letter : begin
 			include : MarkSet.capital
 			include : VBar.m Middle 0 CAP
 			include : dispiro
-				flat (Middle - HalfStroke * HVContrast) 0 [widths.rhs : AdviceStroke 3]
+				flat (Middle - [HSwToV HalfStroke]) 0 [widths.rhs : AdviceStroke 3]
 				curl (SB + O) [mix 0 CAP 0.375]
 			include : dispiro
-				flat (Middle + HalfStroke * HVContrast) 0 [widths.lhs : AdviceStroke 3]
+				flat (Middle + [HSwToV HalfStroke]) 0 [widths.lhs : AdviceStroke 3]
 				curl (RightSB - O) [mix 0 CAP 0.375]
 
 glyph-block Symbol-Cyrl-Thousands : begin

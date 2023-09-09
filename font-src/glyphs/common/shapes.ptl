@@ -179,7 +179,7 @@ glyph-block CommonShapes : begin
 	glyph-block-export CircleDotAt
 	define [CircleDotAt x y r] : CircleRing (y + r) (y - r) (x - r) (x + r) true
 	glyph-block-export RoundStrokeTerminalAt
-	define [RoundStrokeTerminalAt x y r] : CircleRing (y + r) (y - r) (x - HVContrast * r) (x + HVContrast * r) true
+	define [RoundStrokeTerminalAt x y r] : CircleRing (y + r) (y - r) (x - [HSwToV r]) (x + [HSwToV r]) true
 
 	glyph-block-export OShapeT
 	define [OShapeT sink u d l r _width _ada _adb] : begin
@@ -271,28 +271,28 @@ glyph-block CommonShapes : begin
 			local sw : fallback _sw Stroke
 			local swRef : fallback _swRef sw
 			include : dispiro
-				flat (x + 0.5 * HVContrast * swRef) y [widths.heading sw 0 Leftward]
+				flat (x + [HSwToV : 0.5 * swRef]) y [widths.heading sw 0 Leftward]
 				curl (x - length - TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 		export : define [lb x y length _sw _swRef] : glyph-proc
 			local sw : fallback _sw Stroke
 			local swRef : fallback _swRef sw
 			include : dispiro
-				flat (x + 0.5 * HVContrast * swRef) y [widths.heading 0 sw Leftward]
+				flat (x + [HSwToV : 0.5 * swRef]) y [widths.heading 0 sw Leftward]
 				curl (x - length + TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 		export : define [rt x y length _sw _swRef] : glyph-proc
 			local sw : fallback _sw Stroke
 			local swRef : fallback _swRef sw
 			include : dispiro
-				flat (x - 0.5 * HVContrast * swRef) y [widths.heading 0 sw Rightward]
+				flat (x - [HSwToV : 0.5 * swRef]) y [widths.heading 0 sw Rightward]
 				curl (x + length - TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 		export : define [rb x y length _sw _swRef] : glyph-proc
 			local sw : fallback _sw Stroke
 			local swRef : fallback _swRef sw
 			include : dispiro
-				flat (x - 0.5 * HVContrast * swRef) y [widths.heading sw 0 Rightward]
+				flat (x - [HSwToV : 0.5 * swRef]) y [widths.heading sw 0 Rightward]
 				curl (x + length + TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 		export : define [mt x y length _sw] : mtAsymmetric x y length length _sw
@@ -300,14 +300,14 @@ glyph-block CommonShapes : begin
 		export : define [mtAsymmetric x y l r _sw] : begin
 			local sw : fallback _sw Stroke
 			return : dispiro
-				flat (x + r - TanSlope * (sw * DesignParameters.serifShiftX)) y [widths sw 0]
+				flat (x + r - TanSlope * (sw * DesignParameters.serifShiftX)) y [widths.lhs sw]
 				curl (x - l - TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 		export : define [mb x y length _sw] : mbAsymmetric x y length length _sw
 		export : define [mbAsymmetric x y l r _sw] : begin
 			local sw : fallback _sw Stroke
 			return : dispiro
-				flat (x + r + TanSlope * (sw * DesignParameters.serifShiftX)) y [widths 0 sw]
+				flat (x + r + TanSlope * (sw * DesignParameters.serifShiftX)) y [widths.rhs sw]
 				curl (x - l + TanSlope * (sw * DesignParameters.serifShiftX)) y
 
 	glyph-block-export VSerif
@@ -392,21 +392,10 @@ glyph-block CommonShapes : begin
 		local s : fallback _s Stroke
 		return : HCrossBar (xl + 0 * s * TanSlope) (xr + 0 * s * TanSlope) (y + 0.5 * s) s
 
-	glyph-block-export LeftHook
-	define [LeftHook x y xextend] : glyph-proc
-		local fine : AdviceStroke 4.25
-		include : dispiro
-			widths.lhs fine
-			flat [fallback xextend : x + 1] y
-			curl x y
-			archv 8
-			g4.down.end (x - LeftHook.extension) (y - HookX) [heading Downward]
-	set LeftHook.extension [Math.max (Width * 0.2) ([AdviceStroke 4.25] * 1.5)]
-
 	glyph-block-export FlatSlashShape
 	define [FlatSlashShape middlex middle fine kx ky] : glyph-proc
 		include : dispiro
-			flat (middlex - LongJut * [fallback kx 0.8]) (middle - LongJut * [fallback ky 0.4]) [widths fine fine]
+			flat (middlex - LongJut * [fallback kx 0.8]) (middle - LongJut * [fallback ky 0.4]) [widths.center : 2 * fine]
 			curl (middlex + LongJut * [fallback kx 0.8]) (middle + LongJut * [fallback ky 0.4])
 
 	# Spiro shapes
@@ -428,10 +417,10 @@ glyph-block CommonShapes : begin
 		return r
 
 	define nHookSegments 12
-	define [HookShape toStraight toFinish isStart y tight _sw _swItalicAdj noAdjTerminalY] : begin
+	define [HookShape toStraight toFinish isStart args] : begin
+		local [object y tight sw swItalicAdj noAdjTerminalY turnSlope] args
+
 		local atBottom : toStraight.y > y
-		local sw : fallback _sw Stroke
-		local swItalicAdj : fallback _swItalicAdj sw
 		local ltr : if isStart (toFinish.x < toStraight.x) (toFinish.x > toStraight.x)
 		local dtu : if isStart (y > toFinish.y) (y < toFinish.y)
 		local doSwash : !tight && para.isItalic && ltr && atBottom && !isStart
@@ -453,9 +442,14 @@ glyph-block CommonShapes : begin
 		local keyKnot : g4.[if ltr "right" "left"].mid
 			begin mx
 			begin y
-			if [not tight] nothing : begin
-				local s : if ltr Rightward Leftward
-				heading {.x (s.x * [fallback tight.skew 1]) .y s.y}
+			piecewise
+				tight : begin
+					local s : if ltr Rightward Leftward
+					heading {.x (s.x * [fallback tight.skew 1]) .y s.y}
+				turnSlope : begin
+					local s : if ltr Rightward Leftward
+					heading {.x turnSlope .y s.y}
+				true : begin nothing
 
 		# Adjust terminal's direction
 		do "Adjust terminal's direction"
@@ -508,18 +502,32 @@ glyph-block CommonShapes : begin
 			* segAfter
 
 	define [hookStartBlender before after args] : begin
-		return : HookShape after before true args.y args.tight args.sw args.swItalicAdj args.noAdjTerminalY
+		return : HookShape after before true args
 
 	define [hookEndBlender before after args] : begin
-		return : HookShape before after false args.y args.tight args.sw args.swItalicAdj args.noAdjTerminalY
+		return : HookShape before after false args
 
 	glyph-block-export hookstart
-	define [hookstart] : with-params [y tight sw swItalicAdj noAdjTerminalY] : begin
-		return : Interpolator hookStartBlender : object y tight sw swItalicAdj noAdjTerminalY
+	define [hookstart] : begin
+		postulate
+			y
+			tight
+			sw             -- Stroke
+			swItalicAdj    -- sw
+			noAdjTerminalY -- false
+			turnSlope      -- nothing
+		return : Interpolator hookStartBlender : object y tight sw swItalicAdj noAdjTerminalY turnSlope
 
 	glyph-block-export hookend
-	define [hookend] : with-params [y tight sw swItalicAdj noAdjTerminalY] : begin
-		return : Interpolator hookEndBlender : object y tight sw swItalicAdj noAdjTerminalY
+	define [hookend] : begin
+		postulate
+			y
+			tight
+			sw             -- Stroke
+			swItalicAdj    -- sw
+			noAdjTerminalY -- false
+			turnSlope      -- nothing
+		return : Interpolator hookEndBlender : object y tight sw swItalicAdj noAdjTerminalY turnSlope
 
 	glyph-block-export Ungizmo
 	define [Ungizmo] : glyph-proc
@@ -567,8 +575,12 @@ glyph-block CommonShapes : begin
 			include   giz
 		include g
 
-	glyph-block-export WithTransform
-	define [WithTransform tfm gr] : new-glyph : composite-proc gr tfm
+	glyph-block-export with-transform
+	define [with-transform tfm gr] : new-glyph : composite-proc gr tfm
+
+	glyph-block-export clear-geometry
+	define [clear-geometry] : glyph-proc
+		currentGlyph.clearGeometry
 
 	glyph-block-export clear-anchors
 	define [clear-anchors] : glyph-proc
