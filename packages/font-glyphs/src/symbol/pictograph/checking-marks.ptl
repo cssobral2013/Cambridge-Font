@@ -30,7 +30,7 @@ glyph-block Symbol-Pictograph-Checking-Marks : begin
 				set-width MosaicWidth
 				include : dispiro
 					widths.center sw
-					g4 ptSB [mix ptBot ptTop 0.46]
+					g4 ptSB ([mix ptBot ptTop 0.46] + 0.5 * sw)
 					alsoThru 0.5 0.4
 					g4 [mix ptSB ptRSB 0.4] [mix ptBot ptTop 0.05] [heading Downward]
 				include : dispiro
@@ -59,19 +59,28 @@ glyph-block Symbol-Pictograph-Checking-Marks : begin
 					alsoThru 0.47 0.5
 					g4 ptRSB [mix ptBot ptTop 0.05]
 
+		create-glyph [MangleName 'halfCheck'] [MangleUnicode 0x237B] : glyph-proc
+			set-width MosaicWidth
+			include : refer-glyph : MangleName : NameUni 0x2713
+			include : dispiro
+				widths.center lightSw
+				g4 [mix ptSB ptRSB 0.5] [mix ptBot ptTop 0.82]
+				alsoThru 0.47 0.5
+				g4 ptRSB [mix ptBot ptTop 0.42]
+
 	do "Ext angle brackets"
 		define Geom : GeometricDim Width Width
-		define lightSw  : UnicodeWeightGrade 3    Geom.Scalar
 		define mediumSw : UnicodeWeightGrade 5    Geom.Scalar
 		define heavySw  : UnicodeWeightGrade 9    Geom.Scalar
+		define xHeavySw : UnicodeWeightGrade 11   Geom.Scalar
 
 		define ExtBracketConfig : list
-			list 0x276C lightSw  1
-			list 0x276D lightSw  0
-			list 0x276E mediumSw 1
-			list 0x276F mediumSw 0
-			list 0x2770 heavySw  1
-			list 0x2771 heavySw  0
+			list 0x276C mediumSw 1
+			list 0x276D mediumSw 0
+			list 0x276E heavySw  1
+			list 0x276F heavySw  0
+			list 0x2770 xHeavySw 1
+			list 0x2771 xHeavySw 0
 		foreach {unicode sw op} [items-of ExtBracketConfig] : begin
 			create-glyph [NameUni unicode] unicode : glyph-proc
 				local cor : DiagCor (PictTop - PictBot) (2 * (RightSB - SB))

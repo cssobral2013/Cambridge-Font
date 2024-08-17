@@ -2,7 +2,9 @@
 
 $$include '../meta/macros.ptl'
 
+import [Point] from "@iosevka/geometry/point"
 import [Box] from "@iosevka/geometry/box"
+import [Transform] from "@iosevka/geometry/transform"
 import [mix linreg clamp fallback] from "@iosevka/util"
 import [DesignParameters] from "../meta/aesthetics.mjs"
 
@@ -22,9 +24,13 @@ glyph-block Symbol-Currency : begin
 			include : dispiro
 				widths.center sw
 				flat (Middle + radius * 0.87 * [Math.cos angle]) (SymbolMid + radius * 0.87 * [Math.sin angle])
-				curl (Middle + radius * [Math.sqrt 2] * [Math.cos angle]) (SymbolMid + radius * [Math.sqrt 2] * [Math.sin angle])
+				curl (Middle + radius * Math.SQRT2 * [Math.cos angle]) (SymbolMid + radius * Math.SQRT2 * [Math.sin angle])
 
-	do "Sterling"
+	define SterlingConfig : object
+		serifless     { 0 }
+		motionSerifed { 1 }
+
+	foreach { suffix { serifGrade } } [Object.entries SterlingConfig] : do
 		define xBarLeft : [mix SB RightSB 0.2] - Stroke * 0.1
 		define [BaseShape] : glyph-proc
 			local xBarLeft : [mix SB RightSB 0.2] - Stroke * 0.1
@@ -32,22 +38,26 @@ glyph-block Symbol-Currency : begin
 			include : union
 				dispiro
 					g4 hookEndX (CAP - Hook * 0.85) [widths.lhs]
-					hookstart (CAP - O) (tight -- true)
+					hookstart CAP
 					flat xBarLeft [CAP - ArchDepthA * 0.75]
 					curl xBarLeft [mix Stroke CAP 0.3]
 					g4   SB Stroke
 				HBar.b SB RightSB 0
+			if serifGrade : include : VSerif.ur RightSB 0 VJut
 
-		create-glyph 'currency/sterlingSign' 0xA3 : glyph-proc
+		create-glyph "currency/sterlingSign.\(suffix)" : glyph-proc
 			set-width Width
 			include : BaseShape
 			include : LetterBarOverlay.l xBarLeft (CAP * 0.5)
 
-		create-glyph 'currency/liraSymbolSign' 0x20A4 : glyph-proc
+		create-glyph "currency/liraSymbolSign.\(suffix)" : glyph-proc
 			set-width Width
 			include : BaseShape
 			include : LetterBarOverlay.l xBarLeft (CAP * 0.37)
 			include : LetterBarOverlay.l xBarLeft (CAP * 0.60 - OverlayStroke * 0.25)
+
+	select-variant 'currency/sterlingSign'   0xA3
+	select-variant 'currency/liraSymbolSign' 0x20A4 (follow -- 'currency/sterlingSign')
 
 glyph-block Symbol-Currency-Letter-Derived : begin
 	glyph-block-import CommonShapes
@@ -102,85 +112,69 @@ glyph-block Symbol-Letter : begin
 	alias 'eulerConst' 0x2107 'latn/Epsilon'
 	alias 'scruple' 0x2108 'cyrl/E'
 
-	create-glyph 'ell' 0x2113 : glyph-proc
-		include : MarkSet.b
-		local fine : AdviceStroke 3.5
-		local radius : Math.max fine (Width * 0.15)
-		local middle : Middle - fine / 2
-		local left : middle - radius * 1.25
-		local right : middle + radius * 1.5
-		local ada : ArchDepthA * 0.6
-		local adb : ArchDepthB * 0.6
-		include : dispiro
-			widths.center fine
-			g2   left [mix 0 CAP 0.33]
-			quadControls 1 0.6
-			g2   right [mix 0 CAP 0.8]
-			arcvh
-			g2   [mix middle right 0.5] (CAP - O - fine / 2)
-			archv
-			flat middle (CAP - ada)
-			curl middle (ArchDepthB * 0.5 + fine / 2)
-			hookend (O + fine / 2)
-			g2   (middle + radius * 2) SHook
-
-	create-glyph 'weierstrassP' 0x2118 : glyph-proc
-		include : MarkSet.p
-
-		local thick : AdviceStroke 2.75
-		local extSw : AdviceStroke 4
-		local fine  : AdviceStroke 5.5
-		local tip   : AdviceStroke 6.5
-
-		local bowl : CursiveBuilder [new Box XH 0         SB RightSB]               thick
-		local extn : CursiveBuilder [new Box XH Descender SB [mix SB RightSB 0.3]]  extSw
-		local bowT : bowl.withSw tip
-		local extF : extn.withSw fine
-		local extT : extn.withSw tip
-
-		include : dispiro
-			g2           [extT.x  0.25  0.5  0    ]  [extT.y  1     0     0    ]  [extT.s 0.5]
-			g2.down.mid  [extF.x  0     0    O    ]  [extF.y  0.8   0     0    ]  [extF.s 0]
-			alsoThru.g2  0.5                         0.5                          [extn.s 0.5]
-			g2.down.mid  [extF.x  1     0.4  (-O) ]  [extn.y  0.2 (-TanSlope) 0]  [extn.s (fine / extSw)]
-			arcvh
-			g2           [extF.xAB 0.5  0.2  0    ]  [extF.y  0     0     O    ]  [extF.s 1]
-			archv
-			g2.up.mid    [extF.x  0     0    O    ]  [extF.y  0.2   0     0    ]  [extF.s 1]
-			bezControls  0  0.5  0.4  1  16
-			g2           [bowl.xAT  0.7 (-0.3) 0  ]  [bowl.y  1     0     (-O) ]  [bowl.s 1]
-			archv
-			straight.down.mid [bowl.x  1  0  (-O) ]  [bowl.y  0.5   0     0    ]
-			arcvh
-			g2           [bowl.xAB  0.7 (-0.2) 0  ]  [bowl.y  0     0     O    ]
-			archv
-			g2           [bowT.x  0.4   0    0    ]  [bowT.y  0.3   0     0    ]  [bowT.s 1 Upward]
 
 	alias 'Ohm' 0x2126 'grek/Omega'
 	turned 'Mho' 0x2127 'Ohm' Middle (CAP / 2)
-	turned 'turniota' 0x2129 'grek/iota' HalfAdvance (XH / 2)
+
 	alias 'letterLike/kelvinSign' 0x212A 'K'
 
-	create-glyph 'estimated' 0x212E : glyph-proc
-		include : MarkSet.capital
-		local fineArc : CAP * 0.0300
-		local fineBar : CAP * 0.0278
-		local thickBarWidth : (0.183 / [Math.sqrt 0.9]) * [Math.sqrt (CAP * (RightSB - SB))]
-		define smA : ArchDepthAOf (ArchDepth * (CAP / XH)) Width
-		define smB : ArchDepthBOf (ArchDepth * (CAP / XH)) Width
-		include : union
-			HBar.b SB RightSB (CAP * 0.5) fineBar
-			difference
-				union
-					difference
-						OShapeOutline CAP 0 SB RightSB fineArc smA smB
-						OShapeOutline (CAP - fineArc) (0 + fineArc) [mix SB RightSB 0.077] [mix RightSB SB 0.077] fineArc (smA - fineArc) (smB - fineArc)
-					intersection
-						OShapeOutline.NoOvershoot CAP 0 SB RightSB fineArc smA smB
-						union
-							Rect CAP 0 SB (SB + thickBarWidth)
-							Rect CAP (CAP * 0.5) (RightSB - thickBarWidth) RightSB
-				Rect (CAP * 0.5) (CAP * 0.208) Middle Width
+	for-width-kinds WideWidth1 : begin
+		create-glyph [MangleName 'estimated'] [MangleUnicode 0x212E] : glyph-proc
+			set-width MosaicWidth
+
+			local cx 500
+			local cy 450
+			local r1 (846 / 2)
+			local yGapSize 263
+			local sw 183
+			local r2 85
+			local r3 13
+			local swCenter 25
+
+			# Scale and transform
+			local desiredHeight : if FMosaicWide CAP XH
+			local s : Math.min (desiredHeight / (2 * cy)) ((MosaicWidth - SB) / (2 * cx))
+			local glyphCenter : currentGlyph.gizmo.applyXY (MosaicWidth / 2) (desiredHeight / 2)
+			local tfm : Transform.Combine
+				Transform.Translate (-cx) (-cy)
+				Transform.Scale s s
+				Transform.Translate glyphCenter.x glyphCenter.y
+
+			# Center of inner round corner, as well as the limit X for the inner circle edge
+			local xLargeRc : sw + r2
+			local yLargeRc : cy - [Math.sqrt ((r1 - r2) * (r1 - r2) - (cx - sw - r2) * (cx - sw - r2))]
+			local xInnerCircleLimit : cx - (cx - xLargeRc) * (r1 / (r1 - r2))
+
+			include : ForceUpright
+			include : difference [Ellipse.Outline.At cx cy cx cy]
+				# Inner arcs
+				intersection [Circle.Outline.At cx cy r1] : union
+					Rect (2 * cy) (2 * cy - yLargeRc) xInnerCircleLimit (2 * cx - xInnerCircleLimit)
+					Rect yLargeRc (-1) xInnerCircleLimit cx
+					Rect (cy - yGapSize) (-1) (cx - 1) (2 * cx)
+
+				# Large round corners
+				Circle.Outline.At xLargeRc yLargeRc r2
+				Circle.Outline.At xLargeRc (2 * cy - yLargeRc) r2
+				Circle.Outline.At (2 * cx - xLargeRc) (2 * cy - yLargeRc) r2
+
+				# Small round corners
+				Circle.Outline.At (sw + r3) (cy + swCenter + r3) r3
+				Circle.Outline.At (2 * cx - sw - r3) (cy + swCenter + r3) r3
+				Circle.Outline.At (sw + r3) (cy - r3) r3
+
+				# Top inner opening
+				Rect (2 * cy - yLargeRc) (cy + swCenter + r3) sw (2 * cx - sw)
+				Rect (cy + swCenter + r3 + 1) (cy + swCenter) (sw + r3) (2 * cx - sw - r3)
+
+				# Bottom-left opening
+				Rect (cy - r3) yLargeRc sw cx
+				Rect cy (cy - r3 - 1) (sw + r3) cx
+
+				# Bottom-right opening
+				Rect               cy (cy - yGapSize) (cx - 1) (2 * cx)
+
+			include tfm
 
 	create-glyph 'mathAleph' 0x2135 : glyph-proc
 		include : MarkSet.capital
@@ -231,7 +225,7 @@ glyph-block Symbol-Letter : begin
 
 		include : intersection [MaskAbove 0] : dispiro [widths.rhs]
 			flat xStart CAP
-			curl [Math.max (xStart + 0.01) (xVertBar - hd.x)] CAP
+			curl [Math.max (xStart + TINY) (xVertBar - hd.x)] CAP
 			archv
 			flat xVertBar (CAP - hd.y)
 			curl xVertBar yBranch
@@ -255,11 +249,6 @@ glyph-block Symbol-Letter : begin
 		include : HSerif.lb (Middle - [HSwToV : 0.5 * sw]) 0  (LongJut / 2)
 		include : HSerif.rb (Middle + [HSwToV : 0.5 * sw]) 0  (LongJut / 2)
 		include : DotAt Middle (XH + AccentStackOffset) (DotRadius * sw / Stroke)
-
-	turned 'turnG/sansSerif' 0x2141 'G/sansSerif' Middle (CAP / 2)
-	turned 'turnL/sansSerif' 0x2142 'L/sansSerif' Middle (CAP / 2)
-	turned 'revL/sansSerif' 0x2143 'grek/Gamma/sansSerif' Middle (CAP / 2)
-	turned 'turnY/sansSerif' 0x2144 'Y/sansSerif' Middle (CAP / 2)
 
 	turned 'turnAmpersand' 0x214B 'ampersand' Middle (CAP / 2)
 
@@ -287,7 +276,7 @@ glyph-block Symbol-Letter : begin
 				widths.rhs
 				flat RightSB (CAP - HalfStroke) [heading Downward]
 				curl RightSB ArchDepthB
-				hookend O
+				hookend 0
 				g4 SB Hook
 
 	do "Roman Numerals"
@@ -301,9 +290,30 @@ glyph-block Symbol-Letter : begin
 				flat (Middle + [HSwToV HalfStroke]) 0 [widths.lhs : AdviceStroke 3]
 				curl (RightSB - O) [mix 0 CAP 0.375]
 
+	do "Tally Marks"
+		create-glyph 'tallyMarkOne' 0x1D377 : glyph-proc
+			local df : include : DivFrame : if (para.diversityII < 1) ([mix 1 para.diversityM 2] / 4) 1
+			include : df.markSet.capital
+			include : VBar.m df.middle 0 CAP df.mvs
+
+		create-glyph 'tallyMarkFive' 0x1D378 : glyph-proc
+			local df : include : DivFrame [mix 1 para.diversityM 2] 4
+			include : df.markSet.capital
+
+			local left  : df.leftSB  + [HSwToV : 0.5 * df.mvs]
+			local right : df.rightSB - [HSwToV : 0.5 * df.mvs]
+
+			include : VBar.m      left              0 CAP df.mvs
+			include : VBar.m [mix left right (1/3)] 0 CAP df.mvs
+			include : VBar.m [mix left right (2/3)] 0 CAP df.mvs
+			include : VBar.m           right        0 CAP df.mvs
+
+			include : dispiro
+				flat (left  - LongJut / 2 + OX) (CAP * (1/3)) [widths.center df.mvs]
+				curl (right + LongJut / 2 - OX) (CAP * (2/3))
+
 glyph-block Symbol-Cyrl-Thousands : begin
 	glyph-block-import CommonShapes
-	glyph-block-import Common-Derivatives
 	create-glyph 'cyrlThousandsSign' 0x482 : glyph-proc
 		define fine : AdviceStroke 3
 		include : ExtLineCenter (-0.1) fine SB Descender RightSB XH
@@ -311,6 +321,10 @@ glyph-block Symbol-Cyrl-Thousands : begin
 		include : ExtLineCenter (-0.1) fine [mix SB RightSB (-0.1)] [mix Descender XH 0.5] [mix SB RightSB 0.9] [mix Descender XH 0.2]
 
 glyph-block Symbol-Letter-Phonetic : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Mark-Above : BreveShape InvBreveShape
+	glyph-block-import Mark-Shared-Metrics : markExtend markHalfStroke
+
 	create-glyph 'modifierArchBreve' 0xAB5B : glyph-proc
 		include : MarkSet.e
 		local archHeight : XH * 0.45
@@ -318,15 +332,28 @@ glyph-block Symbol-Letter-Phonetic : begin
 		include : dispiro
 			widths.rhs
 			g4.up.start (SB + OX) 0 [heading Upward]
-			arcvh
-			g4.right.mid (Middle - CorrectionOMidS) archHeight
-			archv
+			arch.rhs archHeight
 			g4.down.end (RightSB - OX) 0 [heading Downward]
 
 		include : dispiro
 			widths.lhs
 			g4.down.start (SB + OX) XH [heading Downward]
-			arcvh
-			g4.right.mid (Middle + CorrectionOMidS) (XH - archHeight)
-			archv
+			arch.lhs (XH - archHeight)
 			g4.up.end (RightSB - OX) XH [heading Upward]
+
+	create-glyph 'cyrlInvLowKavykaWithKavyka' 0x2E46 : glyph-proc
+		include : MarkSet.e
+
+		include : BreveShape
+			xMiddle -- Middle
+			width   -- markExtend * 3.0
+			top     -- XH
+			bottom  -- XH - AccentHeight
+			hs      -- markHalfStroke
+
+		include : InvBreveShape
+			xMiddle -- Middle
+			width   -- markExtend * 3.0
+			top     -- AccentHeight
+			bottom  -- 0
+			hs      -- markHalfStroke

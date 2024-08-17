@@ -1,5 +1,4 @@
 import toposort from 'toposort'
-import [AnyCv] from "@iosevka/glyph/relation"
 
 extern Map
 extern Set
@@ -209,14 +208,6 @@ class LayoutLanguage
 define UtilityLookupPrefix '.utility-single/'
 define [IsUtilityLookupId name] : [name.slice 0 UtilityLookupPrefix.length] === UtilityLookupPrefix
 
-export : define [QueryRelatedGlyphs glyphs para entries] : begin
-	define sink {}
-	foreach [gid : items-of entries] : if glyphs.(gid) : begin
-		sink.push gid
-		if para.enableCvSs : foreach [gr : items-of : AnyCv.query glyphs.(gid)] : begin
-			sink.push : gr.get glyphs.(gid)
-	return sink
-
 export : define [FinalizeTable table] : begin
 	set table.lookupOrder : toposort table.lookupDep
 	foreach [{key lang} : pairs-of table.languages] : begin
@@ -230,8 +221,25 @@ export : define [UkMapToLookup m] : begin
 		r.push v
 	return { .left l .right r }
 
-export : define [UkMap2ToLookup mm] : begin
-	local res {}
-	foreach { g1 second } [Object.entries mm] : foreach { g2 gTo } [Object.entries second] : begin
-		res.push {.from {g1 g2} .to gTo}
-	return res
+export : define [UkLigatureToLookup data mapper] : begin
+	local substitutions {}
+	foreach { from to } [items-of data] : begin
+		local allFound true
+		local fromGlyphNames {}
+		local toGlyph null
+
+		foreach u [items-of from] : begin
+			local gn : mapper u
+			if gn
+			: then : fromGlyphNames.push gn
+			: else : set allFound false
+
+		begin
+			local gn : mapper to
+			if gn
+			: then : set toGlyph gn
+			: else : set allFound false
+
+		if allFound : substitutions.push {.from fromGlyphNames .to toGlyph}
+
+	return substitutions

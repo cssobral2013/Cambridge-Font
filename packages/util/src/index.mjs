@@ -25,6 +25,14 @@ export function bez3(a, b, c, d, t) {
 		t * t * t * d
 	);
 }
+export function boole(b) {
+	if (b) return 1;
+	else return 0;
+}
+export function boolePn(b) {
+	if (b) return 1;
+	else return -1;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,7 +77,7 @@ export const SuffixCfg = {
 			if (pair) ans[pair.left] = pair.right;
 		}
 		return ans;
-	}
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +106,7 @@ export const MatchUtil = {
 	},
 	either(a, b) {
 		return x => a(x) || b(x);
-	}
+	},
 };
 export function constant(x) {
 	return () => x;
@@ -136,5 +144,5 @@ export const ArrayUtil = {
 		}
 
 		return ranges;
-	}
+	},
 };

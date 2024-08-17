@@ -7,6 +7,19 @@ define-operator "--" 890 'right' : syntax-rules
 define-operator "~>" 880 'right' : syntax-rules
 	`(@l ~> @r) `{.left @l .right @r}
 
+### The operator indicating a "delay"
+define-operator prefix "~~~"  : syntax-rules
+	`(~~~ @x) : dirty `[decor@ @x]
+
+### This operator is a method variant of (+)
+define-operator infix "<+>" 350 'left' : syntax-rules
+	`(@l <+> @r) : dirty `[@l.op_add @r]
+
+### This operator is a method variant of (-)
+define-operator infix "<->" 350 'left' : syntax-rules
+	`(@l <-> @r) : dirty `[@l.op_sub @r]
+
+
 ### Macro for identity match
 define-macro Just : begin
 	local m : syntax-rules
@@ -20,16 +33,15 @@ define-macro Just : begin
 
 	return m
 
-define-macro postulate : syntax-rules
-	`[postulate @::$pairs] : begin
-		local ta : env.newt
+define-macro $$InitFlexParameters$$ : syntax-rules
+	`[$$InitFlexParameters$$ @::$pairs] : begin
 		local tb : env.newt
 		local t : env.newt
 
 		local ps `[begin
-			[local @ta : {}.slice.call arguments 0]
+			[local $-flex-arguments : {}.slice.call arguments 0]
 			[local @tb {}]
-			[for [local @t 0] (@t < @ta.length) [inc @t] : if [not : @ta.(@t) <@ $NamedParameterPair$] : @tb.push @ta.(@t)]
+			[for [local @t 0] (@t < $-flex-arguments.length) [inc @t] : if [not : $-flex-arguments.(@t) <@ $NamedParameterPair$] : @tb.push $-flex-arguments.(@t)]
 		]
 
 		local declarations `[begin]
@@ -40,8 +52,6 @@ define-macro postulate : syntax-rules
 		local j 0
 		foreach $pf [items-of $pairs] : begin
 			local name
-			local pf : formOf $pf
-
 			match [formOf $pf]
 				pf [atom pf] : begin
 					declarations.push `[local @pf]
@@ -59,38 +69,67 @@ define-macro postulate : syntax-rules
 					declarations.push `[local @decl]
 					indexAssigns.push `[set @decl : fallback @decl (@tb).(@{".quote" j}) @dflt]
 					set name decl
-				{".operatorPiece" decl '--' dflt} : begin
-					declarations.push `[local @decl]
-					indexAssigns.push `[set @decl : fallback @decl (@tb).(@{".quote" j}) @dflt]
-					set name decl
-				true : throw : new Error "Invalid postulation syntax"
+				{".operatorPiece" :: items} : match [opSegToRegular items [scopeOf $pf]]
+					`(@decl -- @dflt) : begin
+						declarations.push `[local @decl]
+						indexAssigns.push `[set @decl : fallback @decl (@tb).(@{".quote" j}) @dflt]
+						set name decl
+					____ : throw : new Error "Invalid postulation syntax"
+				____ : throw : new Error "Invalid postulation syntax"
 
 			namedAssigns.push `[if (@t && @t <@ $NamedParameterPair$ && @t.left == @{".quote" name})
 				[set @name @t.right]]
 			inc j
 
 		ps.push declarations
-		ps.push `[foreach [@t : items-of @ta] @namedAssigns]
+		ps.push `[foreach [@t : items-of $-flex-arguments] @namedAssigns]
 		ps.push indexAssigns
 		ps.push tearDowns
 
 		return : dirty ps
 
+# TODO: replace this with the new [with-params]
 define-macro with-params : syntax-rules
-	`[with-params @_pairs @body] : dirty `[begin [postulate @::[formOf _pairs]] @[formOf body]]
+	`[with-params @_pairs @body] : dirty `[begin
+		[$$InitFlexParameters$$ @::[formOf _pairs]]
+		@[formOf body]
+	]
+
+define-macro flex-params : syntax-rules
+	`[flex-params @_lam] : begin
+		local lam : formOf _lam
+		local lamArgs lam.1
+		local {lamBodyLeader :: lamBodyStatements} lam.2
+
+		local finalStatements {}
+
+		foreach stmt [items-of lamBodyStatements] : begin
+			if ([Array.isArray stmt] && stmt.0 == 'local-parameter')
+			: then : begin
+				lamArgs.push stmt.1
+			: else : begin
+				finalStatements.push stmt
+
+		return : dirty {'.lambda'
+			{}
+			`[begin
+				[$$InitFlexParameters$$ @::lamArgs]
+				@{lamBodyLeader :: finalStatements}
+			]
+		}
 
 ### Necessary macros
 # A glyph construction is a function which "modifies" a glyph.
 define-macro glyph-proc : syntax-rules
-	`[glyph-proc @::steps] : dirty `[lambda [] [begin \\
-		local currentGlyph this
+	`[glyph-proc @::steps] : dirty `[new $Capture$.GlyphProc : function [currentGlyph] [begin \\
+		# local currentGlyph this
 		begin @::[steps.map formOf]
 		return nothing
 	]]
 
 define-macro composite-proc : syntax-rules
-	`[composite-proc @::steps] : dirty `[lambda [] [begin \\
-		local currentGlyph this
+	`[composite-proc @::steps] : dirty `[new $Capture$.GlyphProc : function [currentGlyph] [begin \\
+		# local currentGlyph this
 		begin @::[steps.map : lambda [x j] : if j `[include @[formOf x]] `[include @[formOf x] true true]]
 		return nothing
 	]]
@@ -128,9 +167,8 @@ define-macro create-aliased-glyph : syntax-rules
 	`[create-aliased-glyph @name] : begin
 		dirty `[create-aliased-glyph @[formOf name] null]
 	`[create-aliased-glyph @name @code] : begin
-		dirty `[$createAndSaveGlyphImpl$ @[formOf name] @[formOf code] [lambda : begin
-			[this.include currentGlyph true true]
-			[this.cloneRankFromGlyph currentGlyph] ]]
+		dirty `[$createAndSaveGlyphImpl$ @[formOf name] @[formOf code]
+			[new $Capture$.ForkGlyphProc currentGlyph null] ]
 
 define-macro create-forked-glyph : syntax-rules
 	`[create-forked-glyph @body] : begin
@@ -142,10 +180,8 @@ define-macro create-forked-glyph : syntax-rules
 	`[create-forked-glyph @name @body] : begin
 		dirty `[create-forked-glyph @[formOf name] null @[formOf body]]
 	`[create-forked-glyph @name @code @body] : begin
-		dirty `[$createAndSaveGlyphImpl$ @[formOf name] @[formOf code] [lambda : begin
-			[this.include currentGlyph true true]
-			[this.cloneRankFromGlyph currentGlyph]
-			[this.include @[formOf body]] ]]
+		dirty `[$createAndSaveGlyphImpl$ @[formOf name] @[formOf code]
+			[new $Capture$.ForkGlyphProc currentGlyph @[formOf body]] ]
 
 ###### Glyph modules and Glyph blocks
 
@@ -162,18 +198,18 @@ define-macro run-glyph-module : syntax-rules
 define-macro glyph-block-import : syntax-rules
 	`[glyph-block-import @_blockName] : begin
 		define allExports : object
-			Common-Derivatives `[select-variant orthographic-italic orthographic-slanted
-			refer-glyph query-glyph alias turned HDual HCombine VDual VCombine derive-glyphs
-			derive-composites link-reduced-variant alias-reduced-variant HalfAdvance TurnMarks
-			derive-multi-part-glyphs DeriveMeshT]
+			Common-Derivatives `[select-variant conditional-follow orthographic-italic
+			orthographic-slanted refer-glyph query-glyph alias turned HDual HCombine VDual VCombine
+			derive-glyphs derive-composites link-reduced-variant alias-reduced-variant HalfAdvance
+			derive-multi-part-glyphs DeriveMeshT link-gr]
 
-			CommonShapes `[no-shape tagged KnotAdj Rect SquareAt Ring RingAt DotAt RingStroke
-			RingStrokeAt DotStrokeAt CircleRing CircleRingAt CircleDotAt RoundStrokeTerminalAt
-			OShapeT OShape OShapeOutline OShapeFlatTB HSerif VSerif NeedSlab NeedNotItalic HBar
-			HOverlayBar VBar FlatSlashShape hookstart hookend Ungizmo Regizmo FlipAround ScaleAround
-			Realign ForceUpright DiagCor NameUni PointingTo with-transform clear-geometry
-			clear-anchors AsRadical ExtLineCenter ExtLineLhs ExtLineRhs DiagCorDs HCrossBar VERY-FAR
-			MaskAbove MaskBelow MaskLeft MaskRight HalfRectTriangle MaskAboveLine MaskBelowLine
+			CommonShapes `[no-shape tagged Rect SquareAt Ring RingAt DotAt RingStroke
+			RingStrokeAt DotStrokeAt Circle Ellipse OShapeT OShape OShapeOutline OShapeFlatTB HSerif
+			VSerif NeedSlab NeedNotItalic HBar HOverlayBar VBar FlatSlashShape hookstart hookend
+			arch Ungizmo Regizmo FlipAround ScaleAround Realign ForceUpright DiagCor NameUni
+			PointingTo with-transform with-outlined remove-holes radicalize clear-geometry
+			clear-anchors ExtLineCenter ExtLineLhs ExtLineRhs DiagCorDs HCrossBar MaskAbove
+			MaskBelow MaskLeft MaskRight HalfRectTriangle MaskAboveLine MaskBelowLine
 			MaskLeftLine MaskRightLine DotVariants WithDotVariants]
 
 		define vartiableFilter : if externEnv.$glyphBlockVariableUsage$
@@ -240,22 +276,26 @@ define-macro glyph-block : syntax-rules
 		define metricImports `[DesignParameters UPM HalfUPM Width SB CAP XH Ascender Descender
 			Contrast SymbolMid ParenTop ParenBot OperTop OperBot TackTop TackBot PlusTop PlusBot
 			PictTop PictBot BgOpTop BgOpBot Italify Upright Scale Translate ApparentTranslate Rotate
-			GlobalTransform TanSlope HVContrast Upward Downward Rightward Leftward
-			O OX OXHook Hook AHook SHook RHook JHook HookX TailX TailY
-			ArchDepth SmallArchDepth Stroke DotSize PeriodSize HBarPos OverlayPos LongJut Jut VJut
-			VJutStroke AccentStackOffset AccentWidth AccentClearance AccentHeight CThin CThinB SLAB
-			TailAdjX TailAdjY IBalance IBalance2 JBalance JBalance2 TBalance TBalance2 RBalance
-			RBalance2 FBalance OneBalance WideWidth0 WideWidth1 WideWidth2 WideWidth3 WideWidth4
-			EssUpper EssLower EssQuestion HalfStroke RightSB Middle DotRadius PeriodRadius SideJut
-			ArchDepthA ArchDepthB SmallArchDepthA SmallArchDepthB CorrectionOMidX CorrectionOMidS
-			ArchXAdjust AdviceStroke AdviceStroke2 OverlayStroke OperatorStroke GeometryStroke
-			ShoulderFine _SuperXY AdviceGlottalStopArchDepth shoulderMidSkew
-			StrokeWidthBlend ArchDepthAOf ArchDepthBOf SmoothAdjust MidJutSide MidJutCenter
-			compositeBaseAnchors YSmoothMidR YSmoothMidL HSwToV NarrowUnicodeT WideUnicodeT]
-		define spiroFnImports `[g4 g2 corner flat curl close end straight widths
-			disable-contrast heading unimportant important alsoThru alsoThruThem bezControls
-			quadControls archv arcvh dispiro spiro-outline CursiveBuilder]
-		define booleFnImports `[union intersection difference]
+			GlobalTransform TanSlope HVContrast Upward Downward Rightward Leftward O OX OXHook Hook
+			AHook SHook RHook JHook HookX TailX TailY ArchDepth SmallArchDepth Stroke DotSize
+			PeriodSize HBarPos OverlayPos LongJut Jut VJut VJutStroke AccentStackOffset AccentWidth
+			AccentClearance AccentHeight CThin CThinB SLAB IBalance IBalance2 JBalance JBalance2
+			TBalance TBalance2 RBalance RBalance2 FBalance OneBalance WideWidth0 WideWidth1
+			WideWidth2 WideWidth3 WideWidth4 EssUpper EssLower EssQuestion HalfStroke RightSB
+			Middle DotRadius PeriodRadius SideJut ArchDepthA ArchDepthB SmallArchDepthA
+			SmallArchDepthB CorrectionOMidX CorrectionOMidS AdviceStroke AdviceStroke2
+			OverlayStroke OperatorStroke GeometryStroke ShoulderFine _SuperXY
+			AdviceGlottalStopArchDepth StrokeWidthBlend ArchDepthAOf ArchDepthBOf SmoothAdjust
+			MidJutSide MidJutCenter compositeBaseAnchors YSmoothMidR YSmoothMidL HSwToV
+			NarrowUnicodeT WideUnicodeT VERY-FAR TINY]
+		define spiroFnImports `[g4 g2 corner flat curl virt close end straight g2c cg2 flatc ccurl
+			widths disable-contrast heading unimportant important alsoThru alsoThruThem bezControls
+			quadControls archv arcvh dispiro spiro-outline spiro-collect]
+
+		define booleFnImports `[union intersection difference with-knockout]
+
+		define drvCoordImports `[pre@ post@ pre@mix@post post@mix@pre pre@slope post@slope min@ max@
+			decor@ decor@@ decor@@@ pre@tang-in post@tang-in pre@tang-out post@tang-out]
 
 		dirty `[$GlyphBlocks$.push : lambda [$Capture_Ext$] : begin \\
 			$Capture_Ext$.$Exec$.defineGlyphBlock $Capture_Ext$ @blockName
@@ -264,6 +304,7 @@ define-macro glyph-block : syntax-rules
 					define [object @::[metricImports.filter  : lambda [x] variableSet.(x)]] $Capture$.Metrics
 					define [object @::[spiroFnImports.filter : lambda [x] variableSet.(x)]] $Capture$.SpiroFns
 					define [object @::[booleFnImports.filter : lambda [x] variableSet.(x)]] $Capture$.BooleFns
+					define [object @::drvCoordImports] $Capture$.DerivedCoordinateFns
 
 					* @body
 

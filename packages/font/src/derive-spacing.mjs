@@ -6,6 +6,7 @@ import { CliProc, Ot } from "ot-builder";
 
 import { readTTF, saveTTF } from "./font-io/index.mjs";
 import { assignFontNames, createNamingDictFromArgv } from "./naming/index.mjs";
+import { validateFontConfigMono } from "./validate/metrics.mjs";
 
 export default main;
 async function main(argv) {
@@ -36,6 +37,7 @@ async function main(argv) {
 		case "fontconfig-mono":
 		case "fixed":
 			CliProc.gcFont(font, Ot.ListGlyphStoreFactory);
+			validateFontConfigMono(font);
 			await saveTTF(argv.o, font);
 			break;
 		default:
@@ -68,18 +70,24 @@ async function deriveTerm(font) {
 	}
 }
 
-// In FontConfig, a font is considered "monospace" if and only if all encoded non-combining
-// characters  (AW > 0) have the same width. We use this method to validate whether our
-// "Fixed" subfamilies are properly built.
+// Drop the following "long" characters.
 async function deriveFixed_DropWideChars(font) {
-	const unitWidth = font.os2.xAvgCharWidth;
-	for (const [ch, g] of [...font.cmap.unicode.entries()]) {
-		const advanceWidth = g.horizontal.end - g.horizontal.start;
-		if (!(advanceWidth === 0 || advanceWidth === unitWidth)) font.cmap.unicode.delete(ch);
-	}
-	for (const [ch, vs, g] of [...font.cmap.vs.entries()]) {
-		const advanceWidth = g.horizontal.end - g.horizontal.start;
-		if (!(advanceWidth === 0 || advanceWidth === unitWidth)) font.cmap.vs.delete(ch, vs);
+	const longCharCodes = [
+		0x27f5, // LONG LEFTWARDS ARROW
+		0x27f6, // LONG RIGHTWARDS ARROW
+		0x27f7, // LONG LEFT RIGHT ARROW
+		0x27f8, // LONG LEFTWARDS DOUBLE ARROW
+		0x27f9, // LONG RIGHTWARDS DOUBLE ARROW
+		0x27fa, // LONG LEFT RIGHT DOUBLE ARROW
+		0x27fb, // LONG LEFTWARDS ARROW FROM BAR
+		0x27fc, // LONG RIGHTWARDS ARROW FROM BAR
+		0x27fd, // LONG LEFTWARDS DOUBLE ARROW FROM BAR
+		0x27fe, // LONG RIGHTWARDS DOUBLE ARROW FROM BAR
+		0x27ff, // LONG RIGHTWARDS SQUIGGLE ARROW
+		0x2b33, // LONG LEFTWARDS SQUIGGLE ARROW
+	];
+	for (const ch of longCharCodes) {
+		font.cmap.unicode.delete(ch);
 	}
 }
 

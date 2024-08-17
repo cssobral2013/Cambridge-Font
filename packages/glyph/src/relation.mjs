@@ -13,7 +13,7 @@ export const Dotless = {
 	},
 	amendName(name) {
 		return name + ".dotless";
-	}
+	},
 };
 
 export const LowerYDotAtBelow = LinkedGlyphProp("LowerYDotAtBelow");
@@ -24,13 +24,22 @@ export const TieMark = LinkedGlyphProp("TieMark");
 export const LeaningMark = LinkedGlyphProp("LeaningMark");
 export const LeaningMarkSpacer = LinkedGlyphProp("LeaningMarkSpacer");
 
+export const LocalizedForm = {
+	SRB: {
+		Upright: LinkedGlyphProp("SerbianLocUpright"),
+		Italic: LinkedGlyphProp("SerbianLocItalic"),
+	},
+	BGR: LinkedGlyphProp("BulgarianLoc"),
+	IPPH: LinkedGlyphProp("IPALoc"),
+};
+
 export const Texture = {
 	ExtL: LinkedGlyphProp("TextureExtL"),
 	ExtR: LinkedGlyphProp("TextureExtR"),
 	ExtLR: LinkedGlyphProp("TextureExtLR"),
 	ShrL: LinkedGlyphProp("TextureShrL"),
 	ShrR: LinkedGlyphProp("TextureShrR"),
-	ShrLR: LinkedGlyphProp("TextureShrLR")
+	ShrLR: LinkedGlyphProp("TextureShrLR"),
 };
 
 function LinkedGlyphProp(key) {
@@ -50,7 +59,7 @@ function LinkedGlyphProp(key) {
 		},
 		amendOtName(name) {
 			return `${name}.${key}`;
-		}
+		},
 	};
 }
 
@@ -59,11 +68,12 @@ export const Wwid = OtlTaggedProp("Wwid", "WWID", "Narrow cell");
 export const Lnum = OtlTaggedProp("Lnum", "lnum", "Lining number");
 export const Onum = OtlTaggedProp("Onum", "onum", "Old-style number");
 export const Zero = OtlTaggedProp("Zero", "zero", "Slashed zero");
+export const MosaicForm = OtlTaggedProp("MosaicForm", "MOSC", "Mosaic form");
 export const AplForm = OtlTaggedProp("AplForm", "APLF", "APL form");
 export const NumeratorForm = OtlTaggedProp("Numerator", "numr");
 export const DenominatorForm = OtlTaggedProp("Denominator", "dnom");
 function OtlTaggedProp(key, otlTag, description) {
-	return { ...LinkedGlyphProp(key), otlTag, description };
+	return { ...LinkedGlyphProp(key), tag: otlTag, otlTag, description };
 }
 
 export const CvDecompose = DecompositionProp("CvDecompose");
@@ -81,7 +91,7 @@ function DecompositionProp(key) {
 		},
 		amendOtName(baseName, index) {
 			return `${baseName}.d${index}`;
-		}
+		},
 	};
 }
 
@@ -94,7 +104,7 @@ export const TieGlyph = {
 		if (!glyph.related) glyph.related = {};
 		glyph.related.TieGlyph = true;
 		Joining.or(glyph, Joining.Classes.Mid);
-	}
+	},
 };
 
 function BoolProp(id) {
@@ -106,15 +116,16 @@ function BoolProp(id) {
 		set(glyph) {
 			if (!glyph.related) glyph.related = {};
 			glyph.related[id] = true;
-		}
+		},
 	};
 }
-export const Radical = BoolProp("Radical");
+
 export const NeqLigationSlashDotted = BoolProp("NeqLigationSlashDotted");
 export const OgonekTrY = BoolProp("OgonekTrY");
 export const IsSuperscript = BoolProp("IsSuperscript");
 export const IsSubscript = BoolProp("IsSubscript");
 export const ScheduleLeaningMark = BoolProp("ScheduleLeaningMark");
+export const IsCompositeOrLigature = BoolProp("IsCompositeOrLigature");
 
 export const Joining = {
 	get(glyph) {
@@ -126,7 +137,7 @@ export const Joining = {
 		glyph.related.joining = cls;
 	},
 	or(glyph, cls) {
-		Joining.set(glyph, cls | Joining.get(cls));
+		Joining.set(glyph, cls | Joining.get(glyph));
 	},
 	amendOtName(baseName, cl) {
 		switch (cl) {
@@ -143,8 +154,8 @@ export const Joining = {
 	Classes: {
 		Left: 1,
 		Right: 2,
-		Mid: 3
-	}
+		Mid: 3,
+	},
 };
 
 export const HintClass = {
@@ -155,7 +166,7 @@ export const HintClass = {
 	set(glyph, script, style) {
 		if (!glyph.related) glyph.related = {};
 		glyph.related.hintClass = [script, style];
-	}
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,7 +175,19 @@ export const DotlessOrNot = {
 	query(glyph) {
 		if (Dotless.get(glyph)) return [Dotless];
 		return null;
-	}
+	},
+};
+
+export const AnyLocalizedForm = {
+	query(glyph) {
+		let grs = [];
+		if (LocalizedForm.SRB.Upright.get(glyph)) grs.push(LocalizedForm.SRB.Upright);
+		if (LocalizedForm.SRB.Italic.get(glyph)) grs.push(LocalizedForm.SRB.Italic);
+		if (LocalizedForm.BGR.get(glyph)) grs.push(LocalizedForm.BGR);
+		if (LocalizedForm.IPPH.get(glyph)) grs.push(LocalizedForm.IPPH);
+		if (grs.length) return grs;
+		return null;
+	},
 };
 
 export const AnyCv = {
@@ -183,7 +206,7 @@ export const AnyCv = {
 		if (ua < ub) return -1;
 		if (ua > ub) return 1;
 		return a.rank - b.rank;
-	}
+	},
 };
 
 export const AnyDerivingCv = {
@@ -203,7 +226,15 @@ export const AnyDerivingCv = {
 			return glyph.related.preventCvDeriving.size > 0;
 		}
 		return false;
-	}
+	},
+};
+
+export const AnyCvOrCherryPicking = {
+	query(glyph) {
+		let ret = AnyCv.query(glyph);
+		if (Zero.get(glyph)) ret.push(Zero);
+		return ret;
+	},
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,14 +323,19 @@ function collectGidLists(gidListOrig, gidList, grl, excluded, fnGidToGlyph, sink
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function createGrDisplaySheet(glyphStore, gid) {
-	const glyph = glyphStore.queryByName(gid);
+export function createGrDisplaySheet(glyphStore, gn) {
+	const glyph = glyphStore.queryByName(gn);
 	if (!glyph) return [];
+	const glyphIsHidden = /^\./.test(gn);
+	if (glyphIsHidden) return [];
+
 	// Query selected typographic features -- mostly NWID and WWID
 	let typographicFeatures = [];
-	displayQueryPairFeatures(glyphStore, gid, "Width", Nwid, Wwid, typographicFeatures);
-	displayQueryPairFeatures(glyphStore, gid, "Number Form", Lnum, Onum, typographicFeatures);
-	displayQuerySingleFeature(glyphStore, gid, "APL Form", AplForm, typographicFeatures);
+	displayQueryPairFeatures(glyph, "Width", Nwid, Wwid, typographicFeatures);
+	displayQueryPairFeatures(glyph, "Number Form", Lnum, Onum, typographicFeatures);
+	displayQuerySingleFeature(glyph, AplForm, typographicFeatures);
+	displayQuerySingleFeature(glyph, MosaicForm, typographicFeatures);
+	for (const gr of CvCherryPickingGrs) displayQuerySingleFeature(glyph, gr, typographicFeatures);
 
 	// Query selected character variants
 	let charVariantFeatures = [];
@@ -309,15 +345,21 @@ export function createGrDisplaySheet(glyphStore, gid) {
 		for (const componentGn of decomposition) {
 			const component = glyphStore.queryByName(componentGn);
 			if (!component) continue;
+
+			for (const gr of CvCherryPickingGrs)
+				displayQuerySingleFeature(component, gr, typographicFeatures);
 			queryCvFeatureTagsOf(charVariantFeatures, componentGn, component, tagSet);
 		}
 	} else {
-		queryCvFeatureTagsOf(charVariantFeatures, gid, glyph, null);
+		queryCvFeatureTagsOf(charVariantFeatures, gn, glyph, null);
 	}
 
 	sortFeatureDisplaySheet(typographicFeatures);
 	sortFeatureDisplaySheet(charVariantFeatures);
-	return [typographicFeatures, charVariantFeatures];
+
+	let charProps = {};
+	if (IsCompositeOrLigature.get(glyph)) charProps.isCompositeOrLigature = true;
+	return [typographicFeatures, charVariantFeatures, charProps];
 }
 
 function sortFeatureDisplaySheet(sheet) {
@@ -328,35 +370,27 @@ function FeatureSeries(name, groups) {
 	return { name, groups };
 }
 
-function displayQueryPairFeatures(gs, gid, name, grCis, grTrans, sink) {
-	const g = gs.queryByName(gid);
-	if (!g) return;
-	const glyphIsHidden = /^\./.test(gid);
-	if (glyphIsHidden) return;
+function displayQueryPairFeatures(g, name, grCis, grTrans, sink) {
 	if (grCis.get(g) || grTrans.get(g)) {
 		sink.push(
 			FeatureSeries(name, [
 				[
 					{ css: `'${grCis.otlTag}' 1`, description: grCis.description },
-					{ css: `'${grTrans.otlTag}' 1`, description: grTrans.description }
-				]
-			])
+					{ css: `'${grTrans.otlTag}' 1`, description: grTrans.description },
+				],
+			]),
 		);
 	}
 }
-function displayQuerySingleFeature(gs, gid, name, grCis, sink) {
-	const g = gs.queryByName(gid);
-	if (!g) return;
-	const glyphIsHidden = /^\./.test(gid);
-	if (glyphIsHidden) return;
+function displayQuerySingleFeature(g, grCis, sink) {
 	if (grCis.get(g)) {
 		sink.push(
-			FeatureSeries(name, [
+			FeatureSeries(grCis.description, [
 				[
 					{ css: `'${grCis.otlTag}' 0`, description: grCis.description + " disabled" },
-					{ css: `'${grCis.otlTag}' 1`, description: grCis.description + " enabled" }
-				]
-			])
+					{ css: `'${grCis.otlTag}' 1`, description: grCis.description + " enabled" },
+				],
+			]),
 		);
 	}
 }
@@ -386,7 +420,7 @@ function queryCvFeatureTagsOf(sink, gid, glyph, tagSet) {
 
 		const featureApp = {
 			css: `'${gr.tag}' ${String(gr.rank).padStart(2)}`,
-			description: gr.description
+			description: gr.description,
 		};
 		if (!series.groups[gr.groupRank]) series.groups[gr.groupRank] = [];
 		series.groups[gr.groupRank].push(featureApp);
@@ -421,6 +455,14 @@ export function linkSuffixPairGr(gs, tagCis, tagTrans, grCis, grTrans) {
 	}
 }
 
+export function linkSingleGlyphPairGr(gs, fromName, toName, gr) {
+	const gFrom = gs.queryByName(fromName);
+	if (!gFrom) return;
+	const gTo = gs.queryByName(toName);
+	if (!gTo) return;
+	gr.set(gFrom, toName);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function hashCv(g) {
@@ -438,5 +480,7 @@ export const SvInheritableRelations = [
 	Joining,
 	NeqLigationSlashDotted,
 	OgonekTrY,
-	ScheduleLeaningMark
+	ScheduleLeaningMark,
 ];
+
+export const CvCherryPickingGrs = [Zero];

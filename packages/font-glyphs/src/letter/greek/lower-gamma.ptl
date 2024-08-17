@@ -9,8 +9,10 @@ glyph-block Letter-Greek-Lower-Gamma : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Blackboard : BBS BBD BBBarLeft
 
+	alias 'grek/gamma.straight' null 'cyrl/ue.straightSerifless'
+	alias 'grek/gamma.curly'    null 'cyrl/ue.curlySerifless'
 
-	create-glyph 'grek/gamma' 0x3B3 : glyph-proc
+	create-glyph 'grek/gamma.casual' : glyph-proc
 		include : MarkSet.p
 
 		local xMid : [mix SB RightSB 0.46] + [HSwToV HalfStroke]
@@ -27,6 +29,8 @@ glyph-block Letter-Greek-Lower-Gamma : begin
 			curl RightSB (XH * 0.9) [heading Downward]
 			quadControls 0 0.3 6
 			g4   xMid 0 [widths.rhs : Stroke * 0.9]
+
+	select-variant 'grek/gamma' 0x3B3
 
 	create-glyph 'mathbb/grek/gamma' 0x213D : glyph-proc
 		include : MarkSet.p

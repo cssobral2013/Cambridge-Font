@@ -9,6 +9,7 @@ glyph-block Symbol-Math-VAndCup : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Letter-Latin-U : UShape
 	glyph-block-import Letter-Greek-Pi : PiShape
+	glyph-block-import Letter-Cyrillic-Sha : CyrShaShape
 	glyph-block-import Symbol-Arrow : ArrowShape
 	glyph-block-import Symbol-Math-Relation-Common : EqualHalfSpace
 	glyph-block-import NotGlyphFn : NotGlyphSw
@@ -118,7 +119,10 @@ glyph-block Symbol-Math-VAndCup : begin
 		HBar.b SB RightSB (OperBot + EqualHalfSpace * 0.75) OperatorStroke
 		WedgeShape OperTop (OperBot + OperatorStroke + EqualHalfSpace * 0.75 + gap)
 
-	alias  'veeUnderbar'        0x2A61 'math/logic/xor'
+	create-glyph 'smallVeeUnderbar' 0x2A61 : union
+		HBar.b SB RightSB 0 OperatorStroke
+		VeeShape PlusTop [Math.max PlusBot (0 + OperatorStroke * 1.5)]
+
 	turned 'math/logic/equalOr' 0x2A62 'math/logic/andEqual' Middle SymbolMid
 	turned 'math/logic/orEqual' 0x2A63 'math/logic/equalAnd' Middle SymbolMid
 
@@ -230,3 +234,7 @@ glyph-block Symbol-Math-VAndCup : begin
 		include : PiShape [DivFrame 1] OperTop OperBot (shrinkRate -- 0) (fine -- OperatorStroke) (doSerif -- false)
 
 	turned 'squareCup' 0x2294 'squareCap' Middle SymbolMid
+
+	create-glyph 'shuffleProduct' 0x29E2 : glyph-proc
+		local df : include : DivFrame para.diversityM 3
+		include : CyrShaShape df OperTop OperBot (fine -- OperatorStroke) (doSerif -- false)

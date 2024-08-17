@@ -42,7 +42,7 @@ async function main(argv) {
 	const ligationData = await parseLigationData(argv);
 	const tasks = new Generator(
 		argv.outputDir,
-		argv.fontGroups.map(fg => path.resolve(process.cwd(), "dist", fg, "TTF", "*.ttf"))
+		argv.fontGroups.map(fg => path.resolve(process.cwd(), "dist", fg, "TTF", "*.ttf")),
 	);
 
 	// Common
@@ -58,16 +58,17 @@ async function main(argv) {
 	const cl = await getCharMapAndSupportedLanguageList(
 		argv.charMapPath,
 		argv.charMapItalicPath,
-		argv.charMapObliquePath
+		argv.charMapObliquePath,
 	);
-	for (const block of cl.unicodeCoverage) {
+	for (const block of cl.unique.unicodeCoverage) {
 		const blockID = block.name
 			.toLowerCase()
 			.replaceAll(/[^\w ]/g, "")
 			.replaceAll(/ +/g, "-");
 		if (blockID === "specials") continue;
 		await tasks.add(`cs-block-${blockID}`, CharGrid, {
-			characters: block.characters
+			characters: block.characters,
+			udatMap: cl.shared.udatMap,
 		});
 	}
 
@@ -79,7 +80,7 @@ async function main(argv) {
 			lineBreakMode: "each-row",
 			fontFamily: pst.fontFamily,
 			fontStyle: "normal",
-			fontFeatures: pst.fontFeatures
+			fontFeatures: pst.fontFeatures,
 		});
 	}
 
@@ -92,7 +93,7 @@ async function main(argv) {
 			ligationCherry: ligationData.cherry,
 			tag: ls.tag,
 			rank: ls.rank,
-			ligSets: ls.ligSets
+			ligSets: ls.ligSets,
 		});
 	}
 
@@ -105,7 +106,7 @@ async function main(argv) {
 			fontFamily: "Iosevka",
 			fontStyle: "normal",
 			fontFeatures: { [ss.tag]: ss.rank },
-			hotChars: ss.hotChars.sans.upright
+			hotChars: ss.hotChars.sans.upright,
 		});
 		await tasks.add(`ss-i-${ss.tag}-${ss.rank}`, StylisticSet, {
 			hSize: 1,
@@ -114,7 +115,7 @@ async function main(argv) {
 			fontFamily: "Iosevka",
 			fontStyle: "italic",
 			fontFeatures: { [ss.tag]: ss.rank },
-			hotChars: ss.hotChars.sans.italic
+			hotChars: ss.hotChars.sans.italic,
 		});
 	}
 
@@ -125,7 +126,7 @@ async function main(argv) {
 			await tasks.add(`cv-${cv.key}-${variant.key}`, CharVariant, {
 				fontFeatures: variant.snapshotFeatureApplication || { [cv.tag]: variant.rank },
 				slopeDependent: !!cv.slopeDependent,
-				hotChars: cv.hotChars
+				hotChars: cv.hotChars,
 			});
 		}
 	}

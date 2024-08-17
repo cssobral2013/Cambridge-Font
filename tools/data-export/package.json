@@ -1,6 +1,6 @@
 {
   "name": "@iosevka/data-export",
-  "version": "28.0.0",
+  "version": "31.3.0",
   "private": true,
   "exports": {
     ".": "./src/index.mjs",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",
-    "@iosevka/param": "28.0.0",
-    "@unicode/unicode-15.0.0": "^1.5.2",
+    "@iosevka/param": "31.3.0",
+    "@unicode/unicode-15.1.0": "^1.5.2",
     "cldr": "^7.5.0"
   }
 }

@@ -6,10 +6,10 @@ export default async function processLangList(argv) {
 	const cl = await getCharMapAndSupportedLanguageList(
 		argv.charMapPath,
 		argv.charMapItalicPath,
-		argv.charMapObliquePath
+		argv.charMapObliquePath,
 	);
 	const md = new MdCol("Section-Language-List");
-	md.log(`${cl.languages.length} Supported Languages: \n`);
-	md.log(cl.languages.join(", "));
+	md.log(`${cl.shared.languages.length} Supported Languages: \n`);
+	md.log(cl.shared.languages.join(", "));
 	return md;
 }

@@ -19,10 +19,8 @@ glyph-block Letter-Latin-Rams-Horn : begin
 			g4 (SB + [HSwToV HalfStroke] + O) top [heading Downward]
 			quadControls 1 0.7 16
 			g4 (Middle + d - hf) (bottom + d * (1 - TanSlope * 0.5)) [widths.center : 2 * hf]
-			arcvh
-			g4 (Middle + CorrectionOMidX * hf * 2) (bottom + hf)
-			archv
-			g4 (Middle - d + hf) (bottom + d * (1 + TanSlope * 0.5))
+			arch.rhs bottom (sw -- 2 * hf)
+			g4 (Middle - d + hf) (bottom + d * (1 + TanSlope * 0.5)) [widths.center : 2 * hf]
 			quadControls 0 0.3 16
 			g4 (RightSB - [HSwToV HalfStroke] - O) top [widths.heading HalfStroke HalfStroke Upward]
 
@@ -31,7 +29,7 @@ glyph-block Letter-Latin-Rams-Horn : begin
 		include : LatinGammaShape Descender XH
 		if SLAB : begin
 			local sf : SerifFrame.fromDf [DivFrame 1] XH Descender
-			include : composite-proc sf.lt.full sf.rt.full
+			include : if para.isItalic sf.lt.outer [composite-proc sf.lt.full sf.rt.full]
 
 	create-glyph 'latn/Gamma' 0x194 : glyph-proc
 		include : MarkSet.capDesc
@@ -57,9 +55,7 @@ glyph-block Letter-Latin-Rams-Horn : begin
 				straight.right.start SB top [heading Rightward]
 				g4 Middle [mix top bottom kIntersection] [widths.rhs coFine]
 				g4.down.mid [mix Middle RightSB k1] ([mix top bottom k2] - d) [widths.rhs fine]
-				arcvh
-				g4.left.mid (Middle + CorrectionOMidX * fine) (bottom + O)
-				archv
+				arch.rhs bottom (sw -- fine)
 				g4.up.mid [mix Middle SB k1] ([mix top bottom k2] + d)
 				g4 Middle [mix top bottom kIntersection] [widths.rhs coFine]
 				straight.right.end RightSB top [widths.rhs.heading sw Rightward]
@@ -67,13 +63,13 @@ glyph-block Letter-Latin-Rams-Horn : begin
 				then : spiro-outline
 					corner Middle ([mix top bottom kIntersection] - fillOffset)
 					g4.down.mid ([mix Middle RightSB k1] - fillOffset) ([mix top bottom k2] - d)
-					g4.left.mid (Middle + CorrectionOMidX * fine) (bottom + fillOffset)
+					g4.left.mid [arch.adjust-x.bot Middle (sw -- fine)] (bottom + fillOffset)
 					g4.up.mid ([mix Middle SB k1] + fillOffset) ([mix top bottom k2] + d)
 					close
 				else : no-shape
 
 		if SLAB : begin
-			include : VSerif.dl  SB      (top - sw) (VJut * (sw / Stroke) - sw) fine
+			include : VSerif.dl SB      (top - sw) (VJut * (sw / Stroke) - sw) fine
 			include : VSerif.dr RightSB (top - sw) (VJut * (sw / Stroke) - sw) fine
 
 	create-glyph 'ramshorn' 0x264 : glyph-proc

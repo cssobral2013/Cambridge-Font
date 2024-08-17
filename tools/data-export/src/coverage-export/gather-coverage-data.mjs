@@ -1,7 +1,5 @@
-import ugc from "@unicode/unicode-15.0.0/General_Category/index.js";
-import ucdNames from "@unicode/unicode-15.0.0/Names/index.js";
-
 import { collectBlockData } from "./block-data.mjs";
+import { createCharDataLookup } from "./char-data.mjs";
 
 function findFirstLastChar(lchBlockStart, lchBlockEnd, cov) {
 	let lchFirst = 0,
@@ -25,45 +23,44 @@ export async function gatherCoverageData(covUpright, covItalic, covOblique) {
 	const featureSeriesStore = new Map();
 	const unicodeCoverage = [];
 
+	const lookup = await createCharDataLookup();
+
+	const udatMap = [];
+
 	for (const [[lchBlockStart, lchBlockEnd], block] of await collectBlockData()) {
 		let blockResults = [];
 		const [lchStart, lchEnd] = findFirstLastChar(lchBlockStart, lchBlockEnd, covUpright);
 		if (!lchStart || !lchEnd) continue;
 		for (let lch = lchStart; lch < lchEnd; lch++) {
-			const chName = ucdNames.get(lch);
-			const gc = ugc.get(lch);
+			const { gc, charName } = lookup.lookup(lch);
 			const cdUpright = covUpright.get(lch);
 			const cdItalic = covItalic.get(lch);
 			const cdOblique = covOblique.get(lch);
 			if (cdUpright && cdItalic && cdOblique) {
-				const [glyphName, typoFs, uprightFs] = cdUpright;
+				const [, typoFs, uprightFs, charProps] = cdUpright;
 				const [, , italicFs] = cdItalic;
 				const [, , obliqueFs] = cdOblique;
+
 				blockResults.push({
 					lch,
 					gc,
-					charName: chName,
+					charName,
 					inFont: true,
-					glyphName: glyphName,
+					...charProps,
 					...putFeatSeries(featureSeriesStore, "typographicFeatureSets", typoFs),
 					...putFeatSeries(featureSeriesStore, "cvFeatureSetsUpright", uprightFs),
 					...putFeatSeries(featureSeriesStore, "cvFeatureSetsItalic", italicFs),
-					...putFeatSeries(featureSeriesStore, "cvFeatureSetsOblique", obliqueFs)
+					...putFeatSeries(featureSeriesStore, "cvFeatureSetsOblique", obliqueFs),
 				});
 			} else {
-				blockResults.push({
-					lch,
-					gc,
-					charName: chName,
-					inFont: false,
-					glyphName: undefined
-				});
+				blockResults.push({ lch, gc, charName, inFont: false, glyphName: undefined });
 			}
 		}
+
 		if (blockResults.length) {
 			unicodeCoverage.push({
 				name: block,
-				characters: blockResults.sort((a, b) => a.lch - b.lch)
+				...cleanupBlockResultsForExport(blockResults, udatMap),
 			});
 		}
 	}
@@ -74,7 +71,31 @@ export async function gatherCoverageData(covUpright, covItalic, covOblique) {
 		featureSeries[id] = x;
 	}
 
-	return { unicodeCoverage, featureSeries };
+	return { unicodeCoverage, featureSeries, udatMap };
+}
+
+function cleanupBlockResultsForExport(br, udatMap) {
+	br.sort((a, b) => a.lch - b.lch);
+
+	let result = [];
+	let lchMin = 0xffffff;
+	let lchMax = 0;
+	for (const ch of br) {
+		let ch1 = { ...ch };
+		if (ch1.lch < lchMin) lchMin = ch1.lch;
+		if (ch1.lch > lchMax) lchMax = ch1.lch;
+		udatMap.push([ch1.lch, ch1.gc, ch1.charName]);
+
+		delete ch1.gc;
+		delete ch1.charName;
+		result.push(ch1);
+	}
+
+	return {
+		lchMin,
+		lchMax,
+		characters: result,
+	};
 }
 
 function putFeatSeries(store, k, featSeriesList) {

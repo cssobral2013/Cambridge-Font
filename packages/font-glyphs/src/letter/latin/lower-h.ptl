@@ -1,7 +1,7 @@
 $$include '../../meta/macros.ptl'
 
 import [mix fallback SuffixCfg] from "@iosevka/util"
-import [ScheduleLeaningMark MathSansSerif] from "@iosevka/glyph/relation"
+import [MathSansSerif] from "@iosevka/glyph/relation"
 
 glyph-module
 
@@ -30,23 +30,6 @@ glyph-block Letter-Latin-Lower-H : begin
 	define [SmallHTopLeftSerifs tailed hookTop] : glyph-proc
 		if [not hookTop] : include : tagged 'serifLT' : HSerif.lt SB Ascender SideJut
 
-	define [SmallTurnHSerifs tailed hookTop] : glyph-proc : begin
-		include : SmallTurnHLeftSerifs tailed hookTop
-		if [not tailed] : include : tagged 'serifRB' : HSerif.rb RightSB 0 SideJut
-
-	define [SmallTurnHLeftSerifs tailed hookTop] : glyph-proc : begin
-		include : SmallTurnHTopLeftSerifs tailed hookTop
-		include : tagged 'serifLB' : HSerif.rb (SB + [HSwToV HalfStroke]) 0 Jut
-
-	define [SmallTurnHMotionSerifs tailed hookTop] : glyph-proc
-		include : SmallTurnHTopLeftSerifs tailed hookTop
-		if [not tailed] : include : tagged 'serifRB' : HSerif.rb RightSB 0 SideJut
-
-	define [SmallTurnHTopLeftSerifs tailed hookTop] : glyph-proc
-		if [not hookTop] : include : tagged 'serifLT' : union
-			HSerif.lt (SB + [HSwToV HalfStroke]) Ascender Jut
-			HSerif.rt (SB + [HSwToV HalfStroke]) Ascender MidJutSide
-
 	define [HBar.mOverlay fHasTopSerif] : glyph-proc
 		local barSpaceTop : Ascender - [if fHasTopSerif Stroke 0]
 		local s : Math.min OverlayStroke (0.625 * (barSpaceTop - XH))
@@ -67,12 +50,12 @@ glyph-block Letter-Latin-Lower-H : begin
 			straight false
 			tailed   true
 		object # serifs
-			serifless      { false no-shape            }
-			serifed        { true  SmallHSerifs        }
-			motionSerifed  { true  SmallHMotionSerifs  }
-			topLeftSerifed { true  SmallHTopLeftSerifs }
+			serifless      { no-shape            false }
+			serifed        { SmallHSerifs        true  }
+			motionSerifed  { SmallHMotionSerifs  true  }
+			topLeftSerifed { SmallHTopLeftSerifs true  }
 
-	foreach { suffix { fTailed {fHasTopSerif Serifs} } } [Object.entries HConfig] : do
+	foreach { suffix { fTailed {Serifs fHasTopSerif} } } [Object.entries HConfig] : do
 		create-glyph "h.\(suffix)" : glyph-proc
 			include : MarkSet.b
 			include : LeaningAnchor.Above.VBar.l SB
@@ -84,12 +67,13 @@ glyph-block Letter-Latin-Lower-H : begin
 			if fTailed : include : RightwardTailedBar RightSB 0 (XH - SmallArchDepthB)
 			include : Serifs fTailed false
 
-		create-glyph "hBar.\(suffix)" : glyph-proc
+		create-glyph "hStroke.\(suffix)" : glyph-proc
 			include [refer-glyph "h.\(suffix)"] AS_BASE ALSO_METRICS
 			include : HBar.mOverlay fHasTopSerif
 
 		create-glyph "hHookTop.\(suffix)" : glyph-proc
 			include : MarkSet.b
+			include : LeaningAnchor.Above.VBar.l SB
 			include : TopHook.lBarInner SB 0 Ascender
 			include : nShoulder
 				left -- (SB + [HSwToV Stroke])
@@ -98,34 +82,48 @@ glyph-block Letter-Latin-Lower-H : begin
 			if fTailed : include : RightwardTailedBar RightSB 0 (XH - SmallArchDepthB)
 			include : Serifs fTailed true
 
-		create-glyph "hengHookTop.\(suffix)" : glyph-proc
-			include : MarkSet.bp
-			include : refer-glyph "hHookTop.\(suffix)"
-			eject-contour 'serifRB'
-			include : EngHook RightSB 0 Descender
+		if [not fTailed] : begin
+			create-glyph "heng.\(suffix)" : glyph-proc
+				include : MarkSet.bp
+				include : LeaningAnchor.Above.VBar.l SB
+				include : VBar.l SB 0 Ascender
+				include : nShoulder
+					left -- (SB + [HSwToV Stroke])
+					right -- RightSB
+					bottom -- 0
+				include : Serifs true false
+				include : EngHook RightSB 0 Descender
 
-		create-glyph "heng.\(suffix)" : glyph-proc
-			include : MarkSet.bp
-			include : refer-glyph "h.\(suffix)"
-			eject-contour 'serifRB'
-			include : EngHook RightSB 0 Descender
+			create-glyph "hengStroke.\(suffix)" : glyph-proc
+				include [refer-glyph "heng.\(suffix)"] AS_BASE ALSO_METRICS
+				include : HBar.mOverlay fHasTopSerif
 
-		create-glyph "hengBar.\(suffix)" : glyph-proc
-			include [refer-glyph "heng.\(suffix)"] AS_BASE ALSO_METRICS
-			include : HBar.mOverlay fHasTopSerif
+			create-glyph "hengHookTop.\(suffix)" : glyph-proc
+				include : MarkSet.bp
+				include : LeaningAnchor.Above.VBar.l SB
+				include : TopHook.lBarInner SB 0 Ascender
+				include : nShoulder
+					left -- (SB + [HSwToV Stroke])
+					right -- RightSB
+					bottom -- 0
+				include : Serifs true true
+				include : EngHook RightSB 0 Descender
 
 	select-variant 'h' 'h'
 	link-reduced-variant 'h/descBase' 'h'
 	link-reduced-variant 'h/sansSerif' 'h' MathSansSerif
 
-	select-variant 'hBar' 0x127 (follow -- 'h')
+	select-variant 'hStroke' 0x127 (follow -- 'h')
 
 	select-variant 'hHookTop' 0x266
-	select-variant 'hengHookTop' 0x267
-	select-variant 'heng' 0xA727
-	select-variant 'cyrl/dje' 0x452 (follow -- 'heng') (shapeFrom -- 'hengBar')
 
-	select-variant 'cyrl/shha' 0x4BB (shapeFrom -- 'h')
+	select-variant 'heng' 0xA727
+	select-variant 'cyrl/dje' 0x452 (follow -- 'heng') (shapeFrom -- 'hengStroke')
+	select-variant 'hengHookTop' 0x267
+
+	alias 'cyrl/shha' 0x4BB 'h'
+	alias 'cyrl/tshe' 0x45B 'hStroke'
+	alias 'cyrl/hwe'  0xA695 'hHookTop'
 
 	derive-composites 'hPalatalHook' 0xA795 'h/descBase' [PalatalHook.rSideJut RightSB 0]
 	derive-composites 'hDescender' 0x2C68 'h/descBase' [CyrDescender.rSideJut RightSB 0]
@@ -146,54 +144,6 @@ glyph-block Letter-Latin-Lower-H : begin
 		include : MarkSet.bp
 		set-base-anchor 'belowBraceL' ((-Middle) + shift - 0.5 * markExtend) belowMarkMid
 		set-base-anchor 'belowBraceR' ((-Middle) + shift + 0.5 * markExtend) belowMarkMid
-
-	alias 'cyrl/tshe' 0x45B 'hBar'
-
-	define TurnHConfig : object
-		toothedSerifless     { no-shape                }
-		toothedSerifed       { SmallTurnHSerifs        }
-		toothedMotionSerifed { SmallTurnHMotionSerifs  }
-
-	foreach { suffix { Serifs } } [Object.entries TurnHConfig] : do
-		create-glyph "turnh.\(suffix)" : glyph-proc
-			include : nShoulder
-				left -- (SB + [HSwToV Stroke])
-				right -- RightSB
-				bottom -- 0
-			include : VBar.l SB 0 Ascender
-			include : Serifs false false
-			include : FlipAround Middle (XH / 2)
-			include : MarkSet.p
-			include : LeaningAnchor.Below.VBar.r RightSB
-
-		create-glyph "hookturnh.\(suffix)" : glyph-proc
-			include : nShoulder
-				left -- (SB + [HSwToV Stroke])
-				right -- RightSB
-				bottom -- (TailY + HalfStroke)
-			include : VBar.l SB 0 Ascender
-			include : RetroflexHook.rExt RightSB (TailY + HalfStroke)
-			include : Serifs true false
-			include : FlipAround Middle (XH / 2)
-			include : MarkSet.p
-			include : LeaningAnchor.Below.VBar.r RightSB
-
-		if (Serifs !== SmallTurnHMotionSerifs) : begin
-			create-glyph "hookturnhrtail.\(suffix)" : glyph-proc
-				include : nShoulder
-					left -- (SB + [HSwToV Stroke])
-					right -- RightSB
-					bottom -- (TailY + HalfStroke)
-				include : VBar.l SB 0 XH
-				include : RetroflexHook.rExt RightSB (TailY + HalfStroke)
-				include : Serifs true true
-				include : FlipAround Middle (XH / 2)
-				include : RetroflexHook.rExt RightSB (Descender + TailY + HalfStroke) (yAttach -- 0)
-				include : MarkSet.p
-
-	select-variant 'turnh' 0x265
-	select-variant 'hookturnh' 0x2AE
-	select-variant 'hookturnhrtail' 0x2AF
 
 	glyph-block-import Letter-Blackboard : BBS BBD BBBarLeft
 	create-glyph 'mathbb/h' 0x1D559 : glyph-proc

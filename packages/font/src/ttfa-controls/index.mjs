@@ -30,7 +30,7 @@ export async function generateTtfaControls(gsOrig, gsTtf) {
 		alignment.write(ttfaControls, gsTtf);
 	}
 
-	return ttfaControls;
+	return ttfaControls.join("\n") + "\n";
 }
 
 class Alignment {
@@ -62,13 +62,13 @@ class Alignment {
 
 			for (const [go, gd] of this.allGlyphs) {
 				const cvs = [
-					...Gr.AnyCv.query(go),
+					...Gr.AnyCvOrCherryPicking.query(go),
 					Gr.Texture.ExtL,
 					Gr.Texture.ExtR,
 					Gr.Texture.ExtLR,
 					Gr.Texture.ShrL,
 					Gr.Texture.ShrR,
-					Gr.Texture.ShrLR
+					Gr.Texture.ShrLR,
 				];
 				for (const gr of cvs) {
 					const gnLinked = gr.get(go);

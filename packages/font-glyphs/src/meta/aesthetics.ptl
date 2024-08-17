@@ -44,7 +44,7 @@ export : define [calculateMetrics para] : begin
 	define [Rotate angle] : new Transform [Math.cos angle] (-[Math.sin angle]) [Math.sin angle] [Math.cos angle] 0 0
 
 	define GlobalTransform : Italify para.slopeAngle
-	define TanSlope   GlobalTransform.yx
+	define TanSlope   GlobalTransform.xy
 	define SinSlope : Math.sin (para.slopeAngle / 180 * Math.PI)
 	define CosSlope : Math.cos (para.slopeAngle / 180 * Math.PI)
 	define HVContrast : Contrast * CosSlope + SinSlope * TanSlope
@@ -107,8 +107,6 @@ export : define [calculateMetrics para] : begin
 
 	define SLAB para.slab
 
-	define TailAdjX : Width * 0.2
-	define TailAdjY : XH * 0.25
 	define [IBalance df] : df.div * df.div * [fallback para.ibalance (LongJut * 0.04)] # Serifed
 	define [IBalance2 df] : df.div * [fallback para.ibalance2 (LongJut * 0.14)]        # Hooky, Tailed
 	define JBalance : fallback para.jbalance 0
@@ -174,11 +172,6 @@ export : define [calculateMetrics para] : begin
 	define CorrectionOMidX : TanSlope * 0.9 * [StrokeWidthBlend 1.3 0.9]
 	define CorrectionOMidS : Stroke * CorrectionOMidX
 
-	define ArchXAdjust : object
-		top    : function [x sw] : x - CorrectionOMidX * [fallback sw Stroke]
-		bottom : function [x sw] : x + CorrectionOMidX * [fallback sw Stroke]
-		bot    : function [x sw] : x + CorrectionOMidX * [fallback sw Stroke]
-
 	define OverlayStroke : AdviceStroke 3.75
 	define OperatorStroke : AdviceStroke 2.75
 	define GeometryStroke : AdviceStroke 4
@@ -191,27 +184,24 @@ export : define [calculateMetrics para] : begin
 	define [AdviceGlottalStopArchDepth y sign] : begin
 		return : ((y - Stroke) * 0.24 + Stroke * 0.625) + sign * TanSlope * SmoothAdjust
 
-	define [shoulderMidSkew _fine _stroke] : begin
-		local stroke : fallback _stroke Stroke
-		local fine : fallback _fine ShoulderFine
-		return : 0.5 * Contrast * (stroke - fine) / stroke
+	define VERY-FAR : UPM * 16
+	define TINY     :  1 / 128
 
 	return [object
 		DesignParameters UPM HalfUPM Width SB CAP XH Ascender Descender Contrast SymbolMid
 		ParenTop ParenBot OperTop OperBot TackTop TackBot PlusTop PlusBot PictTop PictBot BgOpTop
 		BgOpBot Italify Upright Scale Translate ApparentTranslate Rotate GlobalTransform TanSlope
 		HVContrast Upward Downward Rightward Leftward O OX OXHook Hook AHook SHook RHook JHook
-		HookX TailX TailY ArchDepth SmallArchDepth Stroke DotSize
-		PeriodSize HBarPos OverlayPos LongJut Jut VJut VJutStroke AccentStackOffset AccentWidth
-		AccentClearance AccentHeight CThin CThinB SLAB TailAdjX TailAdjY IBalance IBalance2
-		JBalance JBalance2 TBalance TBalance2 RBalance RBalance2 FBalance OneBalance WideWidth0
-		WideWidth1 WideWidth2 WideWidth3 WideWidth4 EssUpper EssLower EssQuestion HalfStroke
-		RightSB Middle DotRadius PeriodRadius SideJut ArchDepthA ArchDepthB SmallArchDepthA
-		SmallArchDepthB CorrectionOMidX CorrectionOMidS ArchXAdjust compositeBaseAnchors
-		AdviceStroke AdviceStroke2 OverlayStroke OperatorStroke GeometryStroke ShoulderFine
-		_SuperXY AdviceGlottalStopArchDepth shoulderMidSkew StrokeWidthBlend
-		ArchDepthAOf ArchDepthBOf SmoothAdjust MidJutSide MidJutCenter YSmoothMidR YSmoothMidL
-		HSwToV NarrowUnicodeT WideUnicodeT]
+		HookX TailX TailY ArchDepth SmallArchDepth Stroke DotSize PeriodSize HBarPos OverlayPos
+		LongJut Jut VJut VJutStroke AccentStackOffset AccentWidth AccentClearance AccentHeight
+		CThin CThinB SLAB IBalance IBalance2 JBalance JBalance2 TBalance TBalance2 RBalance
+		RBalance2 FBalance OneBalance WideWidth0 WideWidth1 WideWidth2 WideWidth3 WideWidth4
+		EssUpper EssLower EssQuestion HalfStroke RightSB Middle DotRadius PeriodRadius SideJut
+		ArchDepthA ArchDepthB SmallArchDepthA SmallArchDepthB CorrectionOMidX CorrectionOMidS
+		compositeBaseAnchors AdviceStroke AdviceStroke2 OverlayStroke OperatorStroke GeometryStroke
+		ShoulderFine _SuperXY AdviceGlottalStopArchDepth StrokeWidthBlend ArchDepthAOf ArchDepthBOf
+		SmoothAdjust MidJutSide MidJutCenter YSmoothMidR YSmoothMidL HSwToV NarrowUnicodeT
+		WideUnicodeT VERY-FAR TINY]
 
 export : define [setFontMetrics para metrics fm] : begin
 	define [object CAP Descender XH Width SymbolMid] metrics
@@ -317,8 +307,8 @@ define [MarksetDiv p sbMul me] : begin
 	define leftSB   me.SB
 	define rightSB : me.Width * p - me.SB
 	define [ta anchor] : return : new Anchor
-		* (anchor.x * me.GlobalTransform.xx + anchor.y * me.TanSlope + me.GlobalTransform.x)
-		* (anchor.x * me.GlobalTransform.xy + anchor.y * me.GlobalTransform.yy + me.GlobalTransform.y)
+		me.GlobalTransform.applyX anchor.x anchor.y
+		me.GlobalTransform.applyY anchor.x anchor.y
 
 	define [MarkAbove zone]        {.baseAnchors {.above       [ta : new Anchor middle  zone.top]}}
 	define [MarkBelow zone]        {.baseAnchors {.below       [ta : new Anchor middle  zone.bot]}}
@@ -429,6 +419,7 @@ export : define [GenDivFrame metrics] : begin
 			local mvs   : fallback _mvs : if _hPack [metrics.AdviceStroke _hPack div] metrics.Stroke
 			local sbMul : fallback _sbMul : Math.min 1 : (metrics.Width * div - hPack * mvs) / (2 * hPack * metrics.SB)
 
+			set this.params       : object div hPack sbMul mvs ox
 			set this.div            div
 			set this.hPack          hPack
 			set this.width        : metrics.Width * div
@@ -470,8 +461,22 @@ export : define [GenDivFrame metrics] : begin
 
 			return : new CDivFrame subDfDiv keeps (this.leftSB / metrics.SB) this.mvs o
 
+		public [rest sub _hPack] : begin
+			return : new CDivFrame ((this.width - sub.width) / metrics.Width) [fallback _hPack (this.hPack - sub.hPack + 1)] (this.leftSB / metrics.SB) this.mvs this.ox
+		public [restCompact kKern sub _hPack] : begin
+			local kern : kKern * ((this.width - this.rightSB) + sub.leftSB)
+			return : new CDivFrame ((this.width - sub.width + kern) / metrics.Width) [fallback _hPack (this.hPack - sub.hPack + 1)] (this.leftSB / metrics.SB) this.mvs this.ox
+
 		public [applyToGlyph g] : begin
 			g.setWidth this.width
+			set g.divFrameParams this.params
 			return this
 
-	return : lambda [_div _hPack _sbMul _mvs _ox] : new CDivFrame _div _hPack _sbMul _mvs _ox
+		public [adviceStroke c] : metrics.AdviceStroke c this.div
+		public [adviceStroke2 c d h] : metrics.AdviceStroke2 c d h this.div
+
+	define [F _div _hPack _sbMul _mvs _ox] : begin
+		return : new CDivFrame _div _hPack _sbMul _mvs _ox
+	set F.fromParams : lambda [params] : begin
+		return : new CDivFrame params.div params.hPack params.sbMul params.mvs params.ox
+	return F

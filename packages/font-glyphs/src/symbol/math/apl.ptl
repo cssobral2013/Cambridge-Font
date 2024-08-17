@@ -29,8 +29,8 @@ glyph-block Symbol-Math-APL : begin
 		define background : new-glyph : glyph-proc : include fnBackground AS_BASE ALSO_METRICS
 
 		local corners : new-glyph : glyph-proc
-			set this.gizmo : Translate 0 0
-			foreach [c : items-of : overlay.geometry.asContours] : foreach [z : items-of c] : do
+			set currentGlyph.gizmo : Translate 0 0
+			foreach [c : items-of : overlay.geometry.toContours] : foreach [z : items-of c] : do
 				if (z.type === Point.Type.Corner) : begin
 					define x z.x
 					define y z.y
@@ -87,13 +87,11 @@ glyph-block Symbol-Math-APL : begin
 		local shift : OperTop - 2 * ArchDepth - OperBot
 		local fine : CThin * [AdviceStroke 4]
 		local [InnerCircleMask sw] : spiro-outline
-			corner (SB + HVContrast * (Stroke - fine)) (OperTop + shift)
-			curl   (SB + HVContrast * (Stroke - fine)) (OperBot + ArchDepthB + shift)
-			arcvh
-			g4     (Middle + CorrectionOMidX * OperatorStroke) (OperBot + (OperatorStroke - sw) + shift + O)
-			archv
-			flat   (RightSB - HVContrast * (Stroke - fine)) (OperBot + ArchDepthA + shift)
-			corner (RightSB - HVContrast * (Stroke - fine)) (OperTop + shift)
+			corner (SB + [HSwToV (Stroke - fine)]) (OperTop + shift)
+			curl   (SB + [HSwToV (Stroke - fine)]) (OperBot + ArchDepthB + shift)
+			arch.lhs (OperBot + (OperatorStroke - sw) + shift) (sw -- OperatorStroke)
+			flat   (RightSB - [HSwToV (Stroke - fine)]) (OperBot + ArchDepthA + shift)
+			corner (RightSB - [HSwToV (Stroke - fine)]) (OperTop + shift)
 		include : union
 			composite-proc
 				UShape [DivFrame 1] OperTop OperBot (stroke -- OperatorStroke)
@@ -261,9 +259,9 @@ glyph-block Symbol-Math-APL : begin
 	LinkAplFormForNwidWwid 'arrowUpDown'
 	LinkAplFormForNwidWwid 'arrowUpLeft'
 	LinkAplFormForNwidWwid 'arrowDownLeft'
-	LinkAplFormForNwidWwid 'hookArrowLeft'
 	LinkAplFormForNwidWwid 'arrowLeftRightHR'
 	LinkAplFormForNwidWwid 'dblArrowLeft'
+	LinkAplFormForNwidWwid 'hookArrowLeft'
 	LinkAplFormForNwidWwid 'uni231C'
 	LinkAplFormForNwidWwid 'uni2389'
 	LinkAplFormForNwidWwid 'uni238A'
@@ -271,6 +269,32 @@ glyph-block Symbol-Math-APL : begin
 	LinkAplFormForNwidWwid 'uni2687'
 
 	# Uiua symbols
-	LinkAplFormForNwidWwid 'uni238B'
-	LinkAplFormForNwidWwid 'uni2335'
+	LinkAplFormForNwidWwid 'whiteDiamond'
+	LinkAplFormForNwidWwid 'whiteSquare'
+	LinkAplFormForNwidWwid 'whiteTriangleUp'
+	LinkAplFormForNwidWwid 'whiteTriangleDown'
+	LinkAplFormForNwidWwid 'whiteTriangleRB'
+	LinkAplFormForNwidWwid 'whiteTriangleRT'
+	LinkAplFormForNwidWwid 'arrowDownRight'
+	LinkAplFormForNwidWwid 'barArrowUp'
+	LinkAplFormForNwidWwid 'barArrowDown'
+	LinkAplFormForNwidWwid 'counterArrowLeft'
+	LinkAplFormForNwidWwid 'counterArrowRight'
+	LinkAplFormForNwidWwid 'cwOpenCircleArrow'
+	LinkAplFormForNwidWwid 'dashArrowUp'
+	LinkAplFormForNwidWwid 'dottedCircle'
+	LinkAplFormForNwidWwid 'dottedSquare'
+	LinkAplFormForNwidWwid 'lightning'
+	LinkAplFormForNwidWwid 'loopArrowLeft'
+	LinkAplFormForNwidWwid 'loopArrowRight'
+	LinkAplFormForNwidWwid 'mathCDots'
 	LinkAplFormForNwidWwid 'telephoneRecorder'
+	LinkAplFormForNwidWwid 'vBarSquare'
+	LinkAplFormForNwidWwid 'zigZagArrow'
+	LinkAplFormForNwidWwid 'uni21CC'
+	LinkAplFormForNwidWwid 'uni25F0'
+	LinkAplFormForNwidWwid 'uni25F3'
+	LinkAplFormForNwidWwid 'uni25F4'
+	LinkAplFormForNwidWwid 'uni2335'
+	LinkAplFormForNwidWwid 'uni238B'
+	LinkAplFormForNwidWwid 'uni2682'

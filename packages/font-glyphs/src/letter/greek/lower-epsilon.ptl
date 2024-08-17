@@ -10,7 +10,7 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Adjustment : ExtendBelowBaseAnchors
-	glyph-block-import Letter-Shared : CreateAccentedComposition
+	glyph-block-import Letter-Shared : CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : SerifedArcStart SerifedArcEnd SerifFrame
 	glyph-block-import Letter-Shared-Shapes : InwardSlabArcStart InwardSlabArcEnd
 	glyph-block-import Letter-Shared-Shapes : ArcStartSerif ArcEndSerif
@@ -50,17 +50,15 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 			define [object stroke midx midy ada adb fine stemFine] : Dim
 			return : dispiro
 				match slabTop
-					[Just SLAB-CLASSICAL] : SerifedArcStart.RtlLhs RightSB Middle top stroke hook
-					[Just SLAB-INWARD] : InwardSlabArcStart.RtlLhs RightSB Middle top stroke hook
+					[Just SLAB-CLASSICAL] : SerifedArcStart.RtlLhs RightSB top stroke hook
+					[Just SLAB-INWARD] : InwardSlabArcStart.RtlLhs RightSB top stroke hook
 					[Just OPEN-VERTICAL] : straight.down.start SB top [widths.lhs.heading stroke Downward]
 					([Just CLOSED-CIRCLE] || [Just CLOSED-ROUND]) : list
 						flat (RightSB - [if (slabTop === CLOSED-CIRCLE) OX 0]) midy [widths.lhs stroke]
 						curl (RightSB - [if (slabTop === CLOSED-CIRCLE) OX 0]) (top - adb2)
-						arcvh
-						g4 (Middle - CorrectionOMidX * stroke) (top - O)
-						archv
+						arch.lhs top (sw -- stroke)
 					[Just CLOSED-STEM] : OBarRight.arcStart top SB RightSB stroke stemFine ada2 adb2 midy
-					__ : list [g4 (RightSB + O) (top - hook) [widths.lhs]] [hookstart (top - O)]
+					__ : list [g4 (RightSB + O) (top - hook) [widths.lhs]] [hookstart top (sw -- stroke)]
 				g4 SB [YSmoothMidL top (midy - stroke / 2)]
 				arcvh
 				flat Middle (midy - (fine - stroke / 2)) [widths.heading fine 0 Rightward]
@@ -74,17 +72,15 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 				archv
 				g4 (SB + OX * 2) [YSmoothMidL (midy + stroke / 2) bot] [widths.lhs stroke]
 				match slabBot
-					[Just SLAB-CLASSICAL] : SerifedArcEnd.LtrLhs RightSB Middle bot stroke hook
-					[Just SLAB-INWARD] : InwardSlabArcEnd.LtrLhs RightSB Middle bot stroke hook
+					[Just SLAB-CLASSICAL] : SerifedArcEnd.LtrLhs RightSB bot stroke hook
+					[Just SLAB-INWARD] : InwardSlabArcEnd.LtrLhs RightSB bot stroke hook
 					[Just OPEN-VERTICAL] : straight.down.end (SB + OX * 2) bot [heading Downward]
 					([Just CLOSED-CIRCLE] || [Just CLOSED-ROUND]) : list
-						arcvh
-						g4 (Middle + CorrectionOMidX * stroke) (bot + O)
-						archv
+						arch.lhs bot (sw -- stroke)
 						flat (RightSB - [if (slabBot === CLOSED-CIRCLE) OX 0]) (bot + adb2)
 						curl (RightSB - [if (slabBot === CLOSED-CIRCLE) OX 0]) midy
 					[Just CLOSED-STEM] : OBarRight.arcEnd bot SB RightSB stroke stemFine ada2 adb2 midy
-					__ : list [hookend (bot + O)] [g4 (RightSB - O) (bot + hook)]
+					__ : list [hookend bot (sw -- stroke)] [g4 (RightSB - O) (bot + hook)]
 
 		export : define [Shape] : union [UpperShape] [LowerShape]
 
@@ -124,20 +120,18 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 			local middle : (left + right) / 2
 			return : sink
 				match slabTop
-					[Just SLAB-CLASSICAL] : SerifedArcStart.LtrRhs left middle top stroke hook
-					[Just SLAB-INWARD] : InwardSlabArcStart.LtrRhs left middle top stroke hook
+					[Just SLAB-CLASSICAL] : SerifedArcStart.LtrRhs left top stroke hook
+					[Just SLAB-INWARD] : InwardSlabArcStart.LtrRhs left top stroke hook
 					[Just FLAT-CONNECTION] : list
 						flat (left - xo) top [widths.rhs.heading stroke Rightward]
-						curl (middle - CorrectionOMidX * stroke) top [heading Rightward]
+						curl [arch.adjust-x.top middle stroke] top [heading Rightward]
 					[Just OPEN-VERTICAL] : straight.down.start right top [widths.rhs.heading stroke Downward]
 					([Just CLOSED-CIRCLE] || [Just CLOSED-ROUND]) : list
 						flat (left + [if (slabTop === CLOSED-CIRCLE) xo 0]) midy [widths.rhs stroke]
 						curl (left + [if (slabTop === CLOSED-CIRCLE) xo 0]) (top - ada2)
-						arcvh
-						g4 (middle - CorrectionOMidX * stroke) (top - O)
-						archv
+						arch.rhs top (sw -- stroke)
 					[Just CLOSED-STEM] : OBarLeft.arcStart top left right stroke stemFine ada2 adb2 midy
-					__ : list [g4 (left - xo) (top - hook) : widths.rhs stroke] [hookstart (top - O)]
+					__ : list [g4 (left - xo) (top - hook) : widths.rhs stroke] [hookstart top (sw -- stroke)]
 				g4 right [YSmoothMidR top (midy - stroke / 2)]
 				arcvh
 				flat middle (midy - (fine - stroke / 2)) [widths.heading 0 fine Leftward]
@@ -154,18 +148,16 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 					g4.down.end (right - xo * 2) [YSmoothMidR (midy + stroke / 2) bot] [widths.rhs.heading stroke Downward]
 					g4 (right - xo * 2) [YSmoothMidR (midy + stroke / 2) bot] [widths.rhs stroke]
 				match slabBot
-					[Just SLAB-CLASSICAL] : SerifedArcEnd.RtlRhs left middle bot stroke hook
-					[Just SLAB-INWARD] : InwardSlabArcEnd.RtlRhs left middle bot stroke hook
+					[Just SLAB-CLASSICAL] : SerifedArcEnd.RtlRhs left bot stroke hook
+					[Just SLAB-INWARD] : InwardSlabArcEnd.RtlRhs left bot stroke hook
 					[Just OPEN-HALF] : list
 					[Just OPEN-VERTICAL] : straight.down.end (right - xo * 2) bot [heading Downward]
 					([Just CLOSED-CIRCLE] || [Just CLOSED-ROUND]) : list
-						arcvh
-						g4 (middle + CorrectionOMidX * stroke) (bot + O)
-						archv
+						arch.rhs bot (sw -- stroke)
 						flat (left + [if (slabBot === CLOSED-CIRCLE) xo 0]) (bot + adb2)
 						curl (left + [if (slabBot === CLOSED-CIRCLE) xo 0]) midy
 					[Just CLOSED-STEM] : OBarLeft.arcEnd bot left right stroke stemFine ada2 adb2 midy
-					__ : list [hookend (bot + O) (sw -- stroke)] [g4 (left + xo) (bot + hook)]
+					__ : list [hookend bot (sw -- stroke)] [g4 (left + xo) (bot + hook)]
 
 		export : define [UpperShape] : UpperShapeT dispiro
 
@@ -180,7 +172,7 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 				archv
 				g4.up.mid (left + [HSwToV HalfStroke]) [mix Descender Stroke 0.5] [widths.center.heading Stroke Upward]
 				arcvh
-				g4 (middle + CorrectionOMidS) 0 [widths.lhs]
+				g4 [arch.adjust-x.bot middle] 0 [widths.lhs]
 				archv
 				g4 (right - OX * 2) (bot + ada)
 				arcvh
@@ -216,13 +208,13 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 	glyph-block-export EpsilonConfig
 	define EpsilonConfig : object
 		serifless               { SLAB-NONE      SLAB-NONE      }
+		bottomSerifed           { SLAB-NONE      SLAB-CLASSICAL }
+		bottomInwardSerifed     { SLAB-NONE      SLAB-INWARD    }
 		unilateralSerifed       { SLAB-CLASSICAL SLAB-NONE      }
 		bilateralSerifed        { SLAB-CLASSICAL SLAB-CLASSICAL }
 		unilateralInwardSerifed { SLAB-INWARD    SLAB-NONE      }
 		bilateralInwardSerifed  { SLAB-INWARD    SLAB-INWARD    }
-
-		seriflessDesc               { SLAB-NONE      SLAB-CLASSICAL }
-		unilateralInwardSerifedDesc { SLAB-INWARD    SLAB-CLASSICAL }
+		hybridSerifed1          { SLAB-INWARD    SLAB-CLASSICAL }
 
 	foreach { suffix { slabTop slabBot } } [Object.entries EpsilonConfig] : do
 		create-glyph "latn/Epsilon.\(suffix)" : glyph-proc
@@ -473,37 +465,34 @@ glyph-block Letter-Greek-Lower-Epsilon : begin
 	alias 'grek/epsilon' 0x3B5 'latn/epsilon.serifless'
 	select-variant 'latn/Epsilon' 0x190
 	select-variant 'latn/epsilon' 0x25B
-	turned 'turnepsilon' 0x1D08 'latn/epsilon' Middle (XH / 2)
+	CreateTurnedLetter 'turnepsilon' 0x1D08 'latn/epsilon' HalfAdvance (XH / 2)
 	alias 'cyrl/ZeRev' 0x510 'latn/Epsilon'
 	alias 'cyrl/zeRev' 0x511 'latn/epsilon'
 
 	select-variant 'cyrl/Ze' 0x417
 	select-variant 'cyrl/ze' 0x437
-	select-variant 'cyrl/KsiBase' (follow -- 'cyrl/Ksi')
-	select-variant 'cyrl/ksiBase' (follow -- 'cyrl/ksi')
-	select-variant 'cyrl/ze.BGR' (follow -- 'cyrl/ze')
+	select-variant 'cyrl/KsiBase' (follow -- 'cyrl/ZeTopSerifOnly')
+	select-variant 'cyrl/ksiBase' (follow -- 'cyrl/zeTopSerifOnly')
+	select-variant 'cyrl/ze.BGR'  (follow -- 'cyrl/ze')
 	alias 'latn/EpsilonRev' 0xA7AB 'cyrl/Ze'
 	alias 'latn/epsilonRev' 0x25C  'cyrl/ze'
 
-	select-variant 'cyrl/ZjeKomi' 0x504 (follow -- 'cyrl/Ksi')
-	select-variant 'cyrl/zjeKomi' 0x505 (follow -- 'cyrl/ksi')
-	select-variant 'cyrl/DzjeKomi' 0x506 (follow -- 'cyrl/Ksi')
-	select-variant 'cyrl/dzjeKomi' 0x507 (follow -- 'cyrl/ksi')
+	select-variant 'cyrl/ZjeKomi'  0x504 (follow -- 'cyrl/ZeTopSerifOnly')
+	select-variant 'cyrl/zjeKomi'  0x505 (follow -- 'cyrl/zeTopSerifOnly')
+	select-variant 'cyrl/DzjeKomi' 0x506 (follow -- 'cyrl/ZeTopSerifOnly')
+	select-variant 'cyrl/dzjeKomi' 0x507 (follow -- 'cyrl/zeTopSerifOnly')
 
-	derive-composites 'cyrl/ZeCedilla' 0x498 'cyrl/Ze' 'cedillaExtShapeBelowOArc'
-	derive-composites 'cyrl/zeCedilla' 0x499 'cyrl/ze' 'cedillaExtShapeBelowSOArc'
+	derive-composites 'cyrl/Dhe' 0x498 'cyrl/Ze' 'cedillaExtShapeBelowOArc'
+	derive-composites 'cyrl/dhe' 0x499 'cyrl/ze' 'cedillaExtShapeBelowSOArc'
 
 	select-variant 'latn/epsilon/descBase' (shapeFrom -- 'latn/epsilon')
-	select-variant 'latn/epsilonRev/descBase' (shapeFrom -- 'cyrl/ze') (follow -- 'latn/epsilon/descBase')
+	select-variant 'latn/epsilonRev/descBase' (shapeFrom -- 'cyrl/ze') (follow -- 'cyrl/ze/descBase')
 
 	derive-composites 'latn/epsilonRetroflexHook' 0x1D93 'latn/epsilon/descBase'
 		RetroflexHook.r RightSB 0 (refSw -- [AdviceStroke2 2 3 XH])
 	derive-composites 'latn/epsilonRevRetroflexHook' 0x1D94 'latn/epsilonRev/descBase'
 		RetroflexHook.l SB      0 (refSw -- [AdviceStroke2 2 3 XH])
 		ExtendBelowBaseAnchors Descender
-
-	CreateAccentedComposition 'cyrl/Ksi' 0x46E 'cyrl/KsiBase' 'caronAbove'
-	CreateAccentedComposition 'cyrl/ksi' 0x46F 'cyrl/ksiBase' 'caronAbove'
 
 	create-glyph 'voicedLaryngealSpirant' 0x1D24 : glyph-proc
 		include : MarkSet.b

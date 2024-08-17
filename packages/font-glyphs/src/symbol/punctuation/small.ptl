@@ -25,21 +25,11 @@ glyph-block Symbol-Punctuation-Small : begin
 			local df : include : DivFrame para.diversityF
 			include : DrawAt df.middle (CAP - PeriodRadius * kDotRadius) (PeriodRadius * kDotRadius - overshoot)
 
-		create-glyph "smallPeriod.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityF
-			include : DrawAt df.middle (DotRadius * kDotRadius) (DotRadius * kDotRadius - overshoot)
-		create-glyph "halfXhSmallPeriod.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityF
-			include : DrawAt df.middle (XH / 2) (DotRadius * kDotRadius - overshoot)
-		create-glyph "halfCapSmallPeriod.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityF
-			include : DrawAt df.middle (CAP / 2) (DotRadius * kDotRadius - overshoot)
-		create-glyph "xhSmallPeriod.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityF
-			include : DrawAt df.middle (XH - DotRadius * kDotRadius) (DotRadius * kDotRadius - overshoot)
-		create-glyph "capSmallPeriod.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityF
-			include : DrawAt df.middle (CAP - DotRadius * kDotRadius) (DotRadius * kDotRadius - overshoot)
+		create-glyph "smallPeriod.\(suffix)"        : DrawAt Middle (DotRadius * kDotRadius)       (DotRadius * kDotRadius - overshoot)
+		create-glyph "halfXhSmallPeriod.\(suffix)"  : DrawAt Middle (XH  / 2)                      (DotRadius * kDotRadius - overshoot)
+		create-glyph "halfCapSmallPeriod.\(suffix)" : DrawAt Middle (CAP / 2)                      (DotRadius * kDotRadius - overshoot)
+		create-glyph "xhSmallPeriod.\(suffix)"      : DrawAt Middle (XH  - DotRadius * kDotRadius) (DotRadius * kDotRadius - overshoot)
+		create-glyph "capSmallPeriod.\(suffix)"     : DrawAt Middle (CAP - DotRadius * kDotRadius) (DotRadius * kDotRadius - overshoot)
 
 	select-variant 'period' '.' (follow -- 'punctuationDot')
 
@@ -197,6 +187,11 @@ glyph-block Symbol-Punctuation-Small : begin
 			include [refer-glyph "revComma.\(suffix)"] AS_BASE ALSO_METRICS
 			include [refer-glyph "xhPeriod.\(suffix)"]
 
+		create-glyph "doubleStackedComma.\(suffix)" : glyph-proc
+			include [refer-glyph "comma.\(suffix)"] AS_BASE ALSO_METRICS
+			include : with-transform [ApparentTranslate 0 (XH - 2 * PeriodRadius * kDotRadius)] : composite-proc
+				refer-glyph "comma.\(suffix)"
+
 		local multiDotShift : RightSB - (DotRadius * kDotRadius) - Middle
 		local multiDotShiftDense : [mix Width RightSB 0.5] - (DotRadius * kDotRadius) - Middle
 
@@ -282,6 +277,7 @@ glyph-block Symbol-Punctuation-Small : begin
 	select-variant 'modifierLetterRaisedColon' 0x2F8 (follow -- 'punctuationDot')
 	select-variant 'semicolon' ';' (follow -- 'punctuationDot')
 	select-variant 'invertSemicolon' 0x204F (follow -- 'punctuationDot')
+	select-variant 'doubleStackedComma' 0x2E49 (follow -- 'punctuationDot')
 
 	select-variant 'threeDotPunct' 0x2056 (follow -- 'punctuationDot')
 	select-variant 'geor/paragraphSeparator' 0x10FB (follow -- 'punctuationDot')

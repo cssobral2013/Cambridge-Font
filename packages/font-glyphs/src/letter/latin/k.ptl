@@ -12,7 +12,7 @@ glyph-block Letter-Latin-K : begin
 	glyph-block-import Mark-Shared-Metrics : markExtend
 	glyph-block-import Mark-Above : aboveMarkMid
 	glyph-block-import Mark-Adjustment : ExtendBelowBaseAnchors LeaningAnchor
-
+	glyph-block-import Letter-Shared : CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : DiagTail CyrDescender
 	glyph-block-import Letter-Shared-Shapes : LetterBarOverlay PalatalHook TopHook
 
@@ -80,7 +80,7 @@ glyph-block Letter-Latin-K : begin
 				spiro-outline
 					corner (kshLeft + stroke) 0
 					corner (kshLeft + stroke) (attach + 1)
-					corner (kshRightTop - Ok - 0.1) top
+					corner (kshRightTop - Ok - TINY) top
 					corner (kshRightBot - Ok) top
 					corner (kshRightBot - Ok) 0
 				dispiro
@@ -92,10 +92,10 @@ glyph-block Letter-Latin-K : begin
 					KSlabs                 slabLegs top left right stroke true
 					KAttachment attachment slabLegs top left right stroke true
 				union
-					HalfRectTriangle (kshRightBot - Ok - 0.1) 0 (kshLeft + stroke - 0.1) attach2
+					HalfRectTriangle (kshRightBot - Ok - TINY) 0 (kshLeft + stroke - TINY) attach2
 					intersection
 						TopStrokeMask (-0.1)
-						HalfRectTriangle (kshRightTop - Ok - 0.1) top (kshLeft + stroke - 0.1) attach
+						HalfRectTriangle (kshRightTop - Ok - TINY) top (kshLeft + stroke - TINY) attach
 
 		export : define [Symmetric leadGap hookDepth] : function [fHookTop left right stroke top slabLT slabLegs attachment] : glyph-proc
 			local fine : AdviceStroke [if leadGap 3.5 3]
@@ -173,10 +173,10 @@ glyph-block Letter-Latin-K : begin
 				union
 					intersection
 						StrokeMask 1 top (0.5 * top) (-0.1)
-						HalfRectTriangle (kshRight - Ok - 0.1) top ([mix (kshRight - Ok) xAttach 2] - 0.1) [mix top yAttach 2]
+						HalfRectTriangle (kshRight - Ok - TINY) top ([mix (kshRight - Ok) xAttach 2] - TINY) [mix top yAttach 2]
 					intersection
 						StrokeMask 0 (0.5 * top) 0 (-0.1)
-						HalfRectTriangle (kshRight - Ok - 0.1) 0   ([mix (kshRight - Ok) xAttach 2] - 0.1) [mix 0 coYAttach 2]
+						HalfRectTriangle (kshRight - Ok - TINY) 0   ([mix (kshRight - Ok) xAttach 2] - TINY) [mix 0 coYAttach 2]
 
 		export : define [Curly fHookTop left right stroke top slabLT slabLegs attachment] : glyph-proc
 			local turn : top * 0.99
@@ -216,17 +216,17 @@ glyph-block Letter-Latin-K : begin
 					g4 xAttach2 yAttach2 [widths.center fine]
 				if fHookTop
 					spiro-outline
-						straight.left.start (kshRight + [if [maskBit slabLegs 1] SideJut 0] - TanSlope * stroke) (top - stroke + 0.1)
+						straight.left.start (kshRight + [if [maskBit slabLegs 1] SideJut 0] - TanSlope * stroke) (top - stroke + TINY)
 						upperCurvatureHT
-						corner (xAttach1 - 0.1) yAttach1
+						corner (xAttach1 - TINY) yAttach1
 						corner (-Width) yAttach1
 						corner (-Width) (top * 2)
 						corner (2 * Width) (top * 2)
-						corner (2 * Width) (top - stroke + 0.1)
+						corner (2 * Width) (top - stroke + TINY)
 					spiro-outline
-						corner.down.start (kshRight - 0.1) top
+						corner.down.start (kshRight - TINY) top
 						upperCurvature
-						corner (kshLeft + stroke) (yAttach1 + 0.1)
+						corner (kshLeft + stroke) (yAttach1 + TINY)
 						corner kshLeft 0
 						corner kshLeft top
 			include : difference
@@ -242,7 +242,7 @@ glyph-block Letter-Latin-K : begin
 			define kshRight : right + [KBalanceRight slabLegs true]
 			define Ok       : KO slabLegs true top stroke
 
-			define arcFine : stroke * CThin
+			define arcFine ShoulderFine
 			define arcStroke : AdviceStroke2 2 3 top
 			define arcTerminalFine : AdviceStroke2 3 4 top
 			define expansion : Width / (UPM / 2) - 1
@@ -251,14 +251,13 @@ glyph-block Letter-Latin-K : begin
 			define pArcTopX      : 0.625 - 0.05 * (arcStroke / Width) - 0 * expansion * (arcStroke / UPM)
 			define pArcRightX    : 0.925 - TanSlope * 0.25 + ([if SLAB 0 0.05] + 0.75 * TanSlope) * (arcStroke / Width)
 			define pArcRightY    : 0.575 - 0.625 * (arcStroke / Width) - 0.5 * expansion * (arcStroke / UPM)
-			define pArcTerminalX : 0.15 - 0.5 * (arcStroke / Width)
-			define pArcBottomX   : 0.15 + 0.5 * (arcStroke / Width)
+			define pArcTerminalX : 0.2 - 2.25 * (arcStroke / Width)
+			define pArcBottomX   : 0.15 + 0.0 * (arcStroke / Width)
 			define pArcBottomY   : 0.45 + 0.5 * (arcStroke / Width)
 
 			define arcRightSlope : 0.05 + 0.2 * (arcStroke / Width) + 1 * expansion * (arcStroke / UPM)
-			define arcTopSkew   : shoulderMidSkew arcFine arcStroke
 
-			define arcStartX    : kshLeft + HVContrast * (stroke - arcFine)
+			define arcStartX    : kshLeft + [HSwToV (stroke - arcFine)]
 			define arcStartY    : top * pArcStartY
 			define arcTerminalX : mix arcStartX kshRight pArcTerminalX
 			define arcBottomX   : mix arcStartX kshRight pArcBottomX
@@ -266,19 +265,19 @@ glyph-block Letter-Latin-K : begin
 			define arcTerminalY : arcBottomY + arcStroke * 0.125 - O
 			define arcRightX    : kshRight * pArcRightX + [HSwToV : 0.2 * stroke]
 			define arcRightY    : mix arcBottomY top pArcRightY
-			define arcTopX      : mix arcStartX arcRightX pArcTopX
-			define arcTopY      : top - O
 
-			return : object Ok arcStartX arcStartY arcFine arcRightX arcRightY arcRightSlope arcTopX arcTopY arcStroke arcTopSkew arcBottomX arcBottomY arcTerminalX arcTerminalY arcTerminalFine kshLeft kshRight
+			return : object Ok arcStartX arcStartY arcFine arcRightX arcRightY arcRightSlope arcStroke arcBottomX arcBottomY arcTerminalX arcTerminalY arcTerminalFine kshLeft kshRight pArcTopX
 
 		define [CursiveLoopT sink offset left right stroke top slabLT slabLegs] : begin
 			define dim : CursiveDimen left right top stroke slabLT slabLegs
 			return : sink
 				g4.up.start (dim.arcStartX + offset) dim.arcStartY [widths.rhs.heading dim.arcFine Upward]
-				arcvh 8
-				g4 dim.arcTopX (dim.arcTopY - offset)
-					widths.rhs.heading dim.arcStroke {.y (+1) .x dim.arcTopSkew}
-				archv 8 2.0
+				arch.rhs (top - offset)
+					sw -- dim.arcStroke
+					swBefore -- dim.arcFine
+					swAfter -- dim.arcStroke
+					p -- dim.pArcTopX
+
 				g4.down.mid (dim.arcRightX - offset) (dim.arcRightY - 0.5 * dim.arcRightSlope * [HSwToV dim.arcStroke])
 					heading {.y dim.arcRightSlope .x HVContrast}
 				arcvh
@@ -302,7 +301,7 @@ glyph-block Letter-Latin-K : begin
 				union
 					KSlabs        [if slabLegs 1 0] top left right stroke true
 					KAttachment attachment slabLegs top left right stroke true
-				HalfRectTriangle (dim.kshRight - dim.Ok - 0.1) 0 (dim.arcTerminalX - 0.1) dim.arcTerminalY
+				HalfRectTriangle (dim.kshRight - dim.Ok - TINY) 0 (dim.arcTerminalX - TINY) dim.arcTerminalY
 
 		export : define [CursiveTailed fHookTop left right stroke top slabLT slabLegs attachment] : glyph-proc
 			define dim : CursiveDimen left right top stroke slabLT slabLegs
@@ -340,20 +339,18 @@ glyph-block Letter-Latin-K : begin
 			curly                 KLegs.Curly
 			symmetricTouching    [KLegs.Symmetric 0]
 			symmetricConnected   [KLegs.Symmetric : AdviceStroke 6]
-			symmetricConnectedKH [KLegs.Symmetric [AdviceStroke 6] Descender]
+			symmetricConnectedKH [KLegs.Symmetric  [AdviceStroke 6] Descender]
 			symmetricConnectedVB [KLegs.Symmetric CyrlVbGap]
-		object # serifs
-			serifless                     { 0 0 0 0 }
-			topLeftSerifed                { 2 0 0 0 }
-			bottomRightSerifed            { 0 0 1 0 }
-			bottomRightSerifed2           { 0 0 0 1 }
-			topLeftAndBottomRightSerifed  { 2 0 1 0 }
-			topLeftAndBottomRightSerifed2 { 2 0 0 1 }
-			serifed                       { 1 1 3 0 }
-			serifedKH                     { 1 1 2 0 }
-			serifed2                      { 1 1 2 1 }
-			serifedKra                    { 2 1 3 0 }
-			serifedKappa                  { 2 0 3 0 }
+		function [body] : object # serifs
+			serifless                     { 0 0 0 }
+			topLeftSerifed                { 2 0 0 }
+			bottomRightSerifed            { 0 0 1 }
+			topLeftAndBottomRightSerifed  { 2 0 1 }
+			serifedKra                    { 2 1 3 }
+			serifedKappa                  { 2 0 3 }
+			serifed : match body
+				[Just 'symmetricConnectedKH']  { 1 1 2 }
+				__                             { 1 1 3 }
 
 	define [UpperKLTSerif top sw xBarLeft slabType] : match slabType
 		2 : HSerif.lt xBarLeft top SideJut
@@ -371,31 +368,26 @@ glyph-block Letter-Latin-K : begin
 		top / 2 + [CyrlVbLength top] / 2
 		Math.min [AdviceStroke 5] (CyrlVbGap * 0.5)
 
-	# Attachment glyphs used for Greek Kai Symbol
-	define [GrekKaiAttachmentshape fSerif] : begin
+	# Attachment glyph used for Greek Kai Symbol
+	create-glyph 'UpperKaiSymbolAttachment' : glyph-proc
+		set-width 0
+		set-mark-anchor 'trailing' 0 0
 		define shapeDepth : 0.8 * Descender - 0.25 * Stroke
-		return : PointingTo 0 0 shapeDepth shapeDepth : function [mag] : glyph-proc
-			define kSw : mix 1 HVContrast ([Math.sqrt 2] / 2)
-			include : dispiro
+		define kSw : mix 1 HVContrast Math.SQRT1_2
+		include : PointingTo 0 0 shapeDepth shapeDepth : function [mag] : union
+			dispiro
 				widths.lhs (Stroke * kSw)
 				flat 0   0
 				curl mag 0
-			if fSerif : include : dispiro
-				widths.center (Stroke / kSw)
-				flat 0 (Stroke * kSw + SideJut)
-				curl 0 (0 - SideJut)
-
-	create-glyph 'UpperKaiSymbolAttachment/sans' : glyph-proc
-		set-width 0
-		set-mark-anchor 'trailing' 0 0
-		include : GrekKaiAttachmentshape false
-	create-glyph 'UpperKaiSymbolAttachment/serifed' : glyph-proc
-		set-width 0
-		set-mark-anchor 'trailing' 0 0
-		include : GrekKaiAttachmentshape true
+			if SLAB
+				dispiro
+					widths.center (Stroke / kSw)
+					flat 0 (Stroke * kSw + SideJut)
+					curl 0 (0 - SideJut)
+				no-shape
 
 	# Main building
-	foreach { suffix { LegsImpl {slabLT slabLB slabLegs slabKS} } } [pairs-of UpperKConfig] : do
+	foreach { suffix { LegsImpl {slabLT slabLB slabLegs} } } [pairs-of UpperKConfig] : do
 		local straightBar : LegsImpl !== KLegs.Curly
 		local xBarLeft : SB + [KBalance slabLT straightBar]
 
@@ -429,10 +421,9 @@ glyph-block Letter-Latin-K : begin
 
 		create-glyph "grek/KaiSymbol.\(suffix)" : glyph-proc
 			include [refer-glyph "K.\(suffix)"] AS_BASE ALSO_METRICS
+			eject-contour 'serifRB'
 			include : ExtendBelowBaseAnchors Descender
-			include : refer-glyph : match slabKS
-				0 'UpperKaiSymbolAttachment/sans'
-				1 'UpperKaiSymbolAttachment/serifed'
+			include [refer-glyph "UpperKaiSymbolAttachment"]
 
 		create-glyph "smcpK.\(suffix)" : glyph-proc
 			include : MarkSet.e
@@ -456,30 +447,27 @@ glyph-block Letter-Latin-K : begin
 			if slabLT : include : UpperKLTSerif CAP Stroke xBarLeft slabLT
 			if slabLB : include : UpperKLBSerif CAP Stroke xBarLeft slabLB
 
-		turned "turnK.\(suffix)" nothing "K.\(suffix)" Middle (CAP / 2)
-
-		turned "smcpTurnK.\(suffix)" nothing "smcpK.\(suffix)" Middle (XH / 2)
-
 		define [BashkirKaShape df top] : glyph-proc
-			local left : if slabLT ([mix SB RightSB 0.35] - [HSwToV : 0.5 * df.mvs]) [mix SB RightSB 0.2]
-			local leftNB : left - [KBalance slabLT straightBar]
-			local xTopBarLeftEnd : mix 0 SB [if slabLT 0.25 0.375]
+			local left : if SLAB ([mix SB RightSB 0.35] - [HSwToV : 0.5 * df.mvs]) [mix SB RightSB 0.2]
+			local leftNB : left - [KBalance SLAB straightBar]
+			local xTopBarLeftEnd : mix 0 SB [if SLAB 0.25 0.375]
 			local sw : AdviceStroke 3
 
 			include : HBar.t xTopBarLeftEnd (Stroke * 0.1 + left) top
 			include : VBar.l left 0 top sw
-			include : LegsImpl false leftNB RightSB sw top slabLT slabLegs
-			if slabLT : include : VSerif.dl xTopBarLeftEnd top VJut
-				Math.min (VJutStroke * df.mvs / Stroke) (0.625 * (left - xTopBarLeftEnd))
-			if slabLB : begin
-				include : HSerif.mb (left + [HSwToV : 0.5 * sw]) 0 Jut
+			include : LegsImpl false leftNB RightSB sw top SLAB slabLegs
+			if SLAB : begin
+				include : VSerif.dl xTopBarLeftEnd top VJut
+					Math.min (VJutStroke * df.mvs / Stroke) (0.625 * (left - xTopBarLeftEnd))
+				if slabLT : include : UpperKLTSerif top sw left slabLT
+			if slabLB : include : UpperKLBSerif top sw left slabLB
 
-		create-glyph "cyrl/BashkirUpperKa.\(suffix)" : glyph-proc
+		create-glyph "cyrl/KaBashkir.\(suffix)" : glyph-proc
 			define df : include : DivFrame 1
 			include : df.markSet.capital
 			include : BashkirKaShape df CAP
 
-		create-glyph "cyrl/BashkirKa.\(suffix)" : glyph-proc
+		create-glyph "cyrl/kaBashkir.\(suffix)" : glyph-proc
 			define df : include : DivFrame 1
 			include : df.markSet.e
 			include : BashkirKaShape df XH
@@ -538,6 +526,7 @@ glyph-block Letter-Latin-K : begin
 			include : KHookTopBar xBarLeft
 			if slabLB : include : tagged 'serifLB'
 				HSerif.mb (xBarLeft + [HSwToV HalfStroke]) 0 Jut
+			include : LeaningAnchor.Above.VBar.l xBarLeft
 
 		create-glyph "turnk.\(suffix)" : glyph-proc
 			include : VBar.l xBarLeft 0 Ascender
@@ -591,14 +580,15 @@ glyph-block Letter-Latin-K : begin
 	derive-composites 'KStrokeLegStroke' 0xA744 'KStroke' 'legSlashOver'
 	derive-composites 'kStrokeLegStroke' 0xA745 'kStroke' 'legSlashOver'
 
-	select-variant 'turnK' 0xA7B0 (follow -- 'K')
+	CreateTurnedLetter 'turnK'     0xA7B0  'K'     HalfAdvance (CAP / 2)
+	CreateTurnedLetter 'smcpTurnK' 0x1DF10 'smcpK' HalfAdvance (XH / 2)
+
 	select-variant 'turnk' 0x29E (follow -- 'k')
-	select-variant 'smcpTurnK' 0x1DF10 (follow -- 'K')
 
-	select-variant 'cyrl/BashkirUpperKa' 0x4A0 (follow -- 'cyrl/Ka')
-	select-variant 'cyrl/BashkirKa'      0x4A1 (follow -- 'cyrl/ka')
+	select-variant 'cyrl/KaBashkir' 0x4A0
+	select-variant 'cyrl/kaBashkir' 0x4A1
 
-	select-variant 'grek/KaiSymbol' 0x3CF
+	select-variant 'grek/KaiSymbol' 0x3CF (follow -- 'KDescender')
 
 	derive-multi-part-glyphs 'kDot' null {'k' 'dotAbove'} : lambda [srcs gr] : glyph-proc
 		local { base mark } srcs

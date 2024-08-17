@@ -2,14 +2,13 @@ $$include '../../meta/macros.ptl'
 
 import [mix clamp SuffixCfg] from "@iosevka/util"
 
-
 glyph-module
 
 glyph-block Letter-Latin-Lower-T : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Adjustment : LeaningAnchor
-	glyph-block-import Letter-Shared : CreateCommaCaronComposition
+	glyph-block-import Letter-Shared : CreateCommaCaronComposition CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : CurlyTail FlatHookDepth ConnectedCedilla SerifedArcEnd
 	glyph-block-import Letter-Shared-Shapes : DiagTail DToothlessRise
 	glyph-block-import Letter-Shared-Shapes : TopHook PalatalHook
@@ -46,14 +45,14 @@ glyph-block Letter-Latin-Lower-T : begin
 		export : define [HookShapeT sink df sym offset top bot sw] : begin
 			local xLeft : BarLeftPos df sym
 			local xHook : XHookTerminal df sym
-			local xTurn : [mix xLeft xHook 0.5] + CorrectionOMidS
-			local adb : clamp Hook ((xTurn - xLeft) * 1.2) SmallArchDepthB
+			local xTurn : arch.adjust-x.bot [mix xLeft xHook 0.5]
+			local adb : clamp Hook ((xTurn - xLeft) * 1.2) ArchDepthB
 
 			return : sink
 				widths.lhs sw
 				[if (sink == spiro-outline) corner flat] (offset + xLeft) top [heading Downward]
 				curl (offset + xLeft) (bot + adb)
-				hookend (bot + O + offset) (tight -- !para.isItalic)
+				hookend (bot + offset) (sw -- sw)
 				g4 (xHook - offset) (bot + Hook)
 				if (sink == spiro-outline) {[corner (xHook - offset) top]} {}
 
@@ -276,8 +275,6 @@ glyph-block Letter-Latin-Lower-T : begin
 			local attach : currentGlyph.gizmo.unapply currentGlyph.baseAnchors.hooktopAttach
 			include : TopHook.mBarInner attach.x XH Ascender
 
-		turned "turnt.\(suffix)" nothing "t.\(suffix)" df.middle (XH / 2) [df.markSet.p]
-
 		create-glyph "tCurlyTail.\(suffix)" : glyph-proc
 			include : MarkSet.b
 
@@ -287,25 +284,21 @@ glyph-block Letter-Latin-Lower-T : begin
 
 			local xLeft : Style.BarLeftPos df sym
 
-			local x2 : mix SB xLeft 0.4
-			local y2 : -fine
-
 			include : difference
 				Style.Body df sym top 0
-				MaskBelow (yCrossBar - Stroke - 0.1)
+				MaskBelow (yCrossBar - Stroke - TINY)
 
 			include : dispiro
 				widths.lhs
 				flat xLeft (yCrossBar - Stroke) [heading Downward]
 				curl xLeft (fine + rinner * 2)
-				CurlyTail fine rinner (xLeft + [HSwToV Stroke]) 0 (xLeft + [HSwToV Stroke] + LongJut) x2 y2
+				CurlyTail.n fine 0 (xLeft + [HSwToV Stroke] + LongJut) 0 0
 
 	select-variant 't' 't'
 	select-variant 't/teshLeft' (follow -- 't')
 	select-variant 't/phoneticLeft1' (shapeFrom -- 't')
 	select-variant 't/phoneticLeft2'
 	select-variant 't/phoneticRight'
-	select-variant 'turnt' 0x287 (follow -- 't')
 	CreateCommaCaronComposition 'tcaron' 0x165 't'
 	derive-glyphs 'tCedilla' 0x163 't' ConnectedCedilla
 
@@ -315,6 +308,8 @@ glyph-block Letter-Latin-Lower-T : begin
 	select-variant 'tCurlyTail' 0x236
 
 	select-variant "tHookTopRTail" 0x1DF09
+
+	CreateTurnedLetter "turnt" 0x287 "t" HalfAdvance (XH / 2)
 
 	# U+01BE is actually "t" and "s" combined together
 	define SLAB-NONE        0
@@ -329,13 +324,12 @@ glyph-block Letter-Latin-Lower-T : begin
 			alsoThru.g2 0.5 0.5 [widths.center stroke]
 			g4   df.rightSB (archDepth) [widths.rhs stroke]
 			match sb
-				[Just SLAB-CLASSICAL] : SerifedArcEnd.RtlRhs df.leftSB Middle 0 stroke SHook
+				[Just SLAB-CLASSICAL] : SerifedArcEnd.RtlRhs df.leftSB 0 stroke SHook
 				[Just SLAB-INWARD] : list
-					arcvh
-					g4 (df.middle + CorrectionOMidX * stroke) O
+					arch.rhs 0 (sw -- stroke) (blendPost -- {})
 					g4 df.leftSB DToothlessRise
 				__ : list
-					hookend O (sw -- stroke) (swItalicAdj -- Stroke)
+					hookend 0 (sw -- stroke)
 					g4      df.leftSB SHook
 
 	define TSUpperConfig : object
@@ -343,7 +337,7 @@ glyph-block Letter-Latin-Lower-T : begin
 		bentHookShortNeck   { yShortNeck1 }
 		bentHookShortNeck2  { yShortNeck2 }
 
-	foreach { suffix { yTop } } [Object.entries TSUpperConfig] : do
+	foreach { suffix { top } } [Object.entries TSUpperConfig] : do
 		create-glyph "tsLig/upperHalf.\(suffix)" : glyph-proc
 			define df : DivFrame 1
 			set-base-anchor 'cvDecompose' 0 0
@@ -365,7 +359,7 @@ glyph-block Letter-Latin-Lower-T : begin
 			include : intersection
 				TsLigStrokeShape df Stroke Ascender doBS
 				MaskBelow XH
-			include : SAutoSlabEnd   doBS 0  Stroke Hook
+			include : SAutoSlabEnd df doBS 0  Stroke Hook
 
 	select-variant 'tsLig/upperHalf'
 	select-variant 'tsLig/lowerHalf'

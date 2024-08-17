@@ -26,20 +26,23 @@ glyph-block Letter-Latin-Upper-N : begin
 		local yEnd : match bodyType
 			[Just BODY-SYMMETRIC]    0
 			[Just BODY-ASYMMETRIC] : top * 0.375
+		local swEnd : match bodyType
+			[Just BODY-SYMMETRIC]    swDiag
+			[Just BODY-ASYMMETRIC]   stroke
 
 		include : union
 			match bodyType
 				[Just BODY-SYMMETRIC] : dispiro
 					flat left 0 [widths.heading 0 stroke Upward]
 					curl left (top * 0.4) [heading Upward]
-					straight.up.end left top [widths.heading 0 swDiag Upward]
-				[Just BODY-ASYMMETRIC] : VBar.l left 0 top stroke
+					straight.up.end left top [widths.heading 0 swEnd Upward]
+				[Just BODY-ASYMMETRIC] : VBar.l left 0 top swEnd
 			match bodyType
 				[Just BODY-SYMMETRIC] : dispiro
 					flat right top [widths.heading 0 stroke Downward]
 					curl right (top * 0.6) [heading Downward]
-					straight.down.end right 0 [widths.heading 0 swDiag Downward]
-				[Just BODY-ASYMMETRIC] : VBar.r right 0 top stroke
+					straight.down.end right 0 [widths.heading 0 swEnd Downward]
+				[Just BODY-ASYMMETRIC] : VBar.r right 0 top swEnd
 			intersection [Rect top 0 left right]
 				ExtLineCenter 2 swDiag (left + swDiag) top (right - swDiag) yEnd
 
@@ -50,26 +53,31 @@ glyph-block Letter-Latin-Upper-N : begin
 			[Just SLAB-MOTION] : composite-proc sf.lt.outer
 			[Just SLAB-NONE]   : no-shape
 
+		return : object swEnd
+
 	define [NRevShape] : with-params [bodyType slabType top left right [crowd 2] [crDiag 4]] : glyph-proc
 		local swDiag : AdviceStroke crDiag
 		local stroke : AdviceStroke crowd
 		local yEnd : match bodyType
 			[Just BODY-SYMMETRIC]    0
 			[Just BODY-ASYMMETRIC] : top * 0.375
+		local swEnd : match bodyType
+			[Just BODY-SYMMETRIC]    swDiag
+			[Just BODY-ASYMMETRIC]   stroke
 
 		include : union
 			match bodyType
 				[Just BODY-SYMMETRIC] : dispiro
 					flat left top [widths.lhs.heading stroke Downward]
 					curl left (top * 0.6) [heading Downward]
-					straight.down.end left 0 [widths.lhs.heading swDiag Downward]
-				[Just BODY-ASYMMETRIC] : VBar.l left 0 top stroke
+					straight.down.end left 0 [widths.lhs.heading swEnd Downward]
+				[Just BODY-ASYMMETRIC] : VBar.l left 0 top swEnd
 			match bodyType
 				[Just BODY-SYMMETRIC] : dispiro
 					flat right 0 [widths.lhs.heading stroke Upward]
 					curl right (top * 0.4) [heading Upward]
-					straight.up.end right top [widths.lhs.heading swDiag Upward]
-				[Just BODY-ASYMMETRIC] : VBar.r right 0 top stroke
+					straight.up.end right top [widths.lhs.heading swEnd Upward]
+				[Just BODY-ASYMMETRIC] : VBar.r right 0 top swEnd
 			intersection [Rect top 0 left right]
 				ExtLineCenter 2 swDiag (left + swDiag) yEnd (right - swDiag) top
 
@@ -104,10 +112,10 @@ glyph-block Letter-Latin-Upper-N : begin
 
 		create-glyph "Eng.\(suffix)" : glyph-proc
 			include : MarkSet.capDesc
-			include : NShape bodyType slabType CAP SB RightSB (crDiag -- crD)
-			include : EngHook RightSB 0 Descender
+			local [object swEnd] : include : NShape bodyType slabType CAP SB RightSB (crDiag -- crD)
+			include : EngHook RightSB 0 Descender (sw -- [Math.min Stroke (swEnd * 1.5)])
 
-		create-glyph "NLTail.\(suffix)" : glyph-proc
+		create-glyph "NHookLeft.\(suffix)" : glyph-proc
 			include [refer-glyph "N.\(suffix)"] AS_BASE ALSO_METRICS
 			eject-contour 'serifLB'
 			include : PalatalHook.lExt SB 0
@@ -133,9 +141,9 @@ glyph-block Letter-Latin-Upper-N : begin
 
 	derive-composites 'NDescender' 0xA790 'N' [CyrDescender.rSideJut RightSB 0]
 
-	select-variant 'Eng'    0x14A  (follow -- 'N')
-	select-variant 'smcpN'  0x274  (follow -- 'N')
-	select-variant 'NLTail' 0x19D  (follow -- 'N')
+	select-variant 'Eng'       0x14A  (follow -- 'N')
+	select-variant 'smcpN'     0x274  (follow -- 'N')
+	select-variant 'NHookLeft' 0x19D  (follow -- 'N')
 	select-variant 'currency/nairaSignBase' (follow -- 'N')
 
 	create-glyph 'cyrl/I' 0x418 : glyph-proc

@@ -10,7 +10,7 @@ import { sampleImageCountEmOfCv } from "./cv-ot.mjs";
 export default async function processCherryPickingStyles(argv, dirs) {
 	const variantsData = await parseVariantsData(argv);
 	const md = new MdCol("Section-Cherry-Picking-Styles");
-	const headerPath = path.resolve(dirs.fragments, "description-cheery-picking-styles.md");
+	const headerPath = path.resolve(dirs.fragments, "description-cherry-picking-styles.md");
 	md.log(await fs.promises.readFile(headerPath, "utf-8"));
 	for (const cv of [...variantsData.specials, ...variantsData.primes]) {
 		if (!cv.tag && !cv.isSpecial) continue;
@@ -21,7 +21,7 @@ export default async function processCherryPickingStyles(argv, dirs) {
 		const info = {
 			introMD: cv.description || `Styles for ${sampleText + explainText}`,
 			sampleImageCountEm: sampleImageCountEmOfCv(cv),
-			alternatives: []
+			alternatives: [],
 		};
 		const defaults = figureOutDefaults(variantsData, cv);
 		for (const cvv of cv.variants) {
@@ -31,14 +31,14 @@ export default async function processCherryPickingStyles(argv, dirs) {
 					imageId: `${cv.key}-${cvv.key}`,
 					selectors: [`${cv.key} = '${cvv.key}'`, `${cv.tag} = ${cvv.rank}`],
 					description:
-						formatDescription(cvv.description) + formatDefaults(cvv.key, defaults)
+						formatDescription(cvv.description) + formatDefaults(cvv.key, defaults),
 				});
 			} else {
 				info.alternatives.push({
 					imageId: `${cv.key}-${cvv.key}`,
 					selectors: [`${cv.key} = '${cvv.key}'`],
 					description:
-						formatDescription(cvv.description) + formatDefaults(cvv.key, defaults)
+						formatDescription(cvv.description) + formatDefaults(cvv.key, defaults),
 				});
 			}
 		}
@@ -48,19 +48,22 @@ export default async function processCherryPickingStyles(argv, dirs) {
 }
 
 function formatCv(md, dirs, info) {
-	md.log(`  - ${info.introMD}:`);
+	const INDENT = `    `;
+	md.log(`  - ${info.introMD}`);
+	md.log(`${INDENT}<details><summary>${info.alternatives.length} variants</summary>`);
 	const imgWidth = 32 * info.sampleImageCountEm;
-	let sTable = "     <table>";
+	let sTable = INDENT + "<table>" + "\n";
 	for (const alt of info.alternatives) {
 		const imageId = `${dirs.images}/cv-${alt.imageId}`;
 		const image = ImgX(imageId, imgWidth);
 		const selectorText = alt.selectors.map(x => `<code>${x}</code>`).join(", ");
 		sTable +=
+			INDENT +
 			`<tr><td rowspan="2" width="${2 * 14 + imgWidth}">${image}</td>` +
-			`<td>${selectorText}</td></tr>`;
-		sTable += `<tr><td>${alt.description}</td></tr>`;
+			`<td>${selectorText}</td></tr>\n`;
+		sTable += INDENT + `<tr><td>${alt.description}</td></tr>\n`;
 	}
-	sTable += "</table>";
+	sTable += INDENT + "</table></details>";
 	md.log(sTable);
 }
 function formatDescription(s) {
@@ -93,26 +96,26 @@ function figureOutDefaults(variantsData, gr) {
 			desc: "Sans Upright",
 			mask: 1,
 			result: null,
-			composition: { ...variantsData.defaults.sans.upright }
+			composition: { ...variantsData.defaults.sans.upright },
 		},
 		{
 			desc: "Sans Italic",
 			mask: 2,
 			result: null,
-			composition: { ...variantsData.defaults.sans.italic }
+			composition: { ...variantsData.defaults.sans.italic },
 		},
 		{
 			desc: "Slab Upright",
 			mask: 4,
 			result: null,
-			composition: { ...variantsData.defaults.slab.upright }
+			composition: { ...variantsData.defaults.slab.upright },
 		},
 		{
 			desc: "Slab Italic",
 			mask: 8,
 			result: null,
-			composition: { ...variantsData.defaults.slab.italic }
-		}
+			composition: { ...variantsData.defaults.slab.italic },
+		},
 	];
 	for (const variant of gr.variants) {
 		for (const dc of defaultConfigs) {

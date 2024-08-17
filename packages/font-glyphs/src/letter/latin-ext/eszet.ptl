@@ -49,7 +49,7 @@ glyph-block Letter-Latin-Lower-Eszet : begin
 		: else : include : dispiro
 			widths.lhs
 			g4 xHook (Ascender - Hook)
-			hookstart (Ascender - O)
+			hookstart Ascender
 			flat l XH
 			curl l 0 [heading Downward]
 		local t : mix 0 Ascender 0.7
@@ -82,23 +82,24 @@ glyph-block Letter-Latin-Lower-Eszet : begin
 			mix (SB + [HSwToV Stroke]) RightSB 0.1
 			mix SB RightSB 0.3
 		define xMiddle : Math.max xFinal (SB + [HSwToV : 1.2 * Stroke]) (RightSB - ymiddle / 2 - Stroke * 0.75)
-		define xMiddleBot : Math.max xMiddle (xFinal + 0.01 + TanSlope * Stroke)
+		define xMiddleBot : Math.max xMiddle (xFinal + TINY + TanSlope * Stroke)
+
+		define ada : ArchDepthAOf (0.75 * ArchDepth) (0.5 * Width)
+		define adb : ArchDepthBOf (0.75 * ArchDepth) (0.5 * Width)
 
 		include : MarkSet.b
 		include : dispiro
 			widths.rhs
 			flat SB 0 [heading Upward]
 			curl SB XH
-			arcvh
-			g4 (Middle - CorrectionOMidS) (Ascender - O)
-			archv
-			g4 (RightSB + O * 2) [YSmoothMidR ymiddle Ascender]
+			arch.rhs Ascender
+			g4 (RightSB + O * 2) [YSmoothMidR ymiddle Ascender ada adb]
 			g4.left.end xMiddle ymiddle [heading Leftward]
 		include : dispiro
 			widths.rhs
 			g4.right.start xMiddle (ymiddle + Stroke) [heading Rightward]
 			archv
-			g4   (RightSB - O) [YSmoothMidR (ymiddle + Stroke) 0]
+			g4   (RightSB - O) [YSmoothMidR (ymiddle + Stroke) 0 ada adb]
 			arcvh
 			flat xMiddleBot 0 [heading Leftward]
 			curl xFinal 0 [heading Leftward]
@@ -134,16 +135,17 @@ glyph-block Letter-Latin-Lower-Eszet : begin
 			widths.rhs swOuter
 			flat SB 0 [heading Upward]
 			curl SB (Ascender - archDepthATop)
-			arcvh
-			g4 ([mix SB sTopHookX 0.52] - CorrectionOMidX * swOuter) (Ascender - O) [widths.rhs : mix swOuter swInner 0.5]
-			archv
+			arch.rhs Ascender
+				sw -- [mix swOuter swInner 0.5]
+				swBefore -- swOuter
+				swAfter -- swInner
 			g4.down.mid sTopHookX (Ascender - archDepthBTop + TanSlope * swInner) [widths.rhs.heading swInner Downward]
 			alsoThru.g2 0.5 0.50 [widths.center swInner]
 			g4 sTurnX [mix innerSmoothB (Ascender - archDepthBTop) 0.5] [widths.lhs.heading swInner Downward]
 			alsoThru.g2 0.5 0.50 [widths.center swInner]
 			g4 (RightSB - OX) (innerSmoothB - 2 * TanSlope * swInner) [widths.rhs.heading swInner Downward]
 			arcvh
-			flat ([Math.max (sEndX + 0.1 + TanSlope * swInner) : Math.min (RightSB - innerSmoothB) [mix sEndX RightSB 0.375]] + CorrectionOMidX * swInner / 2 + TanSlope * swInner ) 0
+			flat [arch.adjust-x.bot ([Math.max (sEndX + TINY + TanSlope * swInner) : Math.min (RightSB - innerSmoothB) [mix sEndX RightSB 0.375]] + TanSlope * swInner) (swInner / 2)] 0
 			curl sEndX 0 [heading Leftward]
 
 		include : EszetSerifs [DivFrame 1] false slab
@@ -179,17 +181,59 @@ glyph-block Letter-Latin-Upper-Eszet : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 
+	define SERIF-NONE    0
+	define SERIF-BOTTOM  1
+	define SERIF-MOTION  2
 
-	create-glyph 'Eszet' 0x1E9E : glyph-proc
+	define SERIF-DUAL    : SERIF-BOTTOM + SERIF-MOTION
+
+	define [CapitalEszetSerifs slab] : glyph-proc
+		if [maskBits slab SERIF-BOTTOM] : include : HSerif.lb SB 0   SideJut
+		if [maskBits slab SERIF-MOTION] : include : HSerif.lt SB CAP SideJut
+
+	define [EszetRoundedShape slab] : glyph-proc
 		include : MarkSet.capital
 
 		define ymiddle : [mix 0 CAP 0.5] - HalfStroke
-		define ymiddleCap : [mix 0 CAP 0.54] - HalfStroke
+		define ymiddleCap : [mix 0 CAP 0.5] + HalfStroke
+		define xFinal : Math.max
+			mix (SB + [HSwToV Stroke]) RightSB 0.1
+			mix SB RightSB 0.3
+		define xMiddle : RightSB - ymiddle / 2 - Stroke * 0.75
+		define xMiddleBot : RightSB - ymiddle / 2 - HalfStroke
+		define rightTopX : RightSB + O * 2
+
+		include : dispiro
+			widths.lhs
+			g4 rightTopX (CAP - ArchDepthB)
+			hookstart CAP
+			flat SB XH
+			curl SB 0 [heading Downward]
+		include : dispiro
+			widths.rhs
+			g4   xMiddle ymiddleCap
+			archv
+			g4   (RightSB - O) [mix 0 ymiddleCap 0.5]
+			arcvh
+			flat xMiddleBot 0
+			curl xFinal 0 [heading Leftward]
+		include : dispiro
+			widths.rhs
+			g4 rightTopX (CAP - ArchDepthB)
+			g4 xMiddle ymiddleCap [widths Stroke 0]
+
+		include : CapitalEszetSerifs slab
+
+	define [EszetFlatTopShape slab] : glyph-proc
+		include : MarkSet.capital
+
+		define ymiddle : [mix 0 CAP 0.5] - HalfStroke
+		define ymiddleCap : [mix 0 CAP 0.54] + HalfStroke
 		define xFinal : Math.max
 			mix (SB + [HSwToV Stroke]) RightSB 0.1
 			mix SB RightSB 0.3
 		define xMiddle : Math.max xFinal (SB + [HSwToV : 1.2 * Stroke]) (RightSB - ymiddle / 2 - Stroke * 0.75)
-		define xMiddleBot : Math.max xMiddle (xFinal + 0.01 + TanSlope * Stroke)
+		define xMiddleBot : Math.max xMiddle (xFinal + TINY + TanSlope * Stroke)
 		define rightTopX : RightSB + O
 
 		include : dispiro
@@ -201,15 +245,64 @@ glyph-block Letter-Latin-Upper-Eszet : begin
 			curl SB 0 [heading Downward]
 		include : dispiro
 			widths.rhs
-			g4   xMiddle (ymiddleCap + Stroke) [heading Rightward]
+			g4   xMiddle ymiddleCap [heading Rightward]
 			archv
-			g4   (RightSB - O * 2) [YSmoothMidR (ymiddleCap + Stroke) 0]
+			g4   (RightSB - O * 2) [YSmoothMidR ymiddleCap 0]
 			arcvh
 			flat xMiddleBot 0
 			curl xFinal 0 [heading Leftward]
 		include : dispiro
 			widths.rhs
 			g4 rightTopX (CAP - Stroke)
-			g4 xMiddle (ymiddleCap + Stroke) [widths.lhs Stroke]
+			g4 xMiddle ymiddleCap [widths.lhs Stroke]
 
-		if SLAB : include : HSerif.lb SB 0 SideJut
+		include : CapitalEszetSerifs slab
+
+	define [EszetCornerShape slab] : glyph-proc
+		include : MarkSet.capital
+
+		define ymiddle : [mix 0 CAP 0.5] - HalfStroke
+		define ymiddleCap : [mix 0 CAP 0.54] + HalfStroke
+		define xFinal : Math.max
+			mix (SB + [HSwToV Stroke]) RightSB 0.1
+			mix SB RightSB 0.3
+		define xMiddle : Math.max xFinal (SB + [HSwToV : 1.2 * Stroke]) (RightSB - ymiddle / 2 - Stroke * 0.75)
+		define xMiddleBot : Math.max xMiddle (xFinal + TINY + TanSlope * Stroke)
+		define rightTopX : RightSB + O
+
+		include : VBar.l SB 0 CAP
+		include : HBar.t SB rightTopX CAP
+		include : dispiro
+			widths.rhs
+			g4   xMiddle ymiddleCap [heading Rightward]
+			archv
+			g4   (RightSB - O * 2) [YSmoothMidR ymiddleCap 0]
+			arcvh
+			flat xMiddleBot 0
+			curl xFinal 0 [heading Leftward]
+		include : dispiro
+			widths.rhs
+			g4 rightTopX (CAP - Stroke)
+			g4 xMiddle ymiddleCap [widths.lhs Stroke]
+
+		include : CapitalEszetSerifs slab
+
+	define CapitalEszetConfig : SuffixCfg.combine
+		SuffixCfg.weave
+			object # body
+				rounded    EszetRoundedShape
+				flatTop    EszetFlatTopShape
+				corner     EszetCornerShape
+			function [body] : object # serifs
+				serifless               SERIF-NONE
+				serifed : match body
+					[Just 'corner'] SERIF-DUAL
+					__              SERIF-BOTTOM
+		object # Exclusive corner serif variants
+			cornerMotionSerifed { EszetCornerShape SERIF-MOTION }
+			cornerBottomSerifed { EszetCornerShape SERIF-BOTTOM }
+
+	foreach { suffix { Base serif } } [pairs-of CapitalEszetConfig] : do
+		create-glyph "Eszet.\(suffix)" : Base serif
+
+	select-variant 'Eszet' 0x1E9E

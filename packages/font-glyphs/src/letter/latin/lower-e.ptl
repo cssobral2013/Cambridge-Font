@@ -8,149 +8,131 @@ glyph-module
 glyph-block Letter-Latin-Lower-E : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Letter-Shared : CreateSelectorVariants DefineSelectorGlyph
+	glyph-block-import Letter-Shared : CreateSelectorVariants DefineSelectorGlyph CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : FlatHookDepth RetroflexHook
-	glyph-block-import Letter-Shared-Shapes : SerifedArcEnd ArcEndSerif DToothlessRise
+	glyph-block-import Letter-Shared-Shapes : SerifedArcEnd InwardSlabArcEnd ArcEndSerif
 	glyph-block-import Mark-Shared-Metrics : markExtend markStroke markStress markFine
 	glyph-block-import Mark-Above : aboveMarkTop aboveMarkBot aboveMarkMid aboveMarkStack
 	glyph-block-import Mark-Adjustment : ExtendBelowBaseAnchors
 	glyph-block-import Letter-Latin-C : CConfig
 
-	define [xTerminalR df] : df.rightSB - OX * [if para.isItalic 0 0.5]
+	define [HookHeightFull top stroke noItalicAdj] : Math.min Hook (AHook / XH * top)
 
-	define [HookHeight top stroke] : Math.min Hook (AHook / XH * top)
-		if para.isItalic top (stroke / 2 + (top - stroke * 3) / 4)
+	define [HookHeight top stroke noItalicAdj] : Math.min [HookHeightFull top stroke noItalicAdj]
+		if (para.isItalic && !noItalicAdj) top (stroke + 0.277 * (top - stroke * 3))
 
 	define SLAB-NONE       0
 	define SLAB-CLASSICAL  1
 	define SLAB-INWARD     2
 
-	define [SmallESerifedTerminalShape df top stroke tailSlab] : match tailSlab
+	define [SmallESerifedTerminalShape df top stroke tailSlab schwaTail] : match tailSlab
 		[Just SLAB-CLASSICAL] : begin
-			SerifedArcEnd.LtrLhs df.rightSB df.middle 0 stroke [HookHeight top stroke]
-		[Just SLAB-INWARD] : list
-			arcvh
-			g4 (df.middle + CorrectionOMidX * stroke) O
-			g4 df.rightSB (DToothlessRise)
+			SerifedArcEnd.LtrLhs df.rightSB 0 stroke [HookHeightFull top stroke schwaTail]
+		[Just SLAB-INWARD] : begin
+			InwardSlabArcEnd.LtrLhs df.rightSB 0 stroke [HookHeightFull top stroke schwaTail]
 		__ : list
-			hookend O (sw -- stroke)
-			g4 [xTerminalR df] [HookHeight top stroke]
+			hookend 0 (sw -- stroke) (noSwash -- schwaTail)
+			g4 (df.rightSB - [if (para.isItalic && !schwaTail) 0 0.5] * OX) [HookHeight top stroke schwaTail]
 
-	define [SmallETerminalSerif df top stroke tailSlab] : match tailSlab
-		[Just SLAB-CLASSICAL] : ArcEndSerif.R df.rightSB 0 stroke [HookHeight top stroke]
-		[Just SLAB-INWARD] : ArcEndSerif.InwardR df.rightSB 0 stroke [HookHeight top stroke]
+	define [SmallETerminalSerif df top stroke tailSlab schwaTail] : match tailSlab
+		[Just SLAB-CLASSICAL] : ArcEndSerif.R       df.rightSB 0 stroke [HookHeightFull top stroke schwaTail]
+		[Just SLAB-INWARD]    : ArcEndSerif.InwardR df.rightSB 0 stroke [HookHeightFull top stroke schwaTail]
 		__ : no-shape
 
 	glyph-block-export SmallEShape
-	define [SmallEShape] : with-params [df top stroke barpos [bbd 0] tailSlab] : glyph-proc
-		local barbottom : top * [fallback barpos DesignParameters.eBarPos] - (stroke / 2)
+	define [SmallEShape] : with-params [df top stroke barpos [bbd 0] tailSlab schwaTail] : glyph-proc
+		local barBottom : top * [fallback barpos DesignParameters.eBarPos] - (stroke / 2)
 
-		include : HBar.b (df.leftSB + (stroke / 2) + OX + bbd) (df.rightSB - (stroke / 2) - OX) barbottom stroke
+		include : HBar.b (df.leftSB + (stroke / 2) + OX + bbd) (df.rightSB - (stroke / 2) - OX) barBottom stroke
 		local path : include : dispiro
 			widths.lhs stroke
-			flat (df.rightSB - OX) barbottom [heading Upward]
+			flat (df.rightSB - OX) barBottom [heading Upward]
 			curl (df.rightSB - OX) (top - [df.archDepthB SmallArchDepth])
-			arcvh
-			g4 (df.middle - CorrectionOMidS) (top - O)
-			archv
+			arch.lhs top (sw -- stroke)
 			flat (df.leftSB + OX) (top - [df.archDepthA SmallArchDepth])
-			curl (df.leftSB + OX) (0 + [df.archDepthB SmallArchDepth])
-			SmallESerifedTerminalShape df top stroke tailSlab
+			curl (df.leftSB + OX) (0   + [df.archDepthB SmallArchDepth])
+			SmallESerifedTerminalShape df top stroke tailSlab schwaTail
 
-		include : SmallETerminalSerif df top stroke tailSlab
+		include : SmallETerminalSerif df top stroke tailSlab schwaTail
 
 		return path.rhsKnots.[path.rhsKnots.length - 1]
 
 	glyph-block-export RevSmallEShape
 	define [RevSmallEShape] : with-params [df top stroke barpos] : glyph-proc
-		local barbottom (top * [fallback barpos DesignParameters.eBarPos] - HalfStroke)
-		local hookx df.leftSB
-		local hookmiddle : [mix (df.rightSB - O) hookx 0.55] + CorrectionOMidS
+		local barBottom : top * [fallback barpos DesignParameters.eBarPos] - (stroke / 2)
 
-		include : HBar.b (df.leftSB + (stroke / 2)) (df.rightSB - (stroke / 2)) barbottom stroke
+		include : HBar.b (df.leftSB + (stroke / 2) + OX) (df.rightSB - (stroke / 2) - OX) barBottom stroke
 		include : dispiro
 			widths.rhs stroke
-			flat (df.leftSB + OX) barbottom [heading Upward]
+			flat (df.leftSB + OX) barBottom [heading Upward]
 			curl (df.leftSB + OX) (top - [df.archDepthA SmallArchDepth])
-			arcvh
-			g4   df.middle (top - O)
-			archv
+			arch.rhs top (sw -- stroke)
 			flat (df.rightSB - OX) (top - [df.archDepthB SmallArchDepth])
-			curl (df.rightSB - OX) [df.archDepthA SmallArchDepth]
-			hookend O (sw -- stroke)
-			g4 (df.width - [xTerminalR df]) [HookHeight top stroke]
+			curl (df.rightSB - OX) (0   + [df.archDepthA SmallArchDepth])
+			hookend 0 (sw -- stroke)
+			g4   (df.leftSB + 0.5 * OX) [HookHeight top stroke true]
 
 	glyph-block-export SmallERoundedShape
-	define [SmallERoundedShape] : with-params [df top stroke barpos tailSlab] : glyph-proc
-		local barbottom : top * [fallback barpos : if para.isItalic 0.500 0.475] - (stroke / 2)
-
-		local pBarRight : 0.475 - TanSlope * 0.5
-		local pArcRight : if para.isItalic (0.425 - TanSlope * 0.25) (ArchDepthA / (ArchDepthA + ArchDepthB))
-
+	define [SmallERoundedShape] : with-params [df top stroke barpos tailSlab schwaTail] : glyph-proc
+		local barBottom : top * [fallback barpos : if para.isItalic 0.500 0.475] - (stroke / 2)
 		local xStart : df.leftSB + [HSwToV : 0.125 * stroke]
-		local pfIt : if para.isItalic 1 0
+		local extraCurliness : if para.isItalic (0.05 * (top - barBottom)) 0
 		local path : include : dispiro
 			widths.lhs stroke
-			[if para.isItalic g2 flat] xStart (barbottom - pfIt * [StrokeWidthBlend 2 3] * O)
+			[if para.isItalic g4 flat] xStart (barBottom + extraCurliness)
 			if para.isItalic [alsoThru.g2 0.5 0.8] [list]
-			[if para.isItalic g2 curl] [mix (xStart + [if para.isItalic 0.25 0.0] * [HSwToV stroke]) df.rightSB pBarRight] (barbottom + pfIt * [StrokeWidthBlend 0.25 1] * O)
-			if para.isItalic {} [archv]
-			g4 (df.rightSB - OX) [mix barbottom top pArcRight]
-			arcvh
-			g4 (df.middle - CorrectionOMidS) (top - O)
+			[if para.isItalic g4.right.mid curl] [mix xStart df.rightSB 0.475] (barBottom - extraCurliness)
 			archv
+			g4   (df.rightSB - OX) [YSmoothMidR top barBottom]
+			arch.lhs top (sw -- stroke)
 			flat (df.leftSB + OX) (top - [df.archDepthA SmallArchDepth])
-			curl (df.leftSB + OX) (0 + [df.archDepthB SmallArchDepth])
-			SmallESerifedTerminalShape df top stroke tailSlab
+			curl (df.leftSB + OX) (0   + [df.archDepthB SmallArchDepth])
+			SmallESerifedTerminalShape df top stroke tailSlab schwaTail
 
-		include : SmallETerminalSerif df top stroke tailSlab
+		include : SmallETerminalSerif df top stroke tailSlab schwaTail
 
 		return path.rhsKnots.[path.rhsKnots.length - 1]
 
 	glyph-block-export RevSmallERoundedShape
 	define [RevSmallERoundedShape] : with-params [df top stroke barpos] : glyph-proc
-		local barbottom : top * [fallback barpos : if para.isItalic 0.500 0.475] - (stroke / 2)
-
-		local pBarRight : 0.475 - TanSlope * 0.5
-		local pArcRight : if para.isItalic (0.425 + TanSlope * 0.25) (ArchDepthB / (ArchDepthA + ArchDepthB))
-
+		local barBottom : top * [fallback barpos : if para.isItalic 0.500 0.475] - (stroke / 2)
 		local xStart : df.rightSB - [HSwToV : 0.125 * stroke]
 		local pfIt : if para.isItalic 1 0
+		local extraCurliness : if para.isItalic (0.05 * (top - barBottom)) 0
 		include : dispiro
 			widths.rhs stroke
-			[if para.isItalic g2 flat] xStart (barbottom - pfIt * [StrokeWidthBlend 2 3] * O)
+			[if para.isItalic g4 flat] xStart (barBottom + extraCurliness)
 			if para.isItalic [alsoThru.g2 0.5 0.8] [list]
-			[if para.isItalic g2 curl] [mix (xStart - [if para.isItalic 0.25 0.0] * [HSwToV stroke]) df.leftSB pBarRight] (barbottom + pfIt * [StrokeWidthBlend 0.25 1] * O)
-			if para.isItalic {} [archv]
-			g4 (df.leftSB + OX) [mix barbottom top pArcRight]
-			arcvh
-			g4 (df.middle - CorrectionOMidS) (top - O)
+			[if para.isItalic g4.left.mid curl] [mix xStart df.leftSB 0.475] (barBottom - extraCurliness)
 			archv
+			g4   (df.leftSB + OX) [YSmoothMidL top barBottom]
+			arch.rhs top (sw -- stroke)
 			flat (df.rightSB - OX) (top - [df.archDepthB SmallArchDepth])
-			curl (df.rightSB - OX) (0 + [df.archDepthA SmallArchDepth])
-			hookend O (sw -- stroke)
-			g4 (df.width - [xTerminalR df]) [HookHeight top stroke]
+			curl (df.rightSB - OX) (0   + [df.archDepthA SmallArchDepth])
+			hookend 0 (sw -- stroke)
+			g4   (df.leftSB + 0.5 * OX) [HookHeight top stroke true]
 
 	define [AbkCheShape] : with-params [fDesc Body df top tailSlab] : glyph-proc
 		local gap : (df.width - 2 * df.leftSB - 2.5 * df.mvs) * 0.375 - [HSwToV : 0.25 * df.mvs]
 		define divSub : (df.width - gap - df.mvs) / Width
 		define dfSub : DivFrame divSub 2
 		include : Body dfSub top df.mvs (tailSlab -- tailSlab)
+		define offset : Width * (df.div - divSub)
 		if fDesc : begin
 			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
 			include : difference
 				VBar.m dfSub.middle (-LongJut + 0.5 * Stroke) (df.mvs + O) [AdviceStroke 3.5 df.div]
 				OShapeOutline.NoOvershoot top 0 dfSub.leftSB dfSub.rightSB df.mvs
-		include : Translate (Width * (df.div - divSub)) 0
+		include : Translate offset 0
 
 		local hd : FlatHookDepth df
 		local yBar : top * DesignParameters.eBarPos - 0.5 * df.mvs
-		include : intersection [MaskLeft (dfSub.leftSB + Width * (df.div - divSub))] : dispiro
+		include : intersection [MaskLeft : dfSub.leftSB + offset] : dispiro
 			flat (df.leftSB - [HSwToV : 0.25 * df.mvs]) (yBar + Hook) [widths.lhs.heading df.mvs Downward]
 			curl (df.leftSB - [HSwToV : 0.25 * df.mvs]) (yBar + [Math.min Hook hd.y] - df.mvs * 0.25) [heading Downward]
 			arcvh
-			flat [Math.min (df.leftSB + hd.x - [HSwToV : 0.5 * df.mvs]) (dfSub.leftSB + Width * (df.div - divSub))] yBar
-			curl (dfSub.middle + Width * (df.div - divSub)) yBar
+			flat [Math.min (df.leftSB + hd.x - [HSwToV : 0.5 * df.mvs]) (dfSub.leftSB + offset)] yBar
+			curl (dfSub.middle + offset) yBar
 
 	define SmallEConfig : object
 		flatCrossbar { SmallEShape        RevSmallEShape        }
@@ -183,7 +165,7 @@ glyph-block Letter-Latin-Lower-E : begin
 				MaskBelow lastKnot.y
 				dispiro
 					g4 lastKnot.x lastKnot.y [widths.rhs fine]
-					g4 (lastKnot.x - beginCoSlope * 0.01) (lastKnot.y - 0.01)
+					g4 (lastKnot.x - beginCoSlope * TINY) (lastKnot.y - TINY)
 					alsoThruThem.fromTWithOffset {(1/3) (2/3)} : object
 						rx       : function [rt] rt
 						deltaX   : function [rt] 0
@@ -225,26 +207,26 @@ glyph-block Letter-Latin-Lower-E : begin
 			include : HBar.m [mix SB 0 0.7] [mix RightSB Width 0.7] (XH * 0.25 + Stroke * 0.25)
 				Math.min [AdviceStroke 5] (0.25 * (XH - 3 * Stroke))
 
-		DefineSelectorGlyph "Schwa" suffix [MarkSet.capital]
-		DefineSelectorGlyph "schwa" suffix [MarkSet.e]
+		DefineSelectorGlyph "Schwa" suffix [DivFrame 1] 'capital'
+		DefineSelectorGlyph "schwa" suffix [DivFrame 1] 'e'
 
 		define abkCheDf : DivFrame para.diversityM 3
 
-		DefineSelectorGlyph "cyrl/abk/Che" suffix [abkCheDf.markSet.capital]
-		DefineSelectorGlyph "cyrl/abk/che" suffix [abkCheDf.markSet.e]
-		DefineSelectorGlyph "cyrl/abk/CheDescender" suffix [abkCheDf.markSet.capDesc]
-		DefineSelectorGlyph "cyrl/abk/cheDescender" suffix [abkCheDf.markSet.p]
+		DefineSelectorGlyph "cyrl/abk/Che"          suffix abkCheDf 'capital'
+		DefineSelectorGlyph "cyrl/abk/che"          suffix abkCheDf 'e'
+		DefineSelectorGlyph "cyrl/abk/CheDescender" suffix abkCheDf 'capDesc'
+		DefineSelectorGlyph "cyrl/abk/cheDescender" suffix abkCheDf 'p'
 
 		foreach { suffixSerif { styTop styBot } } [Object.entries CConfig] : do
 			create-glyph "Schwa.\(suffix).\(suffixSerif)" : glyph-proc
 				set-width 0
 				set-mark-anchor 'cvDecompose' 0 0
-				include : Body [DivFrame 1] CAP [AdviceStroke2 2 3 CAP] (tailSlab -- styTop)
+				include : Body [DivFrame 1] CAP [AdviceStroke2 2 3 CAP] (tailSlab -- styTop) (schwaTail -- true)
 				include : FlipAround Middle (CAP / 2)
 			create-glyph "schwa.\(suffix).\(suffixSerif)" : glyph-proc
 				set-width 0
 				set-mark-anchor 'cvDecompose' 0 0
-				include : Body [DivFrame 1] XH [AdviceStroke2 2 3 XH] (tailSlab -- styTop)
+				include : Body [DivFrame 1] XH [AdviceStroke2 2 3 XH] (tailSlab -- styTop) (schwaTail -- true)
 				include : FlipAround Middle (XH / 2)
 
 			create-glyph "cyrl/abk/Che.\(suffix).\(suffixSerif)" : glyph-proc
@@ -264,8 +246,8 @@ glyph-block Letter-Latin-Lower-E : begin
 				set-mark-anchor 'cvDecompose' 0 0
 				include : AbkCheShape 1 Body abkCheDf XH (tailSlab -- styBot)
 
-		select-variant "Schwa.\(suffix)" (follow -- "CTopSerifOnly")
-		select-variant "schwa.\(suffix)" (follow -- "cTopSerifOnly")
+		select-variant "Schwa.\(suffix)" (follow -- 'cyrl/ETopSerifOnly')
+		select-variant "schwa.\(suffix)" (follow -- 'cyrl/eTopSerifOnly')
 		select-variant "cyrl/abk/Che.\(suffix)" (follow -- 'CBottomSerifOnly')
 		select-variant "cyrl/abk/che.\(suffix)" (follow -- 'cBottomSerifOnly')
 		select-variant "cyrl/abk/CheDescender.\(suffix)" (follow -- 'CBottomSerifOnly')
@@ -273,7 +255,7 @@ glyph-block Letter-Latin-Lower-E : begin
 
 	select-variant 'e' 'e'
 	alias 'cyrl/ie' 0x435 'e'
-	turned 'turne' 0x1DD 'e' Middle (XH / 2)
+	CreateTurnedLetter 'turne' 0x1DD 'e' HalfAdvance (XH / 2)
 
 	select-variant 'eOgonek' 0x119 (follow -- 'e')
 	select-variant 'eRetroflexHook' 0x1D92 (follow -- 'e')
@@ -283,10 +265,10 @@ glyph-block Letter-Latin-Lower-E : begin
 
 	select-variant 'eBar' 0xAB33 (follow -- 'e')
 
-	CreateSelectorVariants "Schwa" 0x18F [Object.keys SmallEConfig]
+	CreateSelectorVariants 'Schwa' 0x18F [Object.keys SmallEConfig] (follow -- 'e')
 	alias 'cyrl/Schwa' 0x4D8 'Schwa'
 
-	CreateSelectorVariants "schwa" 0x259 [Object.keys SmallEConfig]
+	CreateSelectorVariants 'schwa' 0x259 [Object.keys SmallEConfig] (follow -- 'e')
 	alias 'cyrl/schwa' 0x4D9 'schwa'
 
 	CreateSelectorVariants 'cyrl/abk/Che' 0x4BC [Object.keys SmallEConfig] (follow -- 'e')

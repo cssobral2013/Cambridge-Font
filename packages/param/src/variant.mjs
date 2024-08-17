@@ -21,7 +21,7 @@ export function apply(data, para, argv) {
 	para.variants = {
 		selectorTree: parsed.selectorTree,
 		primes: parsed.primes,
-		composites: parsed.composites
+		composites: parsed.composites,
 	};
 	para.variantSelector = variantSelector;
 }
@@ -41,10 +41,10 @@ export function parse(data, argv) {
 		const comp = new Composite(k, data.composite[k]);
 		composites.set(k, comp);
 	}
-	if (argv && argv.compositesFromBuildPlan) {
-		for (const k in argv.compositesFromBuildPlan) {
+	if (argv && argv.variantCompositesFromBuildPlan) {
+		for (const k in argv.variantCompositesFromBuildPlan) {
 			const key = `buildPlans.${k}`;
-			const comp = new Composite(key, argv.compositesFromBuildPlan[k]);
+			const comp = new Composite(key, argv.variantCompositesFromBuildPlan[k]);
 			composites.set(key, comp);
 		}
 	}
@@ -134,6 +134,8 @@ class Prime {
 		this.slopeDependent = !!cfg.slopeDependent;
 		this.hotChars = cfg.hotChars ? [...cfg.hotChars] : this.descSampleText;
 
+		this.cherryPicking = cfg.cherryPicking;
+
 		this.variants = new Map();
 
 		let variantConfig = cfg.variants;
@@ -165,7 +167,7 @@ class Prime {
 			ligatureSampler: this.ligatureSampler,
 			descSampleText: this.descSampleText,
 			hotChars: this.hotChars,
-			variants: []
+			variants: [],
 		};
 		for (const variant of this.variants.values()) {
 			gr.variants.push({
@@ -173,7 +175,7 @@ class Prime {
 				rank: variant.rank,
 				groupRank: variant.groupRank,
 				description: variant.description,
-				snapshotFeatureApplication: variant.snapshotFeatureApplication
+				snapshotFeatureApplication: variant.snapshotFeatureApplication,
 			});
 		}
 		gr.variants.sort((a, b) => (a.rank || 0x7fffffff) - (b.rank || 0x7fffffff));
@@ -247,7 +249,7 @@ class Composite {
 			design: slabOverrideCfg.design,
 			override: slabOverrideCfg.upright || slabOverrideCfg["upright-oblique"],
 			oblique: slabOverrideCfg.oblique || slabOverrideCfg["upright-oblique"],
-			italic: slabOverrideCfg.italic
+			italic: slabOverrideCfg.italic,
 		};
 	}
 	decompose(para, selTree) {
@@ -257,7 +259,7 @@ class Composite {
 			this.design,
 			this.decomposeSlope(this, para),
 			!para.slab ? {} : this.slabOverride.design,
-			!para.slab ? {} : this.decomposeSlope(this.slabOverride, para)
+			!para.slab ? {} : this.decomposeSlope(this.slabOverride, para),
 		);
 		for (const [k, v] of Object.entries(cfg)) {
 			const pv = selTree.get(k, v);
@@ -306,7 +308,7 @@ class VariantBuilder {
 		globalState.sink.sort(
 			(a, b) =>
 				a.nonBreakingVariantAdditionPriority - b.nonBreakingVariantAdditionPriority ||
-				a.rank - b.rank
+				a.rank - b.rank,
 		);
 
 		let ans = {};
@@ -396,7 +398,7 @@ class VbStageAlternative {
 			ans.addDescription(
 				this.mode,
 				this.evalValue(this.descriptionJoiner, localState),
-				this.evalValue(this.descriptionAffix, localState)
+				this.evalValue(this.descriptionAffix, localState),
 			);
 		}
 		if (this.selectorAffix) {
@@ -561,7 +563,7 @@ class VbLocalState {
 			rank: this.rank,
 			groupRank: this.groupRank,
 			description: this.produceDescription(),
-			selector: Object.fromEntries(this.selector)
+			selector: Object.fromEntries(this.selector),
 		};
 	}
 }

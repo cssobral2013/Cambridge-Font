@@ -6,19 +6,24 @@ export default async function processCvInfluences(argv) {
 	const cl = await getCharMapAndSupportedLanguageList(
 		argv.charMapPath,
 		argv.charMapItalicPath,
-		argv.charMapObliquePath
+		argv.charMapObliquePath,
 	);
 
 	let m = {
 		upright: new Map(),
-		italic: new Map()
+		italic: new Map(),
 	};
 
-	for (const block of cl.unicodeCoverage) {
+	for (const block of cl.unique.unicodeCoverage) {
 		for (const ch of block.characters) {
 			if (!ch.inFont) continue;
-			addToCvInfluenceMap(cl.featureSeries, m.upright, ch.lch, ch.cvFeatureSetsUpright);
-			addToCvInfluenceMap(cl.featureSeries, m.italic, ch.lch, ch.cvFeatureSetsItalic);
+			addToCvInfluenceMap(
+				cl.unique.featureSeries,
+				m.upright,
+				ch.lch,
+				ch.cvFeatureSetsUpright,
+			);
+			addToCvInfluenceMap(cl.unique.featureSeries, m.italic, ch.lch, ch.cvFeatureSetsItalic);
 		}
 	}
 

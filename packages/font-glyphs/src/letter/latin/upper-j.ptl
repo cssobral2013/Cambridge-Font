@@ -16,18 +16,20 @@ glyph-block Letter-Latin-Upper-J : begin
 		set-width df.width
 		include : df.markSet.[if (top > XH) 'capital' 'e']
 
-		set-base-anchor 'above' (df.rightSB - [HSwToV : 0.75 * Stroke] - JBalance2) top
-		set-base-anchor 'overlay' (df.rightSB - [HSwToV : 0.75 * Stroke] - JBalance2) (top * OverlayPos)
-		set-base-anchor 'jTopSerifAttach' (df.rightSB - JBalance2 - [HSwToV HalfStroke]) top
+		local xBarRight : df.rightSB - JBalance2
 
-		local sw : Math.min (0.4 * (df.rightSB - JBalance2 - df.leftSB)) Stroke
+		set-base-anchor 'above' (xBarRight - [HSwToV : 0.75 * Stroke]) top
+		set-base-anchor 'overlay' (xBarRight - [HSwToV : 0.75 * Stroke]) (top * OverlayPos)
+		set-base-anchor 'jTopSerifAttach' (xBarRight - [HSwToV HalfStroke]) top
+
+		local sw : Math.min (0.4 * (xBarRight - df.leftSB)) Stroke
 		local hookx : 0.75 * df.leftSB
 
 		include : dispiro
 			widths.rhs sw
-			flat (df.rightSB - JBalance2) top [heading Downward]
-			curl (df.rightSB - JBalance2) ArchDepthB
-			hookend O
+			flat xBarRight top [heading Downward]
+			curl xBarRight ArchDepthB
+			hookend 0 (sw -- sw)
 			g4 hookx Hook
 
 	define [JFlatHookBase df dfHook top] : glyph-proc
@@ -50,24 +52,24 @@ glyph-block Letter-Latin-Upper-J : begin
 
 	define [JDescendingBase df dfHook top] : glyph-proc
 		set-width df.width
-		include : df.markSet.[if (top > XH) 'bp' 'p']
+		include : df.markSet.[if (top > XH) 'capDesc' 'p']
 
 		local center : df.middle + JBalance + [HSwToV HalfStroke]
 		set-base-anchor 'above' (center - [HSwToV HalfStroke]) top
 		set-base-anchor 'overlay' (center - [HSwToV HalfStroke]) (top / 2)
 		set-base-anchor 'jTopSerifAttach' (center - [HSwToV HalfStroke]) top
 
-		local hookx  : center - (df.width * 0.5) - [HSwToV Stroke] + OXHook
-		local turn : [mix center hookx 0.5] + CorrectionOMidS
+		local hookx : center - (df.width * 0.5) - [HSwToV Stroke] + OXHook
+		local turn : arch.adjust-x.bot [mix center hookx 0.5]
 		include : dispiro
 			widths.rhs
 			flat center top [heading Downward]
 			curl center (Descender + ArchDepthA)
-			hookend (Descender + O)
+			hookend Descender
 			g4 hookx (Descender + JHook)
 
 	set JFullHookBase.WithCurlyTail   : function [df top] : JCurlyTailBaseT df (df.rightSB - [HSwToV HalfStroke] - JBalance2) (df.leftSB)                    top 0         'capital'
-	set JDescendingBase.WithCurlyTail : function [df top] : JCurlyTailBaseT df (df.middle + JBalance) (df.middle + JBalance - LongJut - [HSwToV HalfStroke]) top Descender 'bp'
+	set JDescendingBase.WithCurlyTail : function [df top] : JCurlyTailBaseT df (df.middle + JBalance) (df.middle + JBalance - LongJut - [HSwToV HalfStroke]) top Descender 'capDesc'
 	define [JCurlyTailBaseT df xc xCo top bottom markClass] : glyph-proc
 		set-width df.width
 		include : df.markSet.(markClass)
@@ -76,21 +78,20 @@ glyph-block Letter-Latin-Upper-J : begin
 		set-base-anchor 'overlay' xc (top / 2)
 		set-base-anchor 'jTopSerifAttach' xc top
 
-		local m1 : xc - [HSwToV HalfStroke]
 		local fine : AdviceStroke 3.5
 		local rinner : LongJut / 2 - fine / 2
-		local x2 : mix df.rightSB m1 0.25
-		local y2 : bottom + O
-
 		include : dispiro
-			widths.lhs
-			flat m1 top [heading Downward]
-			curl m1 (bottom + fine + rinner * 2)
-			CurlyTail fine rinner m1 bottom xCo x2 y2
+			widths.rhs
+			flat (xc + [HSwToV HalfStroke]) top [heading Downward]
+			curl (xc + [HSwToV HalfStroke]) (bottom + fine + rinner * 2)
+			CurlyTail.n fine bottom xCo
+				x2 -- df.width
+				y2 -- bottom + 0.5 * fine
+				yLoopTop -- bottom + 2 * fine + 2 * rinner
 
 	define [JDescendingFlatHookBase df dfHook top] : glyph-proc
 		set-width df.width
-		include : df.markSet.[if (top > XH) 'bp' 'p']
+		include : df.markSet.[if (top > XH) 'capDesc' 'p']
 		include : FlatHookDotlessJShape df dfHook top
 			crossLeft -- (df.middle - (dfHook.middle - [mix 0 dfHook.leftSB : mix 1 dfHook.div 2]))
 			barCenter -- (df.middle + 0.25 * JBalance * df.div * [mix 1 df.div 2])
@@ -98,7 +99,7 @@ glyph-block Letter-Latin-Upper-J : begin
 
 	define [JDescendingFlatHookSerifedBase df dfHook top] : glyph-proc
 		set-width df.width
-		include : df.markSet.[if (top > XH) 'bp' 'p']
+		include : df.markSet.[if (top > XH) 'capDesc' 'p']
 		include : FlatHookDotlessJShape df df top
 			crossLeft -- [mix 0 SB : mix 1 df.div 2]
 			barCenter -- (df.middle + JBalance * df.div)
@@ -113,7 +114,7 @@ glyph-block Letter-Latin-Upper-J : begin
 			""                          { JFullHookBase                  [DivFrame 1]                [DivFrame 1]               }
 			flatHook                    { JFlatHookBase                  [DivFrame 1]                [DivFrame 1]               }
 			descending                  { JDescendingBase                [DivFrame 1]                [DivFrame 1]               }
-			descendingFlatHookSerifless { JDescendingFlatHookBase        [DivFrame para.diversityII] [DivFrame para.diversityI] }
+			descendingFlatHookSerifless { JDescendingFlatHookBase        [DivFrame para.diversityI]  [DivFrame para.diversityI] }
 			descendingFlatHookSerifed   { JDescendingFlatHookSerifedBase [DivFrame para.diversityI]  [DivFrame para.diversityI] }
 		function [body] : if (body == 'descendingFlatHookSerifless' || body == 'descendingFlatHookSerifed') {."" null} : object
 			serifless         null
@@ -159,7 +160,7 @@ glyph-block Letter-Latin-Upper-J : begin
 			widths.rhs BBS
 			flat (RightSB - JBalance2) CAP [heading Downward]
 			curl (RightSB - JBalance2) ArchDepthB
-			hookend O
+			hookend 0 (sw -- BBS)
 			g4 hookx Hook
 		include : HBar.t (RightSB - JBalance2 - BBD) (RightSB - JBalance2) CAP BBS
 		include : intersection
@@ -167,6 +168,6 @@ glyph-block Letter-Latin-Upper-J : begin
 			spiro-outline
 				corner (RightSB - JBalance2 - 1) CAP [heading Downward]
 				curl (RightSB - JBalance2 - 1) ArchDepthB
-				hookend (1 + O)
+				hookend 1 (sw -- BBS)
 				g4 (hookx + 1) Hook
 				corner (hookx + 1) CAP

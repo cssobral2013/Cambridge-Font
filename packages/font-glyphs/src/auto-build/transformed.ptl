@@ -2,8 +2,10 @@
 $$include '../meta/macros.ptl'
 
 import [linreg clamp mix fallback] from "@iosevka/util"
-import [getGrTree IsSuperscript IsSubscript] from "@iosevka/glyph/relation"
-import [AnyCv DotlessOrNot CvDecompose MathSansSerif Texture] from "@iosevka/glyph/relation"
+import [getGrTree IsSuperscript IsSubscript AnyCvOrCherryPicking] from "@iosevka/glyph/relation"
+import [AnyLocalizedForm DotlessOrNot CvDecompose MathSansSerif] from "@iosevka/glyph/relation"
+import [Texture Joining] from "@iosevka/glyph/relation"
+import [BooleanGeometry StrokeGeometry] from "@iosevka/geometry"
 import [NumeratorForm DenominatorForm] from "@iosevka/glyph/relation"
 import [Transform] from "@iosevka/geometry/transform"
 extern Map
@@ -39,13 +41,18 @@ glyph-block Autobuild-Transformed-Shared : begin
 		local relSets        {}
 		local targetNameMap  {.}
 
+		local TraverseGrList : list
+			* AnyLocalizedForm
+			* DotlessOrNot
+			* AnyCvOrCherryPicking
+
 		foreach [record : items-of records] : begin
 			local srcName record.1
 
 			local dstName : wrapName groupID srcName
 			suggestMappedName targetNameMap srcName dstName
 
-			local tree : getGrTree srcName { DotlessOrNot AnyCv } query-glyph
+			local tree : getGrTree srcName TraverseGrList query-glyph
 			foreach [{gr origSrcName relSrcName} : items-of tree] : if [query-glyph relSrcName] : begin
 				local origDstName : suggestMappedName targetNameMap origSrcName [wrapName groupID origSrcName]
 				local relDstName  : suggestMappedName targetNameMap relSrcName  [wrapName groupID relSrcName]
@@ -71,7 +78,7 @@ glyph-block Autobuild-Transformed-Shared : begin
 
 	glyph-block-export ToSuperscript
 	define [ToSuperscript div] : glyph-proc
-		local df : DivFrame df
+		local df : DivFrame div
 		include [Ungizmo] true
 		include [Translate (-df.middle) (-CAP)] true
 		include [Scale ToSuperscript.crowdAdjScale] true
@@ -82,7 +89,7 @@ glyph-block Autobuild-Transformed-Shared : begin
 
 	glyph-block-export ToSubscript
 	define [ToSubscript div] : glyph-proc
-		local df : DivFrame df
+		local df : DivFrame div
 		include [Ungizmo] true
 		include [Translate (-df.middle) 0] true
 		include [Scale ToSubscript.crowdAdjScale] true
@@ -105,21 +112,6 @@ glyph-block Autobuild-Transformed : begin
 		createSuperscripts 'sup' null : list
 			list 0x00AA 'aSbRsbUnderlineBelow'
 			list 0x00BA 'oSbRsbUnderlineBelow'
-			list 0x2070 'zero.lnum'
-			list 0x00B9 'one.lnum'
-			list 0x00B2 'two.lnum'
-			list 0x00B3 'three.lnum'
-			list 0x2074 'four.lnum'
-			list 0x2075 'five.lnum'
-			list 0x2076 'six.lnum'
-			list 0x2077 'seven.lnum'
-			list 0x2078 'eight.lnum'
-			list 0x2079 'nine.lnum'
-			list 0x207A 'plus'
-			list 0x207B 'minus'
-			list 0x207C 'equal'
-			list 0x207D 'parenLeft'
-			list 0x207E 'parenRight'
 			list 0x02B0 'h'
 			list 0x02B1 'hHookTop'
 			list 0x02B2 'j'
@@ -136,8 +128,29 @@ glyph-block Autobuild-Transformed : begin
 			list 0x02E2 's'
 			list 0x02E3 'x'
 			list 0x02E4 'revGlottalStop'
-			list 0x2071 'i'
-			list 0x207F 'n'
+			list 0x1D2C 'A'
+			list 0x1D2D 'AE'
+			list 0x1D2E 'B'
+			list 0x1D2F 'BBar'
+			list 0x1D30 'D'
+			list 0x1D31 'E'
+			list 0x1D32 'revE'
+			list 0x1D33 'G'
+			list 0x1D34 'H'
+			list 0x1D35 'I'
+			list 0x1D36 'J'
+			list 0x1D37 'K'
+			list 0x1D38 'L'
+			list 0x1D39 'M'
+			list 0x1D3A 'N'
+			list 0x1D3B 'NRev'
+			list 0x1D3C 'O'
+			list 0x1D3D 'OU'
+			list 0x1D3E 'P'
+			list 0x1D3F 'R'
+			list 0x1D40 'T'
+			list 0x1D41 'U'
+			list 0x1D42 'W'
 			list 0x1D43 'a'
 			list 0x1D44 'turna'
 			list 0x1D45 'scripta'
@@ -189,8 +202,8 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1DAB 'smcpL'
 			list 0x1DAC 'meng'
 			list 0x1DAD 'turnmLeg'
-			list 0x1DAE 'nLTail'
-			list 0x1DAF 'nHookBottom'
+			list 0x1DAE 'nHookLeft'
+			list 0x1DAF 'nRTail'
 			list 0x1DB0 'smcpN'
 			list 0x1DB1 'obar'
 			list 0x1DB2 'latn/phi'
@@ -203,40 +216,31 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1DB9 'vHookTop'
 			list 0x1DBA 'turnv'
 			list 0x1DBB 'z'
-			list 0x1DBC 'zRTailBR'
+			list 0x1DBC 'zRTail'
 			list 0x1DBD 'zCurlyTail'
 			list 0x1DBE 'ezh'
 			list 0x1DBF 'grek/theta'
-			list 0x1D2C 'A'
-			list 0x1D2E 'B'
-			list 0x1D2F 'BBar'
-			list 0x1D30 'D'
-			list 0x1D31 'E'
-			list 0x1D32 'revE'
-			list 0x1D33 'G'
-			list 0x1D34 'H'
-			list 0x1D35 'I'
-			list 0x1D36 'J'
-			list 0x1D37 'K'
-			list 0x1D38 'L'
-			list 0x1D39 'M'
-			list 0x1D3A 'N'
-			list 0x1D3B 'NRev'
-			list 0x1D3C 'O'
-			list 0x1D3D 'OU'
-			list 0x1D3E 'P'
-			list 0x1D3F 'R'
-			list 0x1D40 'T'
-			list 0x1D41 'U'
-			list 0x1D42 'W'
+			list 0x2071 'i'
+			list 0x207A 'plus'
+			list 0x207B 'minus'
+			list 0x207C 'equal'
+			list 0x207D 'parenLeft'
+			list 0x207E 'parenRight'
+			list 0x207F 'n'
 			list 0x2C7D 'V'
 			list 0x2E0B 'mathBox'
+			list 0x2E0C 'multiplyStroke2'
+			list 0x2E0D 'multiplyStroke1'
 			list 0xA69C 'cyrl/yer'
 			list 0xA69D 'cyrl/yeri'
 			list 0xA702 'subst'
 			list 0xA703 'substBarNoRise'
 			list 0xA704 'supst'
 			list 0xA705 'supstBarNoRise'
+			list 0xA717 'dotvbar'
+			list 0xA718 'dotslash'
+			list 0xA719 'dothbar'
+			list 0xA71A 'turnedRevNegate'
 			list 0xA71B 'arrowUp.NWID'
 			list 0xA71C 'arrowDown.NWID'
 			list 0xA71D 'alveolarclick'
@@ -264,9 +268,9 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1078F 'epsilonRevClosed'
 			list 0x10791 'ramshorn'
 			list 0x10792 'smcpG'
-			list 0x10793 'gScriptHookTop'
+			list 0x10793 'gHookTop'
 			list 0x10794 'smcpGHookTop'
-			list 0x10795 'hBar'
+			list 0x10795 'hStroke'
 			list 0x10796 'smcpH'
 			list 0x10797 'hengHookTop'
 			list 0x10798 'dotlessjBarHookTop'
@@ -282,7 +286,7 @@ glyph-block Autobuild-Transformed : begin
 			list 0x107A4 'closeomega'
 			list 0x107A5 'q'
 			list 0x107A6 'turnrLongLeg'
-			list 0x107A7 'rTurnLongLetRTail'
+			list 0x107A7 'rTurnLongLegRTail'
 			list 0x107A8 'rRTail'
 			list 0x107A9 'rFlap'
 			list 0x107AA 'smcpR'
@@ -316,7 +320,7 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1E040 'cyrl/te'
 			list 0x1E041 'cyrl/u'
 			list 0x1E042 'cyrl/ef'
-			list 0x1E043 'cyrl/ha'
+			list 0x1E043 'cyrl/kha'
 			list 0x1E044 'cyrl/tse'
 			list 0x1E045 'cyrl/che'
 			list 0x1E046 'cyrl/sha'
@@ -325,14 +329,15 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1E049 'cyrl/yu'
 			list 0x1E04A 'cyrl/dzze'
 			list 0x1E04B 'cyrl/schwa'
-			list 0x1E04C 'cyrl/Ukrainiani'
+			list 0x1E04C 'cyrl/iUkrainian'
 			list 0x1E04D 'cyrl/je'
 			list 0x1E04E 'cyrl/oe'
 			list 0x1E04F 'cyrl/ue'
 			list 0x1E050 'cyrl/palochka'
 			list 0x1E06B 'cyrl/the'
 			list 0x1E06C 'cyrl/yeryBack'
-			list 0x1E06D 'cyrl/KazakhShortu'
+			list 0x1E06D 'cyrl/uShortKazakh'
+			list 0x1FBCC 'smallBracketLeft'
 			list null   'S' # there is no superscript S in unicode, but is is used for the SM symbol
 
 		createSuperscripts 'numerator' NumeratorForm : list
@@ -346,24 +351,17 @@ glyph-block Autobuild-Transformed : begin
 			list null 'seven.onum'
 			list null 'eight.onum'
 			list null 'nine.onum'
-			list null 'zero.lnum'
-			list null 'one.lnum'
-			list null 'two.lnum'
-			list null 'three.lnum'
-			list null 'four.lnum'
-			list null 'five.lnum'
-			list null 'six.lnum'
-			list null 'seven.lnum'
-			list null 'eight.lnum'
-			list null 'nine.lnum'
-
-		do "superscript AE"
-			define { tnmAHalf jobsAHalf } : createSuperscripts 'sup' null { { null 'AE/AHalf' } }
-			define { tnmEHalf jobsEHalf } : createSuperscripts 'sup' null { { null 'AE/EHalf' } }
-			create-glyph 'sup{AE}' 0x1D2D : glyph-proc
-				include [refer-glyph tnmAHalf.('AE/AHalf')] AS_BASE ALSO_METRICS
-				include [refer-glyph tnmEHalf.('AE/EHalf')]
-				CvDecompose.set currentGlyph { tnmAHalf.('AE/AHalf') tnmEHalf.('AE/EHalf') }
+			list 0x2070 'zero.lnum'
+			list 0x00B9 'one.lnum'
+			list 0x00B2 'two.lnum'
+			list 0x00B3 'three.lnum'
+			list 0x2074 'four.lnum'
+			list 0x2075 'five.lnum'
+			list 0x2076 'six.lnum'
+			list 0x2077 'seven.lnum'
+			list 0x2078 'eight.lnum'
+			list 0x2079 'nine.lnum'
+			list null 'period'
 
 	: where : [createSuperscripts prefix gr _records] : begin
 		local {records relSets targetNameMap} : extendRelatedGlyphs prefix _records
@@ -371,16 +369,15 @@ glyph-block Autobuild-Transformed : begin
 		local miniatureFont : Miniature pendingGlyphs
 			crowd  -- ToSuperscript.crowd
 			scale  -- ToSuperscript.crowdAdjScale
-			mono   -- true
+			# mono   -- true
 			sbscale -- 0.75
 		foreach { unicode glyphid fRelated } [items-of records]
 			if [not : query-glyph targetNameMap.(glyphid)] : begin
 				create-glyph (targetNameMap.(glyphid)) unicode : glyph-proc
 					if [not : miniatureFont.queryByName glyphid] : begin
 						throw : new Error "Cannot find glyph \(glyphid)"
-					local middle : [miniatureFont.queryByName glyphid].advanceWidth / 2
 					include [miniatureFont.queryByName glyphid] AS_BASE ALSO_METRICS
-					include : ToSuperscript
+					include : ToSuperscript (currentGlyph.advanceWidth / Width)
 					IsSuperscript.set currentGlyph
 				if ([not fRelated] && gr) : gr.set [query-glyph glyphid] (targetNameMap.(glyphid))
 		link-relations relSets
@@ -388,16 +385,15 @@ glyph-block Autobuild-Transformed : begin
 
 	do
 		createSubscripts 'sub' null : list
-			list 0x2080 'zero.lnum'
-			list 0x2081 'one.lnum'
-			list 0x2082 'two.lnum'
-			list 0x2083 'three.lnum'
-			list 0x2084 'four.lnum'
-			list 0x2085 'five.lnum'
-			list 0x2086 'six.lnum'
-			list 0x2087 'seven.lnum'
-			list 0x2088 'eight.lnum'
-			list 0x2089 'nine.lnum'
+			list 0x1D62 'i'
+			list 0x1D63 'r'
+			list 0x1D64 'u'
+			list 0x1D65 'v'
+			list 0x1D66 'grek/beta'
+			list 0x1D67 'grek/gamma'
+			list 0x1D68 'grek/rho'
+			list 0x1D69 'grek/phi'
+			list 0x1D6A 'grek/chi'
 			list 0x208A 'plus'
 			list 0x208B 'minus'
 			list 0x208C 'equal'
@@ -416,16 +412,9 @@ glyph-block Autobuild-Transformed : begin
 			list 0x209A 'p'
 			list 0x209B 's'
 			list 0x209C 't'
-			list 0x1D62 'i'
-			list 0x1D63 'r'
-			list 0x1D64 'u'
-			list 0x1D65 'v'
-			list 0x1D66 'grek/beta'
-			list 0x1D67 'grek/gamma'
-			list 0x1D68 'grek/rho'
-			list 0x1D69 'grek/phi'
-			list 0x1D6A 'grek/chi'
 			list 0x2C7C 'j'
+			list 0x2E1C 'multiplyStroke2'
+			list 0x2E1D 'multiplyStroke1'
 			list 0xA700 'subst'
 			list 0xA701 'substBarNoRise'
 			list 0xA706 'supst'
@@ -447,14 +436,14 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1E05E 'cyrl/es'
 			list 0x1E05F 'cyrl/u'
 			list 0x1E060 'cyrl/ef'
-			list 0x1E061 'cyrl/ha'
+			list 0x1E061 'cyrl/kha'
 			list 0x1E062 'cyrl/tse'
 			list 0x1E063 'cyrl/che'
 			list 0x1E064 'cyrl/sha'
 			list 0x1E065 'cyrl/yer'
 			list 0x1E066 'cyrl/yery'
 			list 0x1E067 'cyrl/ge'
-			list 0x1E068 'cyrl/Ukrainiani'
+			list 0x1E068 'cyrl/iUkrainian'
 			list 0x1E069 'cyrl/dze'
 			list 0x1E06A 'cyrl/dzhe'
 
@@ -469,16 +458,17 @@ glyph-block Autobuild-Transformed : begin
 			list null 'seven.onum'
 			list null 'eight.onum'
 			list null 'nine.onum'
-			list null 'zero.lnum'
-			list null 'one.lnum'
-			list null 'two.lnum'
-			list null 'three.lnum'
-			list null 'four.lnum'
-			list null 'five.lnum'
-			list null 'six.lnum'
-			list null 'seven.lnum'
-			list null 'eight.lnum'
-			list null 'nine.lnum'
+			list 0x2080 'zero.lnum'
+			list 0x2081 'one.lnum'
+			list 0x2082 'two.lnum'
+			list 0x2083 'three.lnum'
+			list 0x2084 'four.lnum'
+			list 0x2085 'five.lnum'
+			list 0x2086 'six.lnum'
+			list 0x2087 'seven.lnum'
+			list 0x2088 'eight.lnum'
+			list 0x2089 'nine.lnum'
+			list null 'period'
 
 	: where : [createSubscripts prefix gr _records] : begin
 		local {records relSets targetNameMap} : extendRelatedGlyphs prefix _records
@@ -486,14 +476,13 @@ glyph-block Autobuild-Transformed : begin
 		local miniatureFont : Miniature pendingGlyphs
 			crowd  -- ToSubscript.crowd
 			scale  -- ToSubscript.crowdAdjScale
-			mono   -- true
+			# mono   -- true
 			sbscale -- 0.75
 		foreach { unicode glyphid fRelated } [items-of records]
 			if [not : query-glyph targetNameMap.(glyphid)] : begin
 				create-glyph (targetNameMap.(glyphid)) unicode : glyph-proc
-					local middle : [miniatureFont.queryByName glyphid].advanceWidth / 2
 					include [miniatureFont.queryByName glyphid] AS_BASE ALSO_METRICS
-					include : ToSubscript
+					include : ToSubscript (currentGlyph.advanceWidth / Width)
 					IsSubscript.set currentGlyph
 				if ([not fRelated] && gr) : gr.set [query-glyph glyphid] (targetNameMap.(glyphid))
 		link-relations relSets
@@ -511,6 +500,7 @@ glyph-block Autobuild-Transformed : begin
 			list 0x36C 'r'
 			list 0x36E 'v'
 			list 0x36F 'x'
+			list 0x1ACE 'tInsular'
 			list 0x1DD3 'flattenedOpena'
 			list 0x1DD4 'ae'
 			list 0x1DD5 'ao'
@@ -528,7 +518,6 @@ glyph-block Autobuild-Transformed : begin
 			list 0x1DED 'oWithLightCentralizationStroke'
 			list 0x1DF0 'uWithLightCentralizationStroke'
 			list 0x1DF1 'w'
-			list 0x1ACE 'tInsular'
 			list 0x20F0 'asterisk/slashBot'
 			list 0x2DE1 'cyrl/ve'
 			list 0x2DE2 'cyrl/ghe'
@@ -542,12 +531,12 @@ glyph-block Autobuild-Transformed : begin
 			list 0x2DEA 'cyrl/o'
 			list 0x2DEB 'cyrl/pe'
 			list 0x2DED 'cyrl/es'
-			list 0x2DEE 'cyrl/te'
-			list 0x2DEF 'cyrl/ha'
+			list 0x2DEE 'cyrl/te/reduced'
+			list 0x2DEF 'cyrl/kha'
 			list 0x2DF0 'cyrl/tse'
 			list 0x2DF1 'cyrl/che'
-			list 0x2DF2 'cyrl/sha'
-			list 0x2DF3 'cyrl/shcha'
+			list 0x2DF2 'cyrl/sha/reduced'
+			list 0x2DF3 'cyrl/shcha/reduced'
 			list 0x2DF4 'cyrl/fita'
 			list 0x2DF5 'cyrl/este'
 			list 0x2DF6 'cyrl/a'
@@ -561,6 +550,9 @@ glyph-block Autobuild-Transformed : begin
 			list 0x2DFF 'cyrl/bigYusIotified'
 			list 0xA674 'cyrl/ye'
 			list 0xA675 'cyrl/i'
+			list 0xA678 'cyrl/yer'
+			list 0xA679 'cyrl/yery'
+			list 0xA67A 'cyrl/yeri'
 			list 0xA67B 'cyrl/omega'
 			list 0xA69F 'cyrl/eIotified'
 
@@ -580,10 +572,7 @@ glyph-block Autobuild-Transformed : begin
 			list 0x2DE0 'cyrl/be'
 			list 0x2DFA 'cyrl/yat'
 			list 0xA676 'cyrl/yi'
-			list 0xA678 'cyrl/yer'
-			list 0xA679 'cyrl/yery'
-			list 0xA67A 'cyrl/yeri'
-			list 0x1E08F 'cyrl/Ukrainiani'
+			list 0x1E08F 'cyrl/iUkrainian'
 
 		createMedievalCombs Descender XH : list
 			list 0x1ACC 'gInsular'
@@ -667,6 +656,9 @@ glyph-block Autobuild-Transformed : begin
 
 	do
 		createReversed : list
+			list 0x1B8   'Ezh'
+			list 0x1B9   'ezh'
+			list 0x2143  'L/sansSerif'
 			list 0xA7FB  'F'
 			list 0xA7FC  'P'
 			list 0xA7FD  'turnM'
@@ -692,7 +684,15 @@ glyph-block Autobuild-Transformed : begin
 				include : Ungizmo
 				set currentGlyph.gizmo [Transform.Id]
 				include : ScaleAround (currentGlyph.advanceWidth / 2) 0 (-1) 1
+				set currentGlyph.gizmo GlobalTransform
 				include GlobalTransform
+
+				# Mirror the leaning marks
+				local bLeaningAbove : g1.gizmo.unapplyIfPresent currentGlyph.baseAnchors.leaningAbove
+				local bLeaningBelow : g1.gizmo.unapplyIfPresent currentGlyph.baseAnchors.leaningBelow
+
+				if bLeaningAbove : set-base-anchor 'leaningAbove' (currentGlyph.advanceWidth - bLeaningAbove.x) bLeaningAbove.y
+				if bLeaningBelow : set-base-anchor 'leaningBelow' (currentGlyph.advanceWidth - bLeaningBelow.x) bLeaningBelow.y
 
 		link-relations relSets
 
@@ -726,6 +726,8 @@ glyph-block Autobuild-Transformed-Texture : begin
 					create-glyph targetNameMap.(glyphid) unicode : glyph-proc
 						include glyphT AS_BASE ALSO_METRICS
 						set-width Width
+						if (extL > 0) : Joining.or currentGlyph Joining.Classes.Left
+						if (extR > 0) : Joining.or currentGlyph Joining.Classes.Right
 						if extL : begin
 							local shift : (glyphT.advanceWidth - Width) * extL / (extL + extR)
 							currentGlyph.applyTransform [Translate (-shift) 0] true
@@ -759,14 +761,13 @@ glyph-block Autobuild-Transformed-Texture : begin
 	createTextureDerivatives Texture.ShrR  0         SHRINK    [jobs 0xF400]
 	createTextureDerivatives Texture.ShrLR SHRINK    SHRINK    [jobs 0xF500]
 
-
 glyph-block Autobuild-Transformed-Mathematical : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Recursive-Build : Fork
 	glyph-block-import Autobuild-Transformed-Shared : extendRelatedGlyphs link-relations wrapName
 
-	define [createMathDerivedSeriesImpl groupName tfm _records] : begin
+	define [createMathDerivedSeriesImpl groupName tfm _records postProcessing] : begin
 		local { records relSets targetNameMap } : extendRelatedGlyphs groupName _records
 		local pendingGlyphs : records.map : [record] => record.1
 		local forkedPara : para.createFork tfm
@@ -777,6 +778,7 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 				if [not glyphT] : console.log glyphid
 				include glyphT AS_BASE ALSO_METRICS
 				set currentGlyph.gizmo glyphT.gizmo
+				if postProcessing : include : postProcessing para forkedPara
 
 		link-relations relSets
 
@@ -806,7 +808,7 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 	define Greek2      : Array.from 'Ϝϝ'
 	define ObliqueBlackboardBolds : Array.from '𝔻𝕕𝕖𝕚𝕛'
 
-	define [CreateMathDerivatives groupName tfm gr base letters overrides] : begin
+	define [CreateMathDerivatives groupName tfm gr base letters overrides postProcessing] : begin
 		local jobs {}
 		local overrideMap : new Map (overrides || {})
 		foreach j [range 0 letters.length] : begin
@@ -816,7 +818,7 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 			local dst : base + j
 			if [overrideMap.has letter] : set dst [overrideMap.get letter]
 			if source : jobs.push { dst source }
-		createMathDerivedSeriesImpl groupName tfm jobs
+		createMathDerivedSeriesImpl groupName tfm jobs postProcessing
 
 	define [CreateMathAliasableImpl groupName altGroupName tfm gr base letters overrides] : begin
 		local overrideMap : new Map (overrides || {})
@@ -832,6 +834,11 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 		if cond
 			CreateMathDerivatives   groupName              tfm gr base letters overrides
 			CreateMathAliasableImpl groupName altGroupName tfm gr base letters overrides
+
+	define [CreateMathBoldFraktur base letters] : begin
+		local jobs {}
+		foreach j [range 0 letters.length] : jobs.push { (base + j) ("frak/" + letters.(j)) }
+		createMathDerivedSeriesImpl 'frakbf' tfBold jobs
 
 	# Math bold
 	CreateMathDerivatives 'mathbf' tfBold null 0x1D400 UpperLatin
@@ -885,6 +892,20 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 
 	# Italic blackboard bold
 	CreateMathDerivatives 'mathit' tfItalic null 0x2145  ObliqueBlackboardBolds
+
+	# Outlined letters and digits -- for Symbols for Legacy Computing Supplement
+	define [TfOutline para forkedPara] : glyph-proc
+		local g currentGlyph.geometry
+		local sw : forkedPara.stroke / 4
+		local gizmo : currentGlyph.gizmo || GlobalTransform
+		set currentGlyph.geometry : new StrokeGeometry g gizmo sw HVContrast true
+
+	CreateMathDerivatives 'legacyComputingOutlined' tfBold null 0x1CCD6 UpperLatin null TfOutline
+	CreateMathDerivatives 'legacyComputingOutlined' tfBold null 0x1CCF0 Digits     null TfOutline
+
+	# Math fraktur
+	CreateMathBoldFraktur 0x1D56C UpperLatin
+	CreateMathBoldFraktur 0x1D586 LowerLatin
 
 glyph-block Autobuild-Rhotic : begin
 	glyph-block-import Mark-Shared-Metrics : markFine markstroke

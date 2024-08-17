@@ -10,7 +10,7 @@ glyph-block Letter-Latin-Lower-D : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Shared-Metrics : markExtend
 	glyph-block-import Mark-Adjustment : LeaningAnchor
-	glyph-block-import Letter-Shared : CreateAccentedComposition CreateCommaCaronComposition
+	glyph-block-import Letter-Shared : CreateCommaCaronComposition
 	glyph-block-import Letter-Shared-Shapes : OBarRight RightwardTailedBar DToothlessRise DMBlend
 	glyph-block-import Letter-Shared-Shapes : CurlyTail LetterBarOverlay SerifFrame
 	glyph-block-import Letter-Shared-Shapes : UpwardHookShape PalatalHook RetroflexHook TopHook
@@ -104,19 +104,26 @@ glyph-block Letter-Latin-Lower-D : begin
 
 		create-glyph "latn/de.\(suffix)" : glyph-proc
 			local df : DivFrame 1
-			include [refer-glyph "d.\(suffix)"] AS_BASE ALSO_METRICS
+			include : df.markSet.b
+			include : Body df Ascender
 			local xLeft : mix df.rightSB df.leftSB 0.9
-			include : HBar.t xLeft (df.rightSB + O) CAP
-			if topSerif : include : VSerif.dl xLeft CAP : Math.min VJut (0.8 * (Ascender - XH))
+			local xRight : df.rightSB + O
+			include : HBar.t xLeft xRight Ascender
+			if topSerif : begin
+				include : VSerif.dl xLeft Ascender : Math.min VJut (0.8 * (Ascender - XH))
+				if [not para.isItalic] : include : HSerif.rt df.rightSB Ascender SideJut
+			if bottomSerif : include : bottomSerif df Ascender
+			include : LeaningAnchor.Above.VBar.m [mix xLeft xRight 0.5]
 
-		create-glyph "dHookTop.\(suffix)" : glyph-proc
+		if [not topSerif] : create-glyph "dHookTop.\(suffix)" : glyph-proc
 			local df : DivFrame 1
 			include : df.markSet.b
 			include : Body df (Ascender - Hook - HalfStroke)
 			include : TopHook.rBarInner df.rightSB (XH / 2) Ascender
 			if bottomSerif : include : bottomSerif df Ascender
+			include : LeaningAnchor.Above.VBar.r df.rightSB
 
-		create-glyph "cyrl/djeKomi.\(suffix)" : glyph-proc
+		if [not bottomSerif] : create-glyph "cyrl/djeKomi.\(suffix)" : glyph-proc
 			local df : DivFrame 1 3
 			include : df.markSet.b
 
@@ -134,7 +141,7 @@ glyph-block Letter-Latin-Lower-D : begin
 				sw -- df.mvs
 
 			if topSerif    : include : topSerif dfHalf Ascender
-			if bottomSerif : begin
+			if SLAB : begin
 				local sf2 : [SerifFrame.fromDf df (XH / 2) 0].slice 1 2
 				include sf2.rt.full
 
@@ -146,7 +153,6 @@ glyph-block Letter-Latin-Lower-D : begin
 	link-reduced-variant 'd/sansSerif' 'd' MathSansSerif
 	link-reduced-variant 'd/phoneticLeft' 'd'
 	link-reduced-variant 'd/hookBottomBase' 'd'
-	CreateAccentedComposition 'dTildeOver' 0x1D6D 'd' 'tildeOverOnExension'
 
 	select-variant 'dHookTop' 0x257
 	link-reduced-variant 'dHookTop/hookBottomBase' 'dHookTop'
@@ -159,10 +165,15 @@ glyph-block Letter-Latin-Lower-D : begin
 		x -- (RightSB + SideJut)
 		y -- 0
 
-	derive-composites 'dHookBottom' 0x256 'd/hookBottomBase'
-		RetroflexHook.rExt RightSB 0
-	derive-composites 'dHookTopBottom' 0x1D91 'dHookTop/hookBottomBase'
-		RetroflexHook.rExt RightSB 0
+	derive-glyphs 'dHookBottom' 0x256 "d/hookBottomBase" : function [src gr] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		include : RetroflexHook.rExt RightSB 0
+		include : LeaningAnchor.Below.VBar.r RightSB
+
+	derive-glyphs 'dHookTopBottom' 0x1D91 "dHookTop/hookBottomBase" : function [src gr] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		include : RetroflexHook.rExt RightSB 0
+		include : LeaningAnchor.Below.VBar.r RightSB
 
 	CreateCommaCaronComposition 'dCaron' 0x10F 'dCaronBase' (Width - [HSwToV : 0.25 * Stroke])
 
@@ -182,20 +193,25 @@ glyph-block Letter-Latin-Lower-D : begin
 
 	foreach { suffix { fSerif } } [Object.entries DCurlyTailConfig] : do
 		create-glyph "dCurlyTail.\(suffix)" : glyph-proc
+			include : MarkSet.b
+
 			local fine : AdviceStroke 4
 			local rinner : clamp (Width * 0.065) (XH * 0.05) (fine * 0.35)
-			local wide Stroke
+			local sw : AdviceStroke 2.75
 			local m1 : Math.min RightSB (Width - rinner * 2 - fine - OX)
-			local x2 : mix SB m1 0.5
-			local y2 : 0 - fine - rinner *  1.25
-			include : MarkSet.b
-			include : OBarRight.shape (left -- SB) (right -- m1)
+
+			include : LeaningAnchor.Above.VBar.r m1
+			include : OBarRight.shape (left -- SB) (right -- m1) (sw -- sw)
 			include : dispiro
-				widths.rhs
-				flat m1 Ascender [heading Downward]
-				curl m1 (rinner * 2 + fine)
-				CurlyTail fine rinner m1 0 (m1 + rinner * 2 + fine) x2 y2
-			if fSerif : include : HSerif.lt (m1 - [HSwToV Stroke]) Ascender SideJut
+				widths.lhs sw
+				flat (m1 - [HSwToV sw]) Ascender [heading Downward]
+				curl (m1 - [HSwToV sw]) (rinner * 2 + fine)
+				CurlyTail.n fine 0 (m1 + rinner * 2 + fine)
+					x2 -- ([mix SB m1 0.5] - [HSwToV : 0.75 * fine])
+					y2 -- 0.37 * Descender
+					swBefore -- sw
+					terminalSlopeAdj -- 0.25
+			if fSerif : include : HSerif.lt (m1 - [HSwToV sw]) Ascender SideJut
 
 	select-variant 'dCurlyTail' 0x221
 

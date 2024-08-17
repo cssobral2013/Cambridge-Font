@@ -1,9 +1,11 @@
 import fs from "fs";
+import { setTimeout } from "node:timers/promises";
 import zlib from "zlib";
 
+import * as CurveUtil from "@iosevka/geometry/curve-util";
 import { encode, decode } from "@msgpack/msgpack";
 
-const Edition = 29;
+const Edition = 45;
 const MAX_AGE = 16;
 class GfEntry {
 	constructor(age, value) {
@@ -23,7 +25,8 @@ class Cache {
 		this.historyAgeKeys = rep.ageKeys.slice(0, MAX_AGE);
 		const ageKeySet = new Set(this.historyAgeKeys);
 		for (const [k, e] of Object.entries(rep.gf)) {
-			if (ageKeySet.has(e.age)) this.gf.set(k, new GfEntry(e.age, e.value));
+			if (ageKeySet.has(e.age))
+				this.gf.set(k, new GfEntry(e.age, CurveUtil.repToShape(e.value)));
 		}
 	}
 	toRep(version, diffOnly) {
@@ -40,7 +43,7 @@ class Cache {
 		return {
 			version: version + "@" + Edition,
 			ageKeys: mergedAgeKeys,
-			gf: gfRep
+			gf: gfRep,
 		};
 	}
 	isEmpty() {
@@ -76,12 +79,22 @@ class Cache {
 export async function load(path, version, freshAgeKey) {
 	let cache = new Cache(freshAgeKey);
 	if (path && fs.existsSync(path)) {
-		try {
-			const buf = zlib.gunzipSync(await fs.promises.readFile(path));
-			cache.loadRep(version, decode(buf));
-		} catch (e) {
-			console.error("Error loading cache. Treat as empty.");
-			console.error(e);
+		let loadAttempt = 0;
+		while (loadAttempt < 3) {
+			try {
+				const buf = zlib.gunzipSync(await fs.promises.readFile(path));
+				cache.loadRep(version, decode(buf));
+				loadAttempt += 1;
+				break;
+			} catch (e) {
+				if (loadAttempt < 2) {
+					await setTimeout(500);
+				} else {
+					console.error("Error loading cache. Treat as empty.");
+					console.error(e);
+				}
+				loadAttempt += 1;
+			}
 		}
 	}
 	return cache;

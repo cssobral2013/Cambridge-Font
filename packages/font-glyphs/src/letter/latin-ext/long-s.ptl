@@ -29,7 +29,7 @@ glyph-block Letter-Latin-Long-S : begin
 		return : dispiro
 			widths.center sw
 			flat (x + sign * hookX) (top - sw / 2)
-			curl (x + sign * [Math.min (hd.x - [HSwToV : 0.25 * sw]) (hookX - 0.1)]) (top - sw / 2)
+			curl (x + sign * [Math.min (hd.x - [HSwToV : 0.25 * sw]) (hookX - TINY)]) (top - sw / 2)
 			archv.superness DesignParameters.tightHookSuperness
 			flat x (top - sw / 2 - [Math.min hd.y hookY])
 			curl x bottom [heading Downward]
@@ -40,7 +40,7 @@ glyph-block Letter-Latin-Long-S : begin
 		return : dispiro
 			widths.center sw
 			flat (x - sign * hookX) (bottom + sw / 2)
-			curl (x - sign * [Math.min (hd.x - [HSwToV : 0.25 * sw]) (hookX - 0.1)]) (bottom + sw / 2)
+			curl (x - sign * [Math.min (hd.x - [HSwToV : 0.25 * sw]) (hookX - TINY)]) (bottom + sw / 2)
 			archv.superness DesignParameters.tightHookSuperness
 			flat x (bottom + sw / 2 + [Math.min hd.y hookY])
 			curl x top [heading Upward]
@@ -71,11 +71,11 @@ glyph-block Letter-Latin-Long-S : begin
 			include : tagged "serifLB" : HSerif.mb xSerifPos 0 serifLength
 		if [maskBits fSlab SLAB_MIDDLE] : begin
 			include : tagged "serifLM" : intersection
-				MaskLeft (m + 0.1)
+				MaskLeft (m + TINY)
 				HSerif.mt xSerifPos fbar serifLength
 		if [maskBits fSlab SLAB_MIDDLE_XH] : begin
 			include : tagged "serifLM" : intersection
-				MaskLeft (m + 0.1)
+				MaskLeft (m + TINY)
 				HSerif.mt xSerifPos XH serifLength
 
 	define [LongSBentHookBase y0 m fSlab] : glyph-proc
@@ -83,7 +83,7 @@ glyph-block Letter-Latin-Long-S : begin
 		include : dispiro
 			widths.lhs
 			g4 xTerminal (Ascender - Hook)
-			hookstart (Ascender - O)
+			hookstart Ascender
 			flat m (Ascender - ArchDepthA)
 			curl m 0 [heading Downward]
 		include : LeaningAnchor.Above.Hook m xTerminal
@@ -107,7 +107,7 @@ glyph-block Letter-Latin-Long-S : begin
 		include : dispiro
 			widths.lhs
 			flat RightSB Ascender
-			curl [Math.min (RightSB - 0.01) (m + hd.x)] Ascender
+			curl [Math.min (RightSB - TINY) (m + hd.x)] Ascender
 			archv
 			flat m (Ascender - hd.y)
 			curl m yBot [heading Downward]
@@ -231,33 +231,22 @@ glyph-block Letter-Latin-Long-S : begin
 		include : MarkSet.bp
 		local fine : AdviceStroke 3.5
 		local rinner : LongJut / 2 - fine / 2
-		local m1 : Middle - [HSwToV HalfStroke] - FBalance
-		local x2 : mix RightSB m1 0.25
-		local y2 : Descender + O
+		local m1 : Middle + [HSwToV HalfStroke] - FBalance
+		# local x2 : mix RightSB m1 0.25
+		# local y2 : Descender + O
 		include : union
 			LongSUpperHalf 1 (Middle - FBalance) Ascender 0 (HookX + 0.25 * Stroke) Hook
 			dispiro
-				widths.lhs
+				widths.rhs
 				flat m1 (-O) [heading Downward]
 				curl m1 (Descender + fine + rinner * 2)
-				CurlyTail
-					fine -- fine
-					rinner -- rinner
-					xleft -- m1
-					bottom -- Descender
-					right -- (m1 - LongJut)
-					x2 -- x2
-					y2 -- y2
+				CurlyTail.n fine Descender (m1 - LongJut - [HSwToV Stroke])
+					x2 -- RightSB + [HSwToV : 0.5 * fine]
+					y2 -- Descender + 0.5 * fine
 
-	create-glyph "iFishHook.serifless" : glyph-proc
+	create-glyph "iFishHook" 0x27F : glyph-proc
 		include : MarkSet.p
-		include : IFishHookShape XH Descender false
-
-	create-glyph "iFishHook.serifed" : glyph-proc
-		include : MarkSet.p
-		include : IFishHookShape XH Descender true
-
-	select-variant 'iFishHook' 0x27F
+		include : IFishHookShape XH Descender SLAB
 
 	create-glyph "iviby" 0x285 : glyph-proc
 		include : MarkSet.p

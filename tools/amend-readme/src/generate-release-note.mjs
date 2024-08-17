@@ -36,17 +36,21 @@ async function GenerateChangeList(argv, out) {
 }
 export default async function main(argv) {
 	const out = new MdCol("Release-Note");
-	let baseUrl = `https://github.com/be5invis/Iosevka/blob/v${argv.version}/doc`;
-	await GenerateChangeList(argv, out);
+	const baseUrl = `https://github.com/be5invis/Iosevka/blob/v${argv.version}/doc`;
+	const releaseUrl = `https://github.com/be5invis/Iosevka/releases/download/v${argv.version}`;
+
 	out.log(
-		`<table>` +
+		`<table>\n` +
 			`<tr><td align="center"><h1>` +
 			`<a href="${baseUrl}/PACKAGE-LIST.md">View package list</a>` +
-			`</h1></td></tr>` +
+			`</h1></td></tr>\n` +
 			`<tr><td align="center">` +
-			`<a href="${baseUrl}/packages-sha.txt">Package hashes (SHA-256)</a>` +
-			`</td></tr>` +
-			`</table>`
+			`<a href="${releaseUrl}/SHA-256.txt">SHA-256 hashes</a>` +
+			`</td></tr>\n` +
+			`</table>\n`,
 	);
+
+	await GenerateChangeList(argv, out);
+
 	await fs.promises.writeFile(argv.outputPath, out.data);
 }

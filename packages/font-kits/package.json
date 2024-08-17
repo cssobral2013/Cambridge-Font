@@ -1,16 +1,15 @@
 {
   "name": "@iosevka/font-kits",
-  "version": "28.0.0",
+  "version": "31.3.0",
   "private": true,
   "exports": {
+    "./derived-coordinates": "./src/derived-coordinates.mjs",
     "./boole-kit": "./src/boole-kit.mjs",
     "./spiro-kit": "./src/spiro-kit.mjs"
   },
   "dependencies": {
-    "@iosevka/geometry": "28.0.0",
-    "@iosevka/glyph": "28.0.0",
-    "@iosevka/util": "28.0.0",
-    "spiro": "^3.0.0",
-    "typo-geom": "^0.13.1"
+    "@iosevka/geometry": "31.3.0",
+    "@iosevka/glyph": "31.3.0",
+    "@iosevka/util": "31.3.0"
   }
 }

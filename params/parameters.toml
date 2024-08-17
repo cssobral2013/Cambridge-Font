@@ -4,17 +4,18 @@
 
 [iosevka]
 naming.copyright = 'Copyright 2015-{{currentYear}}, Renzhi Li (aka. Belleve Invis, belleve@typeof.net).'
-naming.licence = '''This font software is licenced under the SIL Open Font Licence, Version 1.1. This licence is available with a FAQ at: http://scripts.sil.org/OFL. This font software is distributed on an 'AS IS' basis, without warranties or conditions of any kind, either express or implied. See the SIL Open Font licence for the specific language, permissions and limitations governing your use of this font software.'''
 naming.manufacturer = 'Belleve Invis'
 naming.designer = 'Belleve Invis'
 naming.description = 'Spatial efficient monospace font family for programming. Built from code. http://be5invis.github.io/Iosevka'
+naming.license = '''This font software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL. This font software is distributed on an 'AS IS' basis, without warranties or conditions of any kind, either express or implied. See the SIL Open Font license for the specific language, permissions and limitations governing your use of this font software.'''
+naming.licenseURL = 'https://openfontlicense.org/'
 
 leading = 1250     # Default line height times 1000.
 descenderPad = 0   # Additional line height, added to descender.
 cap = 735          # Cap height.
 ascender = 735     # Ascender height.
 xHeight = 520      # X-height.
-#descender = -205  # Depth of descender. Currently unused.
+#descender = -215  # Depth of descender. Currently unused.
 winMetricAscenderPad  = 0 # Padding of Win ascnder metrics to avoid clipping. See #343
 winMetricDescenderPad = 0 # Padding of Win descender metrics to avoid clipping. See #343
 
@@ -125,15 +126,15 @@ forceMonospace = true
 [spacing-quasi-proportional]
 spacing = 3
 isQuasiProportional = true
-diversityM  = 1.25
-diversityF  = 0.75
-diversityI  = 0.75
-diversityII = 0.50
+diversityM  = 1.3333333333333 # 4/3
+diversityF  = 0.8333333333333 # 5/6
+diversityI  = 0.6666666666666 # 2/3
+diversityII = 0.5             # 1/2
 
 [spacing-quasi-proportional-extension-only]
 spacing = 3
 isQuasiProportional = true
-diversityM  = 1.25
+diversityM  = 1.3333333333333 # 4/3
 diversityF  = 1.00
 diversityI  = 1.00
 diversityII = 1.00

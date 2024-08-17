@@ -25,19 +25,22 @@ define [buildGSUB para glyphStore markGlyphs] : begin
 
 	# NWID / WWID
 	if para.enableNwidWwid : begin
-		buildGrFeature gsub glyphStore Gr.Nwid
-		buildGrFeature gsub glyphStore Gr.Wwid
+		local grIgnore : if para.isQuasiProportional Gr.IsCompositeOrLigature null
+		buildGrFeature gsub glyphStore Gr.Nwid grIgnore
+		buildGrFeature gsub glyphStore Gr.Wwid grIgnore
 
 	# lnum / onum
 	buildGrFeature gsub glyphStore Gr.Lnum
 	buildGrFeature gsub glyphStore Gr.Onum
 
-	# zero
-	buildGrFeature gsub glyphStore Gr.Zero
+	# Mosaic form
+	buildGrFeature gsub glyphStore Gr.MosaicForm
+
+	# zero is handled inside the CV/SS feature builder
+	# As it is a cv/ss "cherry picking".
 
 	# APLF
-	if para.enableCvSs : begin
-		buildGrFeature gsub glyphStore Gr.AplForm
+	buildGrFeature gsub glyphStore Gr.AplForm
 
 	# numr / dnom
 	buildGrFeature gsub glyphStore Gr.NumeratorForm
@@ -46,23 +49,18 @@ define [buildGSUB para glyphStore markGlyphs] : begin
 	# ccmp
 	local ccmp : buildCCMP gsub glyphStore markGlyphs
 
+	# Ligation
+	if para.enableLigation : buildLigations gsub para para.ligationBuildups
+
 	# frac
 	buildFrac gsub glyphStore
-
-	# Ligation
-	if para.enableLigation : do
-		define plm : Object.assign {.} para.ligation.defaultBuildup
-		if (para.ligation.caltBuildup && para.ligation.caltBuildup.length) : begin
-			set plm.calt para.ligation.caltBuildup
-		buildLigations gsub para plm
 
 	# THND
 	buildGsubThousands gsub para glyphStore
 
 	# cv##, ss##
 	local cvs nothing
-	if para.enableCvSs : begin
-		set cvs : buildCVSS gsub para glyphStore
+	set cvs : buildCVSS gsub para glyphStore
 
 	# ccmp post cv/ss (for Ogonek shape transform)
 	buildCCMPPostCvSs gsub ccmp glyphStore markGlyphs
@@ -73,7 +71,7 @@ define [buildGSUB para glyphStore markGlyphs] : begin
 
 	# TXTR, "texture" feature
 	if (para.buildTextureFeature && !para.isQuasiProportional) : begin
-		 buildGsubTexture gsub glyphStore markGlyphs cvs
+		buildGsubTexture gsub glyphStore markGlyphs cvs
 
 	gsub.finalize
 	return gsub

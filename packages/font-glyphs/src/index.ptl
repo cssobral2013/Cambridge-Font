@@ -1,9 +1,10 @@
-import [Glyph] from "@iosevka/glyph"
+import [Glyph GlyphProc ForkGlyphProc] from "@iosevka/glyph"
 import [GlyphStore] from "@iosevka/glyph/store"
 import [GlyphBlock GlyphBuildExecutor] from "@iosevka/glyph/block"
 import as Gr from "@iosevka/glyph/relation"
 import as SpiroKit from "@iosevka/font-kits/spiro-kit"
 import as BooleKit from "@iosevka/font-kits/boole-kit"
+import as DerivedCoordinates from "@iosevka/font-kits/derived-coordinates"
 import [DesignParameters calculateMetrics setFontMetrics GenDivFrame] from "./meta/aesthetics.mjs"
 import [$NamedParameterPair$] from "@iosevka/util"
 
@@ -77,9 +78,11 @@ export : define [buildGlyphs para recursive] : begin
 		Contrast        Metrics.Contrast
 		Stroke          Metrics.Stroke
 		CorrectionOMidX Metrics.CorrectionOMidX
+		TINY            Metrics.TINY
 		Superness       DesignParameters.superness
 	define BooleFns : BooleKit.SetupBuilders : object
 		globalTransform Metrics.GlobalTransform
+	define DerivedCoordinateFns : DerivedCoordinates.SetupBuilders : object
 
 	# Setup the capture
 	define $$Capture$$ : object
@@ -92,6 +95,7 @@ export : define [buildGlyphs para recursive] : begin
 		glyphStore
 		SpiroFns
 		BooleFns
+		DerivedCoordinateFns
 		DivFrame
 		MarkSet
 		AS_BASE
@@ -99,6 +103,8 @@ export : define [buildGlyphs para recursive] : begin
 		glyph-is-needed
 		buildGlyphs
 		fontMetrics
+		GlyphProc
+		ForkGlyphProc
 
 	### HERE WE GO
 	run-glyph-module "./common/derivatives.mjs"
@@ -114,6 +120,10 @@ export : define [buildGlyphs para recursive] : begin
 
 	# Numbers
 	run-glyph-module "./number/index.mjs"
+
+	# Letter-likes
+	run-glyph-module "./letter-like/cursive.mjs"
+	run-glyph-module "./letter-like/fraktur.mjs"
 
 	# Symbols
 	run-glyph-module "./symbol/shared.mjs"

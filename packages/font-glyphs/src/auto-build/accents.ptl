@@ -130,20 +130,19 @@ glyph-block AutoBuild-Accents : begin
 		local second : new Set
 		local mapping : new Map
 
-		foreach { k1 m } [Object.entries uk] : begin
-			foreach { k2 v } [Object.entries m] : begin
-				local g1 : query-glyph k1
-				local g2 : query-glyph k2
-				local g3 : query-glyph v
-				if (g1 && g2 && g3) : begin
-					first.add g1
-					second.add g2
+		foreach { { k1 k2 } v } [items-of uk] : begin
+			local g1 : query-glyph k1
+			local g2 : query-glyph k2
+			local g3 : query-glyph v
+			if (g1 && g2 && g3) : begin
+				first.add g1
+				second.add g2
 
-					local mm : mapping.get g1
-					if [not mm] : begin
-						set mm : new Map
-						mapping.set g1 mm
-					mm.set g2 g3
+				local mm : mapping.get g1
+				if [not mm] : begin
+					set mm : new Map
+					mapping.set g1 mm
+				mm.set g2 g3
 
 		define [matchFirst g] : first.has g
 		define [matchSecond g] : second.has g
@@ -174,15 +173,15 @@ glyph-block AutoBuild-Accents : begin
 		# Handle ogonek
 		substParts parts ogonek.ignore {[hasBaseAnchor 'trailing']} {ogonek.matcher} {} ogonek.production
 
-		# Handle leaning marks
-		substParts parts [isMarkExcluding 'above'] {[MatchUtil.either [hasBaseAnchor 'leaningAbove'] [isMark 'leaningAbove']]} {[isLeaningMark 'above']} {} leaningMarkSplit
-		substParts parts [isMarkExcluding 'below'] {[MatchUtil.either [hasBaseAnchor 'leaningBelow'] [isMark 'leaningBelow']]} {[isLeaningMark 'below']} {} leaningMarkSplit
-
 		# Handle mark combinations (Greek)
 		substParts parts MatchUtil.never {} { markComposition.matchFirst markComposition.matchSecond } {} markComposition.production
 
 		# Handle upper Greek Tonos marks
 		substParts parts MatchUtil.never {[hasBaseAnchor 'grekUpperTonos']} {upperTonos.matcher} {} upperTonos.production
+
+		# Handle leaning marks
+		substParts parts [isMarkExcluding 'above'] {[MatchUtil.either [hasBaseAnchor 'leaningAbove'] [isMark 'leaningAbove']]} {[isLeaningMark 'above']} {} leaningMarkSplit
+		substParts parts [isMarkExcluding 'below'] {[MatchUtil.either [hasBaseAnchor 'leaningBelow'] [isMark 'leaningBelow']]} {[isLeaningMark 'below']} {} leaningMarkSplit
 
 	define [pad _s n] : begin
 		local s _s

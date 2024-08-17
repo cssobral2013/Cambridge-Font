@@ -13,6 +13,7 @@ glyph-block Letter-Latin-O : begin
 	glyph-block-import Mark-Above : RingDims RingShape
 	glyph-block-import Mark-Adjustment : ExtendAboveBaseAnchors ExtendBelowBaseAnchors
 	glyph-block-import Letter-Shared : CreateAccentedComposition SetGrekUpperTonos
+	glyph-block-import Letter-Shared-Shapes : RetroflexHook
 	glyph-block-import Letter-Blackboard : BBS BBD
 
 	create-glyph 'O' 'O' : glyph-proc
@@ -209,11 +210,9 @@ glyph-block Letter-Latin-O : begin
 		include : dispiro
 			widths.rhs
 			flat (SB + OX) (XH / 2) [heading Upward]
-			curl (SB + OX) (XH - [Math.min (XH / 2 - 0.1) SmallArchDepthA])
-			arcvh
-			g4 (Middle - CorrectionOMidS) (XH - O)
-			archv
-			flat (RightSB - OX) (XH - [Math.min (XH / 2 - 0.1) SmallArchDepthB])
+			curl (SB + OX) (XH - [Math.min (XH / 2 - TINY) SmallArchDepthA])
+			arch.rhs XH
+			flat (RightSB - OX) (XH - [Math.min (XH / 2 - TINY) SmallArchDepthB])
 			curl (RightSB - OX) (XH / 2) [heading Downward]
 
 	create-glyph 'olowerhalf' 0x1D17 : glyph-proc
@@ -221,11 +220,9 @@ glyph-block Letter-Latin-O : begin
 		include : dispiro
 			widths.lhs
 			flat (SB + OX) (XH / 2) [heading Downward]
-			curl (SB + OX) [Math.min (XH / 2 - 0.1) SmallArchDepthB]
-			arcvh
-			g4 (Middle + CorrectionOMidS) O
-			archv
-			flat (RightSB - OX) [Math.min (XH / 2 - 0.1) SmallArchDepthA]
+			curl (SB + OX) [Math.min (XH / 2 - TINY) SmallArchDepthB]
+			arch.lhs 0
+			flat (RightSB - OX) [Math.min (XH / 2 - TINY) SmallArchDepthA]
 			curl (RightSB - OX) (XH / 2) [heading Upward]
 
 	create-glyph 'oWithLightCentralizationStroke' : glyph-proc
@@ -270,3 +267,8 @@ glyph-block Letter-Latin-O : begin
 		include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
 		include : VBar.m Middle XH (XH + LongJut - 0.5 * Stroke)
 		include : VBar.m Middle (-LongJut + 0.5 * Stroke) 0
+
+	derive-composites 'oRetroflexHook' 0x1DF1B 'o' : RetroflexHook.l
+		x -- [mix [arch.adjust-x.bot Middle] SB 0.75]
+		y -- 0
+		yAttach -- [mix O SmallArchDepthB : archv.yFromX 0.75]

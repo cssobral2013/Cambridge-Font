@@ -8,7 +8,7 @@ glyph-module
 glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Symbol-Geometric-Shared : GeometricDim UnicodeWeightGrade GeometricSizes
+	glyph-block-import Symbol-Geometric-Shared : GeometricDim UnicodeWeightGrade GeometricSizes ConvexPolygonOutline
 
 	define Geom : GeometricDim MosaicUnitWidth MosaicWidth
 	define Size : GeometricSizes Geom
@@ -45,33 +45,25 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 			fallback pp.cy Geom.MidY
 			Geom.Size * [fallback pp.size 1]
 			begin 0
-		local outlines : glyph-proc : begin
-			set this.gizmo : Translate 0 0
-			foreach c [items-of : sh.geometry.asContours] : foreach j [range 0 c.length] : begin
-				local a c.[if j (j - 1) (c.length - 1)]
-				local b c.(j)
-				include : dispiro
-					disable-contrast
-					widths.center ([fallback pp.sw GeometryStroke] * 2)
-					corner [mix a.x b.x (-2)] [mix a.y b.y (-2)]
-					corner [mix a.x b.x (+3)] [mix a.y b.y (+3)]
-
-		return : intersection sh outlines
+		return : ConvexPolygonOutline sh [fallback pp.sw GeometryStroke]
 
 	define [StdWhiteShape fn name unicode props] : begin
 		create-glyph [MangleName name] [MangleUnicode unicode] : glyph-proc
 			set-width Geom.Width
 			include : StdWhiteShapeImpl fn 1 0 1 props
 
+	define [InnerShapeSize props] : begin
+		local pp : fallback props {.}
+		return : [fallback pp.innerSize 0.5] * (Geom.Size * [fallback pp.size 1] - [fallback pp.sw GeometryStroke])
+
 	define [StdWhiteContainingBlackShape fn name unicode props] : begin
 		local pp : fallback props {.}
 		create-glyph [MangleName name] [MangleUnicode unicode] : glyph-proc
 			set-width Geom.Width
-			local sw : fallback pp.sw GeometryStroke
 			include : fn
 				fallback pp.cx Geom.MidX
 				fallback pp.cy Geom.MidY
-				[fallback pp.innerSize 0.5] * (Geom.Size * [fallback pp.size 1] - sw)
+				InnerShapeSize pp
 				begin 0
 			include : StdWhiteShapeImpl fn 1 0 1 props
 
@@ -83,7 +75,7 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 			include : fn
 				fallback pp.cx Geom.MidX
 				fallback pp.cy Geom.MidY
-				[fallback pp.innerSize 0.5] * (Geom.Size * [fallback pp.size 1] - sw)
+				InnerShapeSize pp
 				begin 0
 			include : ConvexWhitePolygonImpl fn props
 
@@ -169,6 +161,7 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 		StdWhiteContainingBlackShape SquareShape 'whiteSquareWithCenter' 0x25A3
 		StdWhiteContainingBlackShape SquareShape 'whiteSquareContainingBlackVerySmallSquare' 0x1F794 Size.TinyInner
 		StdWhiteContainingBlackShape SquareShape 'whiteSquareContainingBlackMediumSquare' 0x1F795 Size.MediumInner
+		StdWhiteContainingBlackShape SquareShape 'heavyWhiteSquareContainingBlackMediumSquare' 0x1CE05 : Object.assign Size.TinyInner {.sw [UnicodeWeightGrade 9 Geom.Scalar]}
 
 		StdGeomTargetShape SquareShape 'squareTarget' 0x1F796
 
@@ -201,26 +194,44 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 		StdBlackShape TriangleRTFill 'blackTriangleRT' 0x25E5
 		ConvexWhitePolygon TriangleRTFill 'whiteTriangleRT' 0x25F9
 
+		define [SquareOverlap name unicode rev square1 square2] : begin
+			create-glyph [MangleName name] [MangleUnicode unicode] : glyph-proc
+				set-width Geom.Width
+				local space : Geom.Width * (1 - Size.Medium.size)
+				local offsetX : space * 0.45 * [if rev (-1) 1]
+				local offsetY : space * 0.45
+				include : union
+					with-transform [Translate (-offsetX) (-offsetY)] : refer-glyph : MangleName [if square1 'blackMediumSquare' 'whiteMediumSquare']
+					with-transform [Translate offsetX offsetY] : refer-glyph : MangleName [if square2 'blackMediumSquare' 'whiteMediumSquare']
+
+		SquareOverlap 'overlapWWSquareRev' 0x29C9 1 0 0
+		SquareOverlap 'overlapWWSquare' 0x2BBA 0 0 0
+		SquareOverlap 'overlapWBSquare' 0x2BBB 0 0 1
+		SquareOverlap 'overlapBBSquare' 0x2BBC 0 1 1
+
 	do "Rectangle"
-		define [RectangleFill cx cy r] : spiro-outline
+		define [HoriRectangleFill cx cy r] : spiro-outline
 			corner (cx - r) (cy + r / 1.5)
 			corner (cx + r) (cy + r / 1.5)
 			corner (cx + r) (cy - r / 1.5)
 			corner (cx - r) (cy - r / 1.5)
 
-		StdBlackShape RectangleFill 'blackRectangle' 0x25AC
-		ConvexWhitePolygon RectangleFill 'whiteRectangle' 0x25AD
+		StdBlackShape HoriRectangleFill 'blackHoriRectangle' 0x25AC
+		ConvexWhitePolygon HoriRectangleFill 'whiteHoriRectangle' 0x25AD
 
-		define [LongRectangleFill cx cy r] : begin
-			define rs : Geom.TallSize / (r * 1.5)
-			return : spiro-outline
-				corner (cx - r * rs) (cy + r * rs * 1.5)
-				corner (cx + r * rs) (cy + r * rs * 1.5)
-				corner (cx + r * rs) (cy - r * rs * 1.5)
-				corner (cx - r * rs) (cy - r * rs * 1.5)
+		define [VertRectangleFill cx cy r] : spiro-outline
+			corner (cx - r / 1.5) (cy + r)
+			corner (cx + r / 1.5) (cy + r)
+			corner (cx + r / 1.5) (cy - r)
+			corner (cx - r / 1.5) (cy - r)
 
-		StdBlackShape LongRectangleFill 'blackLongRectangle' 0x25AE
-		ConvexWhitePolygon LongRectangleFill 'whiteLongRectangle' 0x25AF
+		StdBlackShape VertRectangleFill 'blackVertRectangle' 0x25AE
+		ConvexWhitePolygon VertRectangleFill 'whiteVertRectangle' 0x25AF
+
+		create-glyph [MangleName 'whiteVertRectangleBar'] [MangleUnicode 0x1CE06] : glyph-proc
+			set-width Geom.Width
+			include : refer-glyph : MangleName 'whiteVertRectangle'
+			include : HBar.m (Geom.MidX - Geom.Size) (Geom.MidX + Geom.Size) Geom.MidY GeometryStroke
 
 		define [ParallelogramFill cx cy r] : begin
 			define skew : r * 1 / 4
@@ -232,6 +243,18 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 
 		StdBlackShape ParallelogramFill 'blackParallelogram' 0x25B0
 		ConvexWhitePolygon ParallelogramFill 'whiteParallelogram' 0x25B1
+
+		alias [MangleName 'flatness'] [MangleUnicode 0x23E5] [MangleName 'whiteParallelogram']
+
+		define [TrapeziumFill cx cy r] : begin
+			define skew : r * 1 / 4
+			return : spiro-outline
+				corner (cx - r) (cy + r / 1.5)
+				corner (cx + r - skew) (cy + r / 1.5)
+				corner (cx + r) (cy - r / 1.5)
+				corner (cx - r) (cy - r / 1.5)
+
+		ConvexWhitePolygon TrapeziumFill 'whiteTrapezium' 0x23E2
 
 	do "Triangles"
 		define triangleOvershoot : 2.1 / [Math.sqrt 3]
@@ -354,7 +377,7 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 		StdBlackShape DiamondFill 'blackCenteredDiamond' 0x2BC1 Size.Oblique
 
 		StdWhiteShape DiamondFill 'whiteDiamond' 0x25C7 Size.Oblique
-		StdWhiteShape DiamondFill 'whiteDiamondOperatorImpl' null [Object.assign {.} Size.Oblique {.sw ([Math.sqrt 2] * [AdviceStroke 4])}]
+		StdWhiteShape DiamondFill 'whiteDiamondOperatorImpl' null [Object.assign {.} Size.Oblique {.sw (Math.SQRT2 * [AdviceStroke 4])}]
 
 		StdBlackShape DiamondFill 'blackMediumDiamond' 0x2B25 Size.MediumOblique
 		StdBlackShape DiamondFill 'blackSmallDiamond' 0x2B29 Size.SmallOblique
@@ -424,7 +447,7 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 				g4     [mix cx [mix cx (cx - size) 0.5] p] [mix cy [mix (cy + size) cy 0.5] p]
 				close
 
-		StdWhiteShape DiamondLazongeShape 'whiteConcaveSidedDiamond'  0x27E1 [Object.assign {.} Size.Oblique {.sw ([Math.sqrt 2] * [UnicodeWeightGrade 6 Geom.Scalar])}]
+		StdWhiteShape DiamondLazongeShape 'whiteConcaveSidedDiamond'  0x27E1 [Object.assign {.} Size.Oblique {.sw (Math.SQRT2 * [UnicodeWeightGrade 6 Geom.Scalar])}]
 		StdBlackShape DiamondLazongeShape 'lightFourPointedBlackCusp' 0x2BCC Size.Oblique
 		StdWhiteShape DiamondLazongeShape 'whiteFourPointedBlackCusp' 0x2BCE Size.ObliqueSA
 
@@ -479,6 +502,27 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 		StdBlackShape CircleInvertInnerShape 'blackInvInnerCircle' null
 		StdWhiteShape CircleInvertInnerShape 'whiteInvInnerCircle' null
 
+		create-glyph [MangleName 'blackCircleMinusQuarterLeft'] [MangleUnicode 0x1CC6B] : glyph-proc
+			set-width Geom.Width
+			include : difference
+				refer-glyph : MangleName 'blackCircle'
+				spiro-outline [corner (Geom.MidX - Geom.Size) (Geom.MidY + Geom.Size)] [corner Geom.MidX Geom.MidY] [corner (Geom.MidX - Geom.Size) (Geom.MidY - Geom.Size)]
+		create-glyph [MangleName 'blackCircleMinusQuarterUp'] [MangleUnicode 0x1CC6C] : glyph-proc
+			set-width Geom.Width
+			include : difference
+				refer-glyph : MangleName 'blackCircle'
+				spiro-outline [corner (Geom.MidX + Geom.Size) (Geom.MidY + Geom.Size)] [corner Geom.MidX Geom.MidY] [corner (Geom.MidX - Geom.Size) (Geom.MidY + Geom.Size)]
+		create-glyph [MangleName 'blackCircleMinusQuarterRight'] [MangleUnicode 0x1CC6D] : glyph-proc
+			set-width Geom.Width
+			include : difference
+				refer-glyph : MangleName 'blackCircle'
+				spiro-outline [corner (Geom.MidX + Geom.Size) (Geom.MidY - Geom.Size)] [corner Geom.MidX Geom.MidY] [corner (Geom.MidX + Geom.Size) (Geom.MidY + Geom.Size)]
+		create-glyph [MangleName 'blackCircleMinusQuarterDown'] [MangleUnicode 0x1CC6E] : glyph-proc
+			set-width Geom.Width
+			include : difference
+				refer-glyph : MangleName 'blackCircle'
+				spiro-outline [corner (Geom.MidX - Geom.Size) (Geom.MidY - Geom.Size)] [corner Geom.MidX Geom.MidY] [corner (Geom.MidX + Geom.Size) (Geom.MidY - Geom.Size)]
+
 	do "Ellipse"
 		define [EllipseFillT kx ky] : lambda  [cx cy r s] : begin
 			define rOrig : r + s
@@ -527,9 +571,17 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 		define [PentagramSw c] {.sw ([AdviceStroke c : Math.sqrt Geom.Scalar] * [Math.sqrt 5])}
 		StdBlackShape [RegularPolygonFill 5  2  1.1  0] 'blackStar' 0x2605
 		StdWhiteShape [RegularPolygonFill 5  2  1.1  0] 'whiteStar' 0x2606 [PentagramSw 5.5]
+		StdWhiteShape [RegularPolygonFill 5  2  1.1  0] 'lightWhiteStar' null {.sw ([UnicodeWeightGrade 3 : Math.sqrt Geom.Scalar] * [Math.sqrt 5])}
 		StdWhiteShape [RegularPolygonFill 5  2  1.1  0] 'whiteMediumStar' 0x2B50 [Object.assign [PentagramSw 7] Size.Medium]
 		StdBlackShape [RegularPolygonFill 5  2  1.1  0] 'blackSmallStar' 0x2B51 Size.Small
 		StdWhiteShape [RegularPolygonFill 5  2  1.1  0] 'whiteSmallStar' 0x2B52 [Object.assign [PentagramSw 3] Size.Small]
+
+		create-glyph [MangleName 'Hexagram'] [MangleUnicode 0x2721] : glyph-proc
+			set-width Geom.Width
+			local offset : Geom.Size / 3
+			include : union
+				with-transform [Translate 0   offset ] : refer-glyph : MangleName 'whiteTriangleUp'
+				with-transform [Translate 0 (-offset)] : refer-glyph : MangleName 'whiteTriangleDown'
 
 	do "Other Stars"
 		define [CurlyEdgeStar sides shrink overflow phase] : lambda [cx cy size] : begin
@@ -546,8 +598,8 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 			return : spiro-outline corners [close]
 
 		define [PentagramSw c] {.sw ([AdviceStroke c : Math.sqrt Geom.Scalar] * [Math.sqrt 5])}
-		StdBlackShape [CurlyEdgeStar 4  0.6  1.1  0] 'blackFourPrintedStar' 0x2726
-		StdWhiteShape [CurlyEdgeStar 4  0.6  1.1  0] 'whiteFourPrintedStar' 0x2727 [PentagramSw 5]
+		StdBlackShape [CurlyEdgeStar 4  0.6  1.1  0] 'blackFourPointedStar' 0x2726
+		StdWhiteShape [CurlyEdgeStar 4  0.6  1.1  0] 'whiteFourPointedStar' 0x2727 [PentagramSw 5]
 
 	do "Arrow head"
 		define [RightArrowHeadShape cx cy size] : spiro-outline
@@ -557,3 +609,9 @@ glyph-block Symbol-Geometric-Plain : for-width-kinds WideWidth1
 			corner (cx - 0.5 * size)  cy
 
 		StdBlackShape RightArrowHeadShape 'blackArrowHeadRight' 0x27A4 Size.Oblique
+		StdWhiteShape RightArrowHeadShape 'whiteArrowHeadRight' null {.sw ([Math.min GeometryStroke : AdviceStroke 4.75 : Math.sqrt Geom.Scalar] * [Math.sqrt 5])}
+
+	do "Other Polygon"
+		create-glyph [MangleName 'straightness'] [MangleUnicode 0x23E4] : glyph-proc
+			set-width Geom.Width
+			include : HBar.m Geom.Left Geom.Right Geom.MidY GeometryStroke
