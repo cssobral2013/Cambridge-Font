@@ -1,6 +1,6 @@
 {
   "name": "@iosevka/monorepo",
-  "version": "31.5.0",
+  "version": "32.4.0",
   "workspaces": [
     "packages/*",
     "tools/*"
@@ -16,19 +16,20 @@
   "dependencies": {
     "@iarna/toml": "^2.2.5",
     "deep-equal": "^2.2.3",
-    "otb-ttc-bundle": "^1.7.4",
+    "otb-ttc-bundle": "^1.7.5",
     "semver": "^7.6.3",
-    "uuid": "^10.0.0",
-    "verda": "^1.12.2",
-    "which": "^4.0.0"
+    "uuid": "^11.0.5",
+    "verda": "^1.12.3",
+    "which": "^5.0.0"
   },
   "devDependencies": {
-    "eslint": "^9.9.1",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "glob": "^11.0.0",
-    "patel": "^0.40.0",
-    "prettier": "^3.3.3"
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-import": "^2.31.0",
+    "glob": "^11.0.1",
+    "patel": "^0.41.0",
+    "prettier": "^3.4.2"
   },
   "engines": {
     "node": ">=16.0.0"

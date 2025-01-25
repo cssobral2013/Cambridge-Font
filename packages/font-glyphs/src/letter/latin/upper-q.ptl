@@ -19,8 +19,7 @@ glyph-block Letter-Latin-Upper-Q : begin
 	define [QHorizontalTailedBody df top sw] : begin
 		define fine : mix ShoulderFine sw 0.125
 		return : dispiro
-			flat (df.middle - sw * TanSlope + O) (sw - fine) [widths.lhs fine]
-			curl [arch.adjust-x.bot df.middle fine] (sw - fine)
+			g4.right.mid [arch.adjust-x.bot df.middle fine] (sw - fine) [widths.lhs fine]
 			archv
 			flat df.rightSB ArchDepthA [widths.lhs sw]
 			curl df.rightSB (top - ArchDepthB)
@@ -28,19 +27,20 @@ glyph-block Letter-Latin-Upper-Q : begin
 			flat df.leftSB (top - ArchDepthA)
 			curl df.leftSB ArchDepthB
 			arcvh
-			straight.right.end [arch.adjust-x.bot df.middle] 0
+			flat [arch.adjust-x.bot df.middle] 0
+			curl df.rightSB 0
 
 	define [QOpenSwashyBody df top] : glyph-proc
 		define fine : AdviceStroke 3.5
 		define xLB0 : mix df.leftSB df.rightSB (1 / 16)
 		define xLB : xLB0 + [HSwToV : 0.6 * fine]
-		define yLB : [mix 0 Descender (1 - 1 / 32)] + O
+		define yLB : [mix 0 Descender (31 / 32)] + O
 		define xMBArc : mix df.rightSB xLB 0.5
 		define yMBArc : [mix ArchDepthA yLB 0.625] + Stroke * (1 / 16)
 		define xRB0 : mix df.rightSB df.width 0.7
 		define xRB : xRB0 - [HSwToV : 0.75 * Stroke]
 		define yRingStart : XH / 12
-		define notchOffset : (-Descender * 0.625) + Stroke * 0.625 + yRingStart / 2
+		define notchOffset : ((-Descender) * 0.625) + Stroke * 0.625 + yRingStart / 2
 		define tailSlope : 0.2 + 0.5 * (1 - fine / Stroke)
 		# Lower part
 		include : difference
@@ -76,7 +76,7 @@ glyph-block Letter-Latin-Upper-Q : begin
 			MaskLeft xLB
 
 	# Tails
-	define [QStaraightTail df] : begin
+	define [QStraightTail df] : begin
 		local shift : StrokeWidthBlend 0 0.25
 		return : dispiro
 			widths.rhs
@@ -85,7 +85,7 @@ glyph-block Letter-Latin-Upper-Q : begin
 
 	define [QCurlyTail df] : begin
 		local shift : StrokeWidthBlend 0.5 0.6
-		local startx : df.middle + (Stroke * shift) * HVContrast
+		local startx : df.middle + [HSwToV : Stroke * shift]
 		return : dispiro
 			widths.rhs
 			flat startx HalfStroke [heading Downward]
@@ -104,6 +104,7 @@ glyph-block Letter-Latin-Upper-Q : begin
 			flat [Math.min (df.middle + HookX - 1) (df.middle - [HSwToV HalfStroke] - TailDepth)] (Stroke + TailDepth)
 			curl (df.middle + HookX) (Stroke + TailDepth)
 
+	glyph-block-export QCrossing
 	define [QCrossing df top sw] : begin
 		define k 1.5
 		define cor : DiagCor (k * (df.rightSB - df.middle)) (df.rightSB - df.middle - OX)
@@ -125,13 +126,9 @@ glyph-block Letter-Latin-Upper-Q : begin
 			VBar.m df.middle [mix Descender HalfStroke 1.75] 0 sw
 			VBar.m df.middle 0 TailDepth
 
-	define [QHorizontalTail df tio sw] : dispiro
-		flat [arch.adjust-x.bot df.middle] 0 [widths.lhs : AdviceStroke 3]
-		curl [mix df.rightSB df.width 0.5] 0
-
-	define detachedTailGap : Math.max (-0.25 * Descender) [AdviceStroke 12]
+	define detachedTailGap : Math.max ((-0.25) * Descender) : AdviceStroke 12
 	define yObliqueTailStart : 0 - detachedTailGap - Stroke * 0.875
-	define yObliqueTailEnd : [mix 0 Descender 0.75] - Stroke * 0.5
+	define yObliqueTailEnd : [mix 0 Descender 0.75] - HalfStroke
 	define [xDetachedTailEnd df] : mix df.rightSB df.width 0.75
 	define kBendStartPartLeftLength 0.5
 	define [xBendTailStart df] : mix df.middle df.leftSB kBendStartPartLeftLength
@@ -151,15 +148,19 @@ glyph-block Letter-Latin-Upper-Q : begin
 
 	###################################
 
-	define QInnerVertSw : Math.min [AdviceStroke 3.5] ((RightSB - SB - [HSwToV : 2 * Stroke]) / (2 * HVContrast))
+	glyph-block-export QInnerDiagSw
+	define QInnerDiagSw : AdviceStroke 4
+
+	define QInnerVertSw : Math.min VJutStroke : VSwToH : (RightSB - SB) / 2 - [HSwToV Stroke]
+
 	define QConfig : object
-		straight            { QStdBody                Stroke             QStaraightTail     'capDesc' 'p' }
+		straight            { QStdBody                Stroke             QStraightTail      'capDesc' 'p' }
 		curlyTailed         { QStdBody                Stroke             QCurlyTail         'capDesc' 'p' }
 		crossingCurlyTailed { QStdBody                QInnerVertSw       QCrossingCurlyTail 'capDesc' 'p' }
-		crossing            { QStdBody               [AdviceStroke 4]    QCrossing          'capital' 'e' }
-		crossingBaseline    { QStdBody               [AdviceStroke 4]    QCrossingBaseline  'capital' 'e' }
+		crossing            { QStdBody                QInnerDiagSw       QCrossing          'capital' 'e' }
+		crossingBaseline    { QStdBody                QInnerDiagSw       QCrossingBaseline  'capital' 'e' }
 		verticalCrossing    { QStdBody                QInnerVertSw       QVerticalCrossing  'capDesc' 'p' }
-		horizontalTailed    { QHorizontalTailedBody  [AdviceStroke 3]    QHorizontalTail    'capital' 'e' }
+		horizontalTailed    { QHorizontalTailedBody  [AdviceStroke 3]    no-shape           'capital' 'e' }
 		detachedTailed      { QStdBody                Stroke             QDetachedTail      'capDesc' 'p' }
 		detachedBendTailed  { QStdBody                Stroke             QDetachedBendTail  'capDesc' 'p' }
 		openSwash           { QOpenSwashyBody         Stroke             QSwashyTail        'capDesc' 'p' }
@@ -199,7 +200,7 @@ glyph-block Letter-Latin-Upper-Q : begin
 		include : intersection
 			QInner
 			union
-				VBar.l  (SB + BBD) 0 CAP BBS
+				VBar.l (SB + BBD)      0 CAP BBS
 				VBar.r (RightSB - BBD) 0 CAP BBS
 
 		define terminalX : Middle + HookX

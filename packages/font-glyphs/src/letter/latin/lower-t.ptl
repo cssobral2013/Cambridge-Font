@@ -8,7 +8,7 @@ glyph-block Letter-Latin-Lower-T : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Adjustment : LeaningAnchor
-	glyph-block-import Letter-Shared : CreateCommaCaronComposition CreateTurnedLetter
+	glyph-block-import Letter-Shared : CreateAccentedComposition CreateCommaCaronComposition CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : CurlyTail FlatHookDepth ConnectedCedilla SerifedArcEnd
 	glyph-block-import Letter-Shared-Shapes : DiagTail DToothlessRise
 	glyph-block-import Letter-Shared-Shapes : TopHook PalatalHook
@@ -21,7 +21,7 @@ glyph-block Letter-Latin-Lower-T : begin
 	define SYM-PR-BALANCED   3
 
 	define dfNarrowT : DivFrame para.diversityF
-	define [xSmallTBarLeftT df] : df.middle - TBalance * df.div * df.div - [HSwToV HalfStroke]
+	define [xSmallTBarLeftT  df] : df.middle - (df.div ** 2) * TBalance - [HSwToV HalfStroke]
 	define [xSmallTCrossRefT df] : [xSmallTBarLeftT df] + df.div * TBalance2 + [HSwToV HalfStroke]
 
 	define yCrossBar     XH
@@ -40,7 +40,7 @@ glyph-block Letter-Latin-Lower-T : begin
 
 		define [XHookTerminal df sym] : match sym
 			[Just SYM-LEFT]        df.rightSB
-			__                   : [BarLeftPos df sym] + [Math.max ((df.width - df.leftSB * 2) * 0.75 + [HSwToV : 0.25 * Stroke]) [HSwToV : 2.25 * Stroke]]
+			__                   : [BarLeftPos df sym] + [Math.max ((df.width - df.leftSB * 2) * 0.75 + [HSwToV QuarterStroke]) [HSwToV : 2.25 * Stroke]]
 
 		export : define [HookShapeT sink df sym offset top bot sw] : begin
 			local xLeft : BarLeftPos df sym
@@ -107,8 +107,8 @@ glyph-block Letter-Latin-Lower-T : begin
 
 	define Flat : namespace
 		export : define [xCrossBarPos df sym] : match sym
-			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) [mix df.width df.rightSB [mix 1 df.div 2]]}
-			__ {[mix 0 df.leftSB  [mix 1 df.div 2]] [mix df.width df.rightSB [mix 1 df.div 2]]}
+			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) [mix df.width df.rightSB : mix 1 df.div 2]}
+			__ {[mix 0 df.leftSB  [mix 1 df.div 2]] [mix df.width df.rightSB : mix 1 df.div 2]}
 
 
 		define [CrossLeft df]  : mix 0        df.leftSB  [mix 1 df.div 2]
@@ -121,7 +121,7 @@ glyph-block Letter-Latin-Lower-T : begin
 		export : define [BarLeftPos df sym] : match sym
 			[Just SYM-LEFT]      : mix df.leftSB [xSmallTBarLeftT df] 0.5
 			[Just SYM-BALANCED]  : [mix [CrossLeft df] [CrossRight df] 0.42] - [HSwToV : 0.375 * Stroke]
-			([Just SYM-PR-LEFT] || [Just SYM-PR-BALANCED]) : df.middle - [HSwToV : 0.5 * Stroke]
+			([Just SYM-PR-LEFT] || [Just SYM-PR-BALANCED]) : df.middle - [HSwToV HalfStroke]
 
 		export : define [Body        df sym top bot] : Impl NORMAL    df sym top bot 0
 		export : define [Retroflex   df sym top bot] : Impl RETROFLEX df sym top bot 0
@@ -230,7 +230,7 @@ glyph-block Letter-Latin-Lower-T : begin
 			include : df.markSet.b
 			include : (Style.PLBody || Style.Body) df sym top 0
 
-		create-glyph "t/phoneticRight.\(suffix)" : glyph-proc
+		create-glyph "t/compLigRight.\(suffix)" : glyph-proc
 			set-width df.width
 			include : df.markSet.b
 			include : difference
@@ -250,7 +250,7 @@ glyph-block Letter-Latin-Lower-T : begin
 
 			include : union
 				difference [Style.Body df sym top 0] [MaskAbove XH]
-				TopHook.mBarInner attach.x XH Ascender
+				TopHook.toRight.mBarInner attach.x XH Ascender
 
 		create-glyph "tLTail.\(suffix)" : glyph-proc
 			set-width df.width
@@ -273,14 +273,14 @@ glyph-block Letter-Latin-Lower-T : begin
 			include : df.markSet.bp
 			include : Style.Retroflex df sym XH Descender
 			local attach : currentGlyph.gizmo.unapply currentGlyph.baseAnchors.hooktopAttach
-			include : TopHook.mBarInner attach.x XH Ascender
+			include : TopHook.toRight.mBarInner attach.x XH Ascender
 
 		create-glyph "tCurlyTail.\(suffix)" : glyph-proc
 			include : MarkSet.b
 
 			local df : DivFrame 1
 			local fine : AdviceStroke 3.5
-			local rinner : LongJut / 2 - fine / 2
+			# local rinner : LongJut / 2 - fine / 2
 
 			local xLeft : Style.BarLeftPos df sym
 
@@ -291,16 +291,17 @@ glyph-block Letter-Latin-Lower-T : begin
 			include : dispiro
 				widths.lhs
 				flat xLeft (yCrossBar - Stroke) [heading Downward]
-				curl xLeft (fine + rinner * 2)
+				curl xLeft LongJut
 				CurlyTail.n fine 0 (xLeft + [HSwToV Stroke] + LongJut) 0 0
 
 	select-variant 't' 't'
 	select-variant 't/teshLeft' (follow -- 't')
 	select-variant 't/phoneticLeft1' (shapeFrom -- 't')
 	select-variant 't/phoneticLeft2'
-	select-variant 't/phoneticRight'
+	select-variant 't/compLigRight'
 	CreateCommaCaronComposition 'tcaron' 0x165 't'
 	derive-glyphs 'tCedilla' 0x163 't' ConnectedCedilla
+	CreateAccentedComposition 'tComma' 0x21B 't' 'commaBelow'
 
 	select-variant "tHookTop" 0x1AD
 	select-variant 'tLTail' 0x1AB
@@ -320,7 +321,7 @@ glyph-block Letter-Latin-Lower-T : begin
 		return : dispiro
 			widths.lhs stroke
 			flat [xSmallTBarLeftT df] top [heading Downward]
-			curl [xSmallTBarLeftT df] XH [heading Downward]
+			curl [xSmallTBarLeftT df] XH  [heading Downward]
 			alsoThru.g2 0.5 0.5 [widths.center stroke]
 			g4   df.rightSB (archDepth) [widths.rhs stroke]
 			match sb

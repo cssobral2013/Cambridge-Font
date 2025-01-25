@@ -31,21 +31,21 @@ glyph-block Letter-Cyrillic-Dzzhe-Zhwe : begin
 			include : CyrDeItalicShapeT dispiro subDf sw
 
 		create-glyph "cyrl/Dzzhe/left" : glyph-proc
-			define df : include : DivFrame para.diversityM 3.5
+			define df : include : DivFrame (para.diversityM ** 2) 3.5
 			include : df.markSet.capital
-			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
+			include : ExtendBelowBaseAnchors (-LongVJut + HalfStroke)
 			set-base-anchor 'cvDecompose' 0 0
 			include : CyrDzzheDeShape df CAP
 
 		create-glyph "cyrl/dzzhe.upright/left" : glyph-proc
-			define df : include : DivFrame para.diversityM 3.5
+			define df : include : DivFrame (para.diversityM ** 2) 3.5
 			include : df.markSet.e
-			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
+			include : ExtendBelowBaseAnchors (-LongVJut + HalfStroke)
 			set-base-anchor 'cvDecompose' 0 0
 			include : CyrDzzheDeShape df XH
 
 		create-glyph "cyrl/dzzhe.italic/left" : glyph-proc
-			define df : include : DivFrame para.diversityM 3.5
+			define df : include : DivFrame (para.diversityM ** 2) 3.5
 			include : df.markSet.b
 			set-base-anchor 'cvDecompose' 0 0
 			include : CyrDzzheDeItalicShape df
@@ -53,20 +53,25 @@ glyph-block Letter-Cyrillic-Dzzhe-Zhwe : begin
 	do "ze subglyph"
 		define [CyrZhweZeShape slabTop slabBot df top hook] : glyph-proc
 			local [object subDf sw] : SubDfDimBy4 0 2 df OX
-			local ze : CyrZe slabTop slabBot top 0 subDf.leftSB subDf.rightSB 0.65 hook sw (xo -- 0.33 * OX)
+			local ze : CyrZe slabTop slabBot top 0
+				left   -- subDf.leftSB
+				right  -- subDf.rightSB
+				hook   -- hook
+				stroke -- sw
+				xo     -- (0.33 * OX)
 			include : ze.Shape
 			include : ze.AutoStartSerifL
 			include : ze.AutoEndSerifL
 
 		foreach { suffix { slabTop slabBot } } [Object.entries EpsilonConfig] : do
 			create-glyph "cyrl/Zhwe/left.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.capital
 				set-base-anchor 'cvDecompose' 0 0
 				include : CyrZhweZeShape slabTop slabBot df CAP Hook
 
 			create-glyph "cyrl/zhwe/left.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.e
 				set-base-anchor 'cvDecompose' 0 0
 				include : CyrZhweZeShape slabTop slabBot df XH SHook
@@ -85,8 +90,14 @@ glyph-block Letter-Cyrillic-Dzzhe-Zhwe : begin
 
 		define [ZhweZheShape legShape fSlab fMidSlab df top hook] : glyph-proc
 			local [object subDf sw] : SubDfDimBy4 0 2 df OX
-			local ze : CyrZe 0 0 top 0 subDf.leftSB subDf.rightSB 0.65 hook (0.5 * sw)
-			include : difference [CyrRightZheShape legShape fSlab fMidSlab df top subDf.middle] [ze.ShapeMask]
+			local zeNoO : CyrZe 0 0 top 0
+				left   -- subDf.leftSB
+				right  -- subDf.rightSB
+				hook   -- hook
+				stroke -- (0.5 * sw)
+				xo     -- 0
+				yo     -- 0
+			include : difference [CyrRightZheShape legShape fSlab fMidSlab df top subDf.middle] [zeNoO.ShapeMask]
 
 		glyph-block-import Letter-Cyrillic-De : CyrDeItalicShapeT
 		define [DzzheZheItalicShape legShape fSlab fMidSlab df top] : glyph-proc
@@ -104,28 +115,28 @@ glyph-block Letter-Cyrillic-Dzzhe-Zhwe : begin
 
 		foreach { suffix { legShape fSlab fMidSlab } } [Object.entries ZheConfig] : do
 			create-glyph "cyrl/Dzzhe/right.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.capital
 				include : CyrRightZheShape legShape fSlab fMidSlab df CAP : DzzheLeft df
 
 			create-glyph "cyrl/dzzhe.upright/right.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.e
 				include : CyrRightZheShape legShape fSlab fMidSlab df XH : DzzheLeft df
 
 			create-glyph "cyrl/dzzhe.italic/right.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.e
 				include : DzzheZheItalicShape legShape fSlab fMidSlab df XH
 
 			create-glyph "cyrl/Zhwe/right.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.capital
 				set-base-anchor 'cvDecompose' 0 0
 				include : ZhweZheShape legShape fSlab fMidSlab df CAP Hook
 
 			create-glyph "cyrl/zhwe/right.\(suffix)" : glyph-proc
-				define df : include : DivFrame para.diversityM 3.5
+				define df : include : DivFrame (para.diversityM ** 2) 3.5
 				include : df.markSet.e
 				set-base-anchor 'cvDecompose' 0 0
 				include : ZhweZheShape legShape fSlab fMidSlab df XH SHook

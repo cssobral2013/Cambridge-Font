@@ -1,9 +1,10 @@
-import * as themes from "../themes/index.mjs";
+import themes from "../themes/index.mjs";
 
 // prettier-ignore
 const languages = [
     { lang: 'English',       sample: 'Shaw, those twelve beige hooks are joined if I patch a young, gooey mouth.' },
     { lang: 'IPA',           sample: '[liə̯bə̆ ɡʷɯ̹ʔ̚ daŋ˕ sŋə̆r̥ra] [ʔɹie˦ na˦ ɡɨ˨ tɕie˦] [ʔɣɛw˦˨ tɕi˦˨ ʔɨwk˦ ʔɨwk˦] [jaw⁴ tsɨ³ tʂɨ¹ ʋu² tʂi¹]', localeId :'und-fonipa' },
+    { lang: 'Armenian',      sample: 'Չին ֆիզիկոսը օճառաջուր ցողելով բժշկում է հայ գնդապետի փքված ձախ թևը։' },
     { lang: 'Azerbaijani',   sample: 'Zəfər, jaketini də papağını da götür, bu axşam hava çox soyuq olacaq.', localeId :'az' },
     { lang: 'Belarusian',    sample: 'У Іўі худы жвавы чорт у зялёнай камізэльцы пабег пад’есці фаршу з юшкай.' },
     { lang: 'Breton',        sample: 'Yec’hed mat Jakez ! Skarzhit ar gwerennoù-mañ, kavet e vo gwin betek fin ho puhez.' },
@@ -29,9 +30,9 @@ const languages = [
     { lang: 'Macedonian',    sample: 'Ѕидарски пејзаж: шугав билмез со чудење џвака ќофте и кељ на туѓ цех.', localeId :'mk' },
     { lang: 'Maltese',       sample: 'Kien liebes gozz ħwejjeġ u ċraret vera qodma u m’għażluhx fil-pront.' },
     { lang: 'Norwegian',     sample: 'Jeg begynte å fortære en sandwich mens jeg kjørte taxi på vei til quiz.' },
-    { lang: 'Polish',        sample: 'Pchnąć w tę łódź jeża lub ośm skrzyń fig.' },
+    { lang: 'Polish',        sample: 'Pchnąć w tę łódź jeża lub ośm skrzyń fig.', localeId: 'pl' },
     { lang: 'Portuguese',    sample: 'Luís argüia à Júlia que «brações, fé, chá, óxido, pôr, zângão» eram palavras do português.' },
-    { lang: 'Romanian',      sample: 'Înjurând pițigăiat, zoofobul comandă vexat whisky și tequila.' },
+    { lang: 'Romanian',      sample: 'Înjurând pițigăiat, zoofobul comandă vexat whisky și tequila.', localeId :'ro' },
     { lang: 'Russian',       sample: 'Широкая электрификация южных губерний даст мощный толчок подъёму сельского хозяйства.' },
     { lang: 'Serbian',       sample: 'Ајшо, лепото и чежњо, за љубав срца мога дођи у Хаџиће на кафу.', localeId: 'sr' },
     { lang: 'Slovak',        sample: 'Kŕdeľ šťastných ďatľov učí pri ústí Váhu mĺkveho koňa obhrýzať kôru a žrať čerstvé mäso.' },

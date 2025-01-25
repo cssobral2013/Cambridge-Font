@@ -55,8 +55,8 @@ glyph-block Letter-Latin-Z : begin
 		local cor : 1.2 * HVContrast
 		include : tagged 'strokeTop' : HBar.t SB RightSB XH
 		include : dispiro
-			corner SB [if (mode === MODE-ZSWASH) 0 Stroke] [widths.rhs (Stroke / HVContrast)]
-			corner RightSB (XH - Stroke)                   [widths.lhs (Stroke / HVContrast)]
+			corner SB [if (mode === MODE-ZSWASH) 0 Stroke] [widths.rhs : VSwToH Stroke]
+			corner RightSB (XH - Stroke)                   [widths.lhs : VSwToH Stroke]
 		if [DisplayBottomStroke mode] : include : tagged 'strokeBottom' : HBar.b SB RightSB 0
 		set-base-anchor "trailing" RightSB 0
 
@@ -70,9 +70,9 @@ glyph-block Letter-Latin-Z : begin
 		define hookTerminalWidth : AdviceStroke 3.5
 		define xDiagWidth : 1 * Stroke
 		define yFootHeight : [Math.max (0.15 * top) (Stroke * 0.625)] + 0.7 * Stroke
-		define kFoot : 1 + 0.5 * Stroke / yFootHeight
-		define yHookDepth : Hook + Stroke * 0.25
-		define yHookStraightDepth : Math.min (yHookDepth - Stroke * 1.1) (yHookDepth / 3 - Stroke / 4)
+		define kFoot : 1 + HalfStroke / yFootHeight
+		define yHookDepth : Hook + QuarterStroke
+		define yHookStraightDepth : Math.min (yHookDepth - Stroke * 1.1) (yHookDepth / 3 - QuarterStroke)
 		define xHookDepth : Math.max (0.25 * (RightSB - SB)) (hookTerminalWidth * 1.5)
 		define xMockTailDepth : Math.max (0.375 * (RightSB - SB)) (hookTerminalWidth * 1.375)
 		define kTop 0.625
@@ -95,11 +95,11 @@ glyph-block Letter-Latin-Z : begin
 				curl RightSB                                  (top - yTailDepth)
 
 		include : dispiro
-			corner RightSB (top - yFootHeight)                 [widths.rhs (Stroke / HVContrast)]
-			corner SB [if (mode == MODE-ZSWASH) 0 yFootHeight] [widths.lhs (Stroke / HVContrast)]
+			corner RightSB (top - yFootHeight)                 [widths.rhs : VSwToH Stroke]
+			corner SB [if (mode == MODE-ZSWASH) 0 yFootHeight] [widths.lhs : VSwToH Stroke]
 
-		include : VBar.r RightSB top (top - yFootHeight) (xDiagWidth / HVContrast)
-		if (mode != MODE-ZSWASH) : include : VBar.l SB 0 yFootHeight (xDiagWidth / HVContrast)
+		include : VBar.r RightSB top (top - yFootHeight) [VSwToH xDiagWidth]
+		if (mode != MODE-ZSWASH) : include : VBar.l SB 0 yFootHeight [VSwToH xDiagWidth]
 
 		include : tagged 'strokeBottom' : match mode
 			[Just MODE-RTAIL] : intersection
@@ -163,7 +163,7 @@ glyph-block Letter-Latin-Z : begin
 
 	define [ZemlyaBottomStroke] : begin
 		local fine : AdviceStroke 4
-		local hx : [Math.max (0.5 * HookX) [HSwToV : 1.25 * fine]] + [HSwToV : 0.125 * fine]
+		local hx : [Math.max (0.5 * HookX) : HSwToV : 1.25 * fine] + [HSwToV : 0.125 * fine]
 		return : dispiro
 			widths.lhs
 			flat SB 0 [heading Rightward]
@@ -179,7 +179,7 @@ glyph-block Letter-Latin-Z : begin
 
 	define [ZemlyaBottomStrokeCursive] : begin
 		local fine : AdviceStroke 4
-		local hx : [Math.max (0.5 * HookX) [HSwToV : 1.25 * fine]] + [HSwToV : 0.125 * fine]
+		local hx : [Math.max (0.5 * HookX) : HSwToV : 1.25 * fine] + [HSwToV : 0.125 * fine]
 		return : dispiro
 			flat (RightSB - [HSwToV fine]) HalfStroke [widths.lhs.heading fine Downward]
 			curl (RightSB - [HSwToV fine]) [mix (Descender + fine) 0 0.5] [widths.lhs.heading fine Downward]
@@ -328,13 +328,13 @@ glyph-block Letter-Latin-Z : begin
 	link-reduced-variant 'z/reduced' 'z'
 	select-variant 'z/rtailBase' (follow -- 'z')
 
-	select-variant 'ZHookBottom' 0x224 (follow -- 'ZDesc')
-	select-variant 'zHookBottom' 0x225 (follow -- 'zDesc')
-	select-variant 'ZSwash' 0x2C7F (follow -- 'ZDesc')
-	select-variant 'zSwash' 0x240 (follow -- 'zDesc')
-	select-variant 'zCurlyTail' 0x291 (follow -- 'zDesc')
-	select-variant 'cyrl/Zemlya' 0xA640 (follow -- 'ZDesc')
-	select-variant 'cyrl/zemlya' 0xA641 (follow -- 'zDesc')
+	select-variant 'ZHookBottom' 0x224   (follow -- 'ZDesc')
+	select-variant 'zHookBottom' 0x225   (follow -- 'zDesc')
+	select-variant 'ZSwash'      0x2C7F  (follow -- 'ZDesc')
+	select-variant 'zSwash'      0x240   (follow -- 'zDesc')
+	select-variant 'zCurlyTail'  0x291   (follow -- 'zDesc')
+	select-variant 'cyrl/Zemlya' 0xA640  (follow -- 'ZDesc')
+	select-variant 'cyrl/zemlya' 0xA641  (follow -- 'zDesc')
 	select-variant 'cyrl/Zemlya/reduced' (follow -- 'ZDesc/reduced') (shapeFrom -- 'cyrl/Zemlya')
 	select-variant 'cyrl/zemlya/reduced' (follow -- 'zDesc/reduced') (shapeFrom -- 'cyrl/zemlya')
 
@@ -353,6 +353,26 @@ glyph-block Letter-Latin-Z : begin
 
 	alias 'grek/Zeta' 0x396 'Z/reduced'
 	alias-reduced-variant 'grek/Zeta/sansSerif' 'grek/Zeta' 'Z/reduced/sansSerif' MathSansSerif
+
+	CreateAccentedComposition 'ZAcute' 0x179 'Z' 'acuteAbove'
+	CreateAccentedComposition 'zAcute' 0x17A 'z' 'acuteAbove'
+	CreateAccentedComposition 'ZDot'   0x17B 'Z' 'dotAbove'
+	CreateAccentedComposition 'zDot'   0x17C 'z' 'dotAbove'
+	CreateAccentedComposition 'ZCaron' 0x17D 'Z' 'caronAbove' true
+	CreateAccentedComposition 'zCaron' 0x17E 'z' 'caronAbove' true
+
+	alias 'Z.PLK' null 'Z/reduced'
+	alias 'z.PLK' null 'z/reduced'
+	CreateAccentedComposition 'ZAcute.PLK' null 'Z/reduced' 'kreskaAbove'
+	CreateAccentedComposition 'zAcute.PLK' null 'z/reduced' 'kreskaAbove'
+	CreateAccentedComposition 'ZDot.PLK'   null 'Z/reduced' 'kropkaAbove'
+	CreateAccentedComposition 'zDot.PLK'   null 'z/reduced' 'kropkaAbove'
+
+	CreateAccentedComposition 'ZStroke' 0x1B5 'Z/reduced' 'barOver'
+	CreateAccentedComposition 'zStroke' 0x1B6 'z/reduced' 'barOver'
+
+	CreateAccentedComposition 'cyrl/Dzelo' 0xA642 'cyrl/Zemlya/reduced' 'barOver'
+	CreateAccentedComposition 'cyrl/dzelo' 0xA643 'cyrl/zemlya/reduced' 'barOver'
 
 	define [BBZShape top] : glyph-proc
 		include : HBar.t SB RightSB top BBS
@@ -381,11 +401,3 @@ glyph-block Letter-Latin-Z : begin
 
 	create-glyph 'mathbb/Z' 0x2124  : composite-proc [MarkSet.capital] [BBZShape CAP]
 	create-glyph 'mathbb/z' 0x1D56B : composite-proc [MarkSet.e] [BBZShape XH]
-
-
-	CreateAccentedComposition 'ZBar' 0x1B5 'Z/reduced' 'barOver'
-	CreateAccentedComposition 'zBar' 0x1B6 'z/reduced' 'barOver'
-	CreateAccentedComposition 'ZCaron' 0x17D 'Z' 'caronAbove' true
-	CreateAccentedComposition 'zCaron' 0x17E 'z' 'caronAbove' true
-	CreateAccentedComposition 'cyrl/ZemlyaBar' 0xA642 'cyrl/Zemlya/reduced' 'barOver'
-	CreateAccentedComposition 'cyrl/zemlyaBar' 0xA643 'cyrl/zemlya/reduced' 'barOver'

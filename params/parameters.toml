@@ -24,6 +24,7 @@ parenSize = 966    # Size of parens, brackets, braces, slashes, etc.
 operSize = 0.80    # Size of mathematical operators (cups, etc.)
 tackSize = 0.80    # Size of logical operators (tacks, etc.)
 bgopSize = 1.10    # Size of "taller" mathematical operators
+bgtkSize = 1.10    # Size of "taller" logical operators
 plusSize = 0.52    # Size of plus and arith symbols
 pictSize = 1.10    # Size of pictograms
 arrowHeight = 1.50 # Height of arrows
@@ -77,7 +78,9 @@ slab = 0
 onumZeroHeightRatio = 1.145
 
 # Reset diversity
+diversityMM = 1
 diversityM  = 1
+diversityT  = 1
 diversityF  = 1
 diversityI  = 1
 diversityII = 1
@@ -105,6 +108,10 @@ verbose = true
 slab = 2
 
 ###### Spacings
+# Wide mosaic spacing variant
+[spacing-wide-mosaic]
+spacing = 4
+
 # Terminal variant
 [spacing-term]
 spacing = 0
@@ -126,15 +133,19 @@ forceMonospace = true
 [spacing-quasi-proportional]
 spacing = 3
 isQuasiProportional = true
-diversityM  = 1.3333333333333 # 4/3
+diversityMM = 1.5             # 9/6
+diversityM  = 1.3333333333333 # 8/6
+diversityT  = 1.1666666666666 # 7/6
 diversityF  = 0.8333333333333 # 5/6
-diversityI  = 0.6666666666666 # 2/3
-diversityII = 0.5             # 1/2
+diversityI  = 0.6666666666666 # 4/6
+diversityII = 0.5             # 3/6
 
 [spacing-quasi-proportional-extension-only]
 spacing = 3
 isQuasiProportional = true
-diversityM  = 1.3333333333333 # 4/3
+diversityMM = 1.50            # 9/6
+diversityM  = 1.3333333333333 # 8/6
+diversityT  = 1.1666666666666 # 7/6
 diversityF  = 1.00
 diversityI  = 1.00
 diversityII = 1.00

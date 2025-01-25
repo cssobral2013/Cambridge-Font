@@ -8,7 +8,7 @@ glyph-module
 glyph-block Letter-Latin-S : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Letter-Shared : CreateDependentComposite
+	glyph-block-import Letter-Shared : CreateAccentedComposition CreateDependentComposite
 	glyph-block-import Letter-Blackboard : BBS BBD
 	glyph-block-import Letter-Shared-Shapes : DToothlessRise FlatHookDepth
 	glyph-block-import Letter-Shared-Shapes : ArcStartSerifWidth ArcStartSerifDepth
@@ -28,7 +28,7 @@ glyph-block Letter-Latin-S : begin
 	define [AdviceSArchDepth y sign _stroke] : begin
 		# Handle with extreme care.
 		local stroke : fallback _stroke Stroke
-		local strokeFactor : stroke * [clamp 1 2 : linreg 126 1 137 1.025 stroke] * [clamp 0 1 : Math.pow (Width / HalfUPM) 0.5]
+		local strokeFactor : stroke * [clamp 1 2 : linreg 126 1 137 1.025 stroke] * [clamp 0 1 : Math.sqrt : Width / HalfUPM]
 		local widthFactor : RightSB - SB
 		local ss : y * 0.22 + 0.12 * strokeFactor + 0.05 * widthFactor
 		return : ss + sign * TanSlope * SmoothAdjust
@@ -43,7 +43,7 @@ glyph-block Letter-Latin-S : begin
 		local adjustFactor : 0.1 * (df.rightSB - df.leftSB) / height
 		return : list
 			~~~ [alsoThru 0.5 (0.7 + adjustFactor)]
-			g4 [pre@mix@post 0.5] [pre@mix@post 0.5] [widths.center ess]
+			alsoThru.g4 0.5 0.5 [widths.center ess]
 			~~~ [alsoThru 0.5 (0.3 - adjustFactor)]
 
 	define [SStrokeImpl df top bot st sb stroke refSwEss] : begin
@@ -118,15 +118,15 @@ glyph-block Letter-Latin-S : begin
 		define soStart : stroke - swStart
 		define soEnd   : stroke - swEnd
 		define archDepth : AdviceSArchDepth top (-1) stroke
-		return : dispiro
+		return : lift-@ : dispiro
 			widths.lhs fine
 			g4   (df.rightSB + OX / 4 - [HSwToV soStart]) (top - hook)
 			hookstart (top - soStart) (sw -- fine)
-			g4   (df.leftSB + oXLeftTop + offsetLT.x) (top - archDepth + offsetLT.y)
-			~~~ [virt pre@ (top - archDepth)]
-			~~~ [g4 [pre@mix@post 0.5 offsetC.x] [pre@mix@post 0.5 offsetC.y] [widths.center stroke]]
-			~~~ [virt post@ (archDepth)]
-			g4   (df.rightSB - SOBot - offsetRB.x) (archDepth + offsetRB.y) [widths.rhs fine]
+			g4   @x1                                        (@y1 + offsetLT.y)
+			virt (@x1 = df.leftSB + oXLeftTop + offsetLT.x) (@y1 = top - archDepth)
+			~~~ [g4 ([mix @x1 @x2 0.5] + offsetC.x) ([mix @y1 @y2 0.5] + offsetC.y) [widths.center stroke]]
+			virt (@x2 = df.rightSB - SOBot - offsetRB.x) (@y2 = archDepth)
+			g4    @x2                                    (@y2 + offsetRB.y) [widths.rhs fine]
 			hookend soEnd (sw -- fine)
 			g4   (df.leftSB + SOBot + [HSwToV soEnd]) (hook) [widths.rhs fine]
 
@@ -340,14 +340,22 @@ glyph-block Letter-Latin-S : begin
 
 	select-variant 'S' 'S'
 	link-reduced-variant 'S/sansSerif' 'S' MathSansSerif
+
 	select-variant 's' 's'
 	link-reduced-variant 's/sansSerif' 's' MathSansSerif
+
 	select-variant 'smcpS' 0xA731 (follow -- 'S')
+
+	select-variant 's/phoneticRight'
+
 	select-variant 'revS' 0x1A7 (follow -- 'S')
 	select-variant 'revs' 0x1A8 (follow -- 's')
+
 	alias 'cyrl/Dze' 0x405 'S'
 	alias 'cyrl/dze' 0x455 's'
-	alias 'cyrl/ghe.italic' null 'revs'
+
+	select-variant 'cyrl/ghe.italic' (shapeFrom -- 'revs') (follow -- 's')
+	alias 'cyrl/ghe.BGR' null 'cyrl/ghe.italic'
 
 	alias 'cyrl/DzeRev' 0xA644 'revS'
 	alias 'cyrl/dzeRev' 0xA645 'revs'
@@ -360,25 +368,25 @@ glyph-block Letter-Latin-S : begin
 
 	select-variant 'SSwash' 0x2C7E
 	select-variant 'sSwash' 0x23F
+
 	select-variant 'sCurlyTail' 0x1DF1E (follow -- 'sSwash')
 
 	select-variant 'S/descBase' (shapeFrom -- 'S') (follow -- 'SRTail')
-	select-variant 's/ascBase' (shapeFrom -- 's')
 	select-variant 's/descBase' (shapeFrom -- 's') (follow -- 'sRTail')
-	select-variant 'revs/descBase' (shapeFrom -- 'revs') (follow -- 'sRTail')
-
-	select-variant 's/phoneticRight'
 
 	derive-composites 'SRTail' 0xA7C5 'S/descBase'
 		RetroflexHook.l SB 0 (yAttach -- DToothlessRise) (refSw -- [AdviceStroke2 2 3 CAP])
 	derive-composites 'sRTail' 0x282 's/descBase'
 		RetroflexHook.l SB 0 (yAttach -- DToothlessRise) (refSw -- [AdviceStroke2 2 3 XH])
-	derive-composites 'cyrl/gheDescender.italic' null 'revs/descBase'
+
+	select-variant 'cyrl/ghe.italic/descBase' (shapeFrom -- 'revs') (follow -- 'sRTail')
+
+	derive-composites 'cyrl/gheDescender.italic' null 'cyrl/ghe.italic/descBase'
 		CyrDescender.r DfLower.rightSB 0 (yAttach -- DToothlessRise) (refSw -- [AdviceStroke2 2 3 XH])
-	derive-composites 'cyrl/gheDHook.italic' null 'revs/descBase'
+	derive-composites 'cyrl/gheDHook.italic' null 'cyrl/ghe.italic/descBase'
 		PalatalHook.r DfLower.rightSB 0 (yAttach -- DToothlessRise) (refSw -- [AdviceStroke2 2 3 XH])
 
-	derive-composites 'cyrl/ghayn.italic' null 'revs'
+	derive-composites 'cyrl/ghayn.italic' null 'cyrl/ghe.italic'
 		FlatSlashShape Middle (XH / 2) (OverlayStroke / 2) (-0.2) 0.75
 	derive-composites 'cyrl/gheStrokeHook.italic' null 'cyrl/gheDHook.italic'
 		FlatSlashShape Middle (XH / 2) (OverlayStroke / 2) (-0.2) 0.75
@@ -386,28 +394,38 @@ glyph-block Letter-Latin-S : begin
 	derive-composites 'sPalatalHook' 0x1D8A 's' : PalatalHook.r
 		x -- [mix [arch.adjust-x.bot Middle] DfLower.rightSB 0.75]
 		y -- 0
-		yAttach -- [mix O [AdviceSArchDepth XH (-1) [AdviceStroke2 2 3 XH]] : archv.yFromX 0.75]
+		yAttach -- [mix O [AdviceSArchDepth XH (-1) : AdviceStroke2 2 3 XH] : archv.yFromX 0.75]
+
+	select-variant 's/ascBase' (shapeFrom -- 's')
 
 	derive-composites "s/compLigLeft" null "s/ascBase" : glyph-proc
 		eject-contour 'arcStartSerifR'
-		local sw : ArcStartSerifWidth [AdviceStroke2 2 3 XH]
+		local sw : ArcStartSerifWidth : AdviceStroke2 2 3 XH
 		local fine : sw * [mix CThinB 1 0.6]
 		local hd : FlatHookDepth DfCapital
 		local yStart : XH - [ArcStartSerifDepth SHook]
-		local neckLength : 0.5 * Stroke
 		local leftExt : 0.3 * (RightSB - SB) - [HSwToV : 0.25 * sw]
 		include : dispiro
 			widths.rhs fine
-			flat (RightSB - [HSwToV fine]) yStart [heading Upward]
-			curl (RightSB - [HSwToV fine]) (yStart + neckLength) [heading Upward]
-			alsoThru.g2 0.5 0.5 [widths.center [mix fine sw 0.35]]
-			g4 (RightSB - leftExt) [Math.min ([mix XH Ascender 0.5]) (Ascender - 1.375 * sw)] [widths.lhs : mix fine sw 0.7]
+			flat (RightSB - [HSwToV fine])  yStart               [heading Upward]
+			curl (RightSB - [HSwToV fine]) (yStart + HalfStroke) [heading Upward]
+			alsoThru.g2 0.5 0.5 [widths.center : mix fine sw 0.35]
+			g4 (RightSB - leftExt) [Math.min (Ascender - 1.375 * sw) : mix XH Ascender 0.5] [widths.lhs : mix fine sw 0.7]
 			arcvh
 			flat RightSB     Ascender [widths.rhs.heading sw Rightward]
 			curl (4 * Width) Ascender [widths.rhs.heading sw Rightward]
 
+	CreateAccentedComposition 'SAcute' 0x15A 'S' 'acuteAbove'
+	CreateAccentedComposition 'sAcute' 0x15B 's' 'acuteAbove'
+
+	CreateAccentedComposition 'SAcute.PLK' null 'S' 'kreskaAbove'
+	CreateAccentedComposition 'sAcute.PLK' null 's' 'kreskaAbove'
+
 	derive-composites 'SCedilla' 0x15E 'S' 'cedillaExtShapeBelowOArc'
 	derive-composites 'sCedilla' 0x15F 's' 'cedillaExtShapeBelowSOArc'
+
+	CreateAccentedComposition 'SComma' 0x218 'S' 'commaBelow'
+	CreateAccentedComposition 'sComma' 0x219 's' 'commaBelow'
 
 	create-glyph 'mathbb/S' 0x1D54A : glyph-proc
 		local df : include DfCapital
@@ -418,8 +436,8 @@ glyph-block Letter-Latin-S : begin
 				df -- df
 				top -- CAP
 				hook -- Hook
-				swStart -- BBS * [if (sign > 0) CThin 1]
-				swEnd   -- BBS * [if (sign < 0) CThin 1]
+				swStart -- (BBS * [if (sign > 0) CThin 1])
+				swEnd   -- (BBS * [if (sign < 0) CThin 1])
 				oXLeftTop -- O
 				ess -- BBD
 				offsetC -- {
@@ -444,8 +462,8 @@ glyph-block Letter-Latin-S : begin
 				df -- df
 				top -- XH
 				hook -- SHook
-				swStart -- BBS * [if (sign > 0) CThin 1]
-				swEnd   -- BBS * [if (sign < 0) CThin 1]
+				swStart -- (BBS * [if (sign > 0) CThin 1])
+				swEnd   -- (BBS * [if (sign < 0) CThin 1])
 				oXLeftTop -- (OX / 8)
 				ess -- BBD
 				offsetC -- {
@@ -480,10 +498,10 @@ glyph-block Letter-Latin-S : begin
 		define top : CAP * kTop
 
 		define swBarThick : AdviceStroke 3
-		define swBarFine : AdviceStroke [StrokeWidthBlend 3 5.5]
+		define swBarFine  : AdviceStroke : StrokeWidthBlend 3 5.5
 
 		define [FullBar df sw] : dispiro
-			flat [xBot df] (0 + overflow) [widths.center.heading sw Downward]
+			flat [xBot df] (0   + overflow) [widths.center.heading sw Downward]
 			curl [xTop df] (CAP - overflow) [widths.center.heading sw Downward]
 
 		define [InterruptBar df] : begin
@@ -499,18 +517,18 @@ glyph-block Letter-Latin-S : begin
 		define [DollarMask df stroke] : begin
 			define archDepthA : AdviceSArchDepth (top - bot) (-1) stroke
 			define archDepthB : AdviceSArchDepth (top - bot) (+1) stroke
-			return : spiro-outline
-				curl (df.leftSB + 0.5 * stroke)  (post@ <-> archDepthA)
-				arch.rhs (sw -- stroke) (top - 0.5 * stroke)
-				flat (df.rightSB - 0.5 * stroke) (pre@ <-> archDepthB)
-				curl pre@                        (post@ <+> archDepthA)
-				arch.rhs (sw -- stroke) (bot + 0.5 * stroke)
-				flat post@ 					     (pre@ <+> archDepthB)
+			return : lift-@ : spiro-outline
+				curl (@x1 = df.leftSB + 0.5 * stroke)  (@y2 - archDepthA)
+				arch.rhs (sw -- stroke)                (@y2 = top - 0.5 * stroke)
+				flat (@x3 = df.rightSB - 0.5 * stroke) (@y2 - archDepthB)
+				curl  @x3                              (@y5 + archDepthA)
+				arch.rhs (sw -- stroke)                (@y5 = bot + 0.5 * stroke)
+				flat  @x1                              (@y5 + archDepthB)
 
 		define [InterruptMask df] : begin
-			local gap : (swBarThick / Stroke * EssUpper) + [Math.max ((top - bot) / 6) [AdviceStroke2 3 3 (top - bot)]]
+			local gap : (swBarThick / Stroke * EssUpper) + [Math.max ((top - bot) / 6) : AdviceStroke2 3 3 (top - bot)]
 			local yMid : mix bot top 0.5
-			local yTermLeft : mix yMid (top - [AdviceSArchDepth (top - bot) (-1) swBarThick]) 0.5
+			local yTermLeft  : mix yMid (top - [AdviceSArchDepth (top - bot) (-1) swBarThick]) 0.5
 			local yTermRight : mix yMid (bot + [AdviceSArchDepth (top - bot) (-1) swBarThick]) 0.5
 
 			return : dispiro [corner 0 yTermLeft : widths.center gap] [corner Width yTermRight]
@@ -520,7 +538,7 @@ glyph-block Letter-Latin-S : begin
 			set-base-anchor 'cvDecompose' df.middle (CAP / 2)
 			DependentSelector.set currentGlyph selector
 
-			local [outlineMask] : DollarMask df [AdviceStroke2 2 3 CAP]
+			local [outlineMask] : DollarMask df : AdviceStroke2 2 3 CAP
 
 			include : difference [FullBar df swBarThick] [outlineMask]
 			if (fillType === 1) : include : intersection [FullBar df swBarFine] [outlineMask]

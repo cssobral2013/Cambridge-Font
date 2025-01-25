@@ -17,6 +17,7 @@ glyph-block Symbol-Geometric-Stars : for-width-kinds WideWidth1
 		* { .name 'sixPointedBlackStar'                   .unicode 0x2736 .sides 6  .skip 1 .pMag 1.05 .phase 0     .pShrink 0.4  }
 		* { .name 'eightPointedBlackStar'                 .unicode 0x2734 .sides 8  .skip 1 .pMag 1.15 .phase 0     .pShrink 0.25 }
 		* { .name 'eightPointedRectilinearBlackStar'      .unicode 0x2737 .sides 8  .skip 1 .pMag 1.05 .phase (1/8) .pShrink 0.4  }
+		* { .name 'eightPointedStarMask'                                  .sides 8  .skip 1 .pMag 1    .phase 0     .pShrink [GeometricSizes Geom].SlightlySmall.size}
 		* { .name 'heavyEightPointedRectilinearBlackStar' .unicode 0x2738 .sides 8  .skip 1 .pMag 1.05 .phase (1/8) .pShrink 0.5  }
 		* { .name 'twelvePointedBlackStar'                .unicode 0x2739 .sides 12 .skip 1 .pMag 1.05 .phase 0     .pShrink 0.5  }
 	foreach [[object sides skip name unicode pMag phase pShrink] : items-of StarCfg] : do
