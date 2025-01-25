@@ -2,7 +2,7 @@
 $$include '../meta/macros.ptl'
 
 import [mix linreg clamp fallback] from "@iosevka/util"
-import [getGrMesh AnyCvOrCherryPicking CvDecompose Joining hashCv IsCompositeOrLigature] from "@iosevka/glyph/relation"
+import [getGrMesh AnyCvOrCherryPicking CvDecompose Joining hashCv IsCompositeOrLigature NLDAcuteVariant HBSCaronVariant] from "@iosevka/glyph/relation"
 import [hashGeometry] from "@iosevka/geometry"
 import [Transform] from "@iosevka/geometry/transform"
 extern Map
@@ -119,7 +119,7 @@ glyph-block AutoBuild-Enclosure : begin
 
 	define circleWidthClasses {{'NWID' Width 0.12} {'WWID' WideWidth0 0.08}}
 	define [AdjustDigitCount digits width] : Math.max 1 (digits * Width / width)
-	define [EnclosureStrokeScale dscale digits width] : dscale / [Math.pow [AdjustDigitCount digits width] 0.66]
+	define [EnclosureStrokeScale dscale digits width] : dscale / ([AdjustDigitCount digits width] ** 0.66)
 
 	define enclosureInnerPartActualWidth : new Map
 
@@ -213,14 +213,14 @@ glyph-block AutoBuild-Enclosure : begin
 
 		return : {}.concat finalPartsFirstHalf finalPartsSecondHalf
 
-	define [CircCrowd digits width] : 2 + 2 * [Math.pow [AdjustDigitCount digits width] (2 / 3)] * [Math.max 1 (HalfUPM / Width)]
-	define [CircScale digits width] : 0.65 / [Math.pow [AdjustDigitCount digits width] 0.5]
+	define [CircCrowd digits width] : 2 + 2 * ([AdjustDigitCount digits width] ** (2 / 3)) * [Math.max 1 (HalfUPM / Width)]
+	define [CircScale digits width] : 0.65  / ([AdjustDigitCount digits width] ** (1 / 2))
 
 	define [CircleDimens digits w m] : begin
 		define width : fallback w Width
 		define dscale :  linreg HalfUPM 0.55 UPM 0.6  width
 		define spatt  : [linreg HalfUPM 0.22 UPM 0.27 width] * (Width / HalfUPM)
-		define sw0 : [EnclosureStrokeScale dscale digits width] * [AdviceStroke [CircCrowd digits width]] / [CircScale digits width]
+		define sw0 : [EnclosureStrokeScale dscale digits width] * [AdviceStroke : CircCrowd digits width] / [CircScale digits width]
 		define sw : Math.max sw0 [fallback m 0]
 		define top : SymbolMid + CAP * dscale / 2 + (CAP * spatt)
 		define bot : SymbolMid - CAP * dscale / 2 - (CAP * spatt)
@@ -426,7 +426,7 @@ glyph-block AutoBuild-Enclosure : begin
 		include : AddEnclosureMarkTwoLine digits : CircleDimens digits ww
 	define [AddEnclosureMarkTwoLine digits dimens] : glyph-proc
 		define [object width dscale mockInnerWidth] dimens
-		set-base-anchor 'enclosureInnerFirstHalf' (0.5 * width - 0.5 * dscale * [Math.min (Width * digits) mockInnerWidth]) 0
+		set-base-anchor 'enclosureInnerFirstHalf'  (0.5 * width - 0.5 * dscale * [Math.min (Width * digits) mockInnerWidth]) 0
 		set-base-anchor 'enclosureInnerSecondHalf' (0.5 * width - 0.5 * dscale * [Math.min (Width * digits) mockInnerWidth]) 0
 
 	define [createPlayingCardGlyphs digits demands]
@@ -627,12 +627,12 @@ glyph-block AutoBuild-Enclosure : begin
 			archDepthB - sw + sw1
 		include : AddEnclosureMark digits : CircleDimens digits ww
 
-	define [BraceCrowd digits width] : 2.75 + [AdjustDigitCount digits width]
-	define [BraceScale digits width] : 0.65 / [Math.pow [AdjustDigitCount digits width] 0.5]
+	define [BraceCrowd digits width] : 2.75 +  [AdjustDigitCount digits width]
+	define [BraceScale digits width] : 0.65 / ([AdjustDigitCount digits width] ** (1 / 2))
 	define [bracedDottedDimens digits width] : begin
 		define dscale : linreg Width 0.55 UPM 0.65 width
 		define pscale : linreg Width 0.6 UPM 0.75 width
-		define sw0 : [EnclosureStrokeScale dscale digits width] * [AdviceStroke [BraceCrowd digits width]] / [BraceScale digits width]
+		define sw0 : [EnclosureStrokeScale dscale digits width] * [AdviceStroke : BraceCrowd digits width] / [BraceScale digits width]
 		define sw : Math.min Stroke sw0
 		define l : Math.max (SB + O * 3) (width / 2 - [Math.max (Width * digits) CAP] / 2)
 		define r : width - l
@@ -730,8 +730,8 @@ glyph-block AutoBuild-Enclosure : begin
 		include : Regizmo
 		include : AddEnclosureMark digits : bracedDottedDimens digits ww
 
-	define [DottedCrowd digits width] : 2 + [AdjustDigitCount digits width]
-	define [DottedScale digits width] : 1 / [Math.pow [AdjustDigitCount digits width] 0.5]
+	define [DottedCrowd digits width] : 2 +  [AdjustDigitCount digits width]
+	define [DottedScale digits width] : 1 / ([AdjustDigitCount digits width] ** (1 / 2))
 	define [createDottedGlyphs digits demands] : begin
 		foreach {suffix ww} [items-of circleWidthClasses] : do
 			define jobs : CollectJobs DECOMPOSABLE NOT-CENTERED ALLOW-PROPORTIONAL ('dotted' + digits) suffix demands
@@ -832,12 +832,12 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Double-digit circled"
 		local compositions : list
-			list null    {'markBaseSpace'} WideWidth1
+			list null    {'sp1'} WideWidth1
 			list 0x2789  {'one/sansSerif.lnum' 'zero.lnum'} WideWidth1
 			list 0x1F16D {'C' 'C'} WideWidth2
 			list 0x1F12D {'C' 'D'} WideWidth1
-			list 0x1F12E {'W' 'z'} WideWidth1
-		foreach [j : range 10 till 20] : compositions.push : list (0x2460 + j - 1) [digitGlyphNames j] WideWidth1
+			list 0x1F12E {'W' 'smcpZ'} WideWidth1
+		foreach [j : range 10 till 20] : compositions.push : list (0x2460 + j - 1)  [digitGlyphNames j] WideWidth1
 		foreach [j : range 21 till 35] : compositions.push : list (0x3251 + j - 21) [digitGlyphNames j] WideWidth1
 		foreach [j : range 36 till 50] : compositions.push : list (0x32B1 + j - 36) [digitGlyphNames j] WideWidth1
 		createCircledGlyphs 2 compositions
@@ -864,14 +864,12 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Single-digit boxed"
 		local compositions {}
-		compositions.push { null {'markBaseSpace'} WideWidth1 }
 		foreach [j : range 0 26] : compositions.push {(0x1F130 + j) {[glyphStore.queryNameByUnicode (['A'.charCodeAt 0] + j)]} WideWidth1}
 		compositions.push : list 0x1F1A5 {'d'} WideWidth1
 		createBoxedGlyphs 1 compositions
 
 	do "Double-digit boxed"
 		createBoxedGlyphs 2 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F14A {'H' 'V'} WideWidth1
 			list 0x1F14B {'M' 'V'} WideWidth1
 			list 0x1F14C {'S' 'D'} WideWidth1
@@ -890,7 +888,6 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Triple-digit boxed"
 		createBoxedGlyphs 3 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F14E {'P' 'P' 'V'} WideWidth1
 			list 0x1F195 {'N' 'E' 'W'} WideWidth1
 			list 0x1F198 {'S' 'O' 'S'} WideWidth1
@@ -905,7 +902,6 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Quadruple-digit boxed"
 		createBoxedGlyphs 4 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F192 {'C' 'O' 'O' 'L'} WideWidth1
 			list 0x1F193 {'F' 'R' 'E' 'E'} WideWidth1
 			list 0x1F1A2 {'two.lnum' 'two.lnum' 'period' 'two.lnum'} WideWidth1
@@ -913,55 +909,50 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Triple-digit two-row boxed"
 		createTwoRowBoxedGlyphs 3 : list
-			list null    { 'markBaseSpace' 'markBaseSpace' } WideWidth1
 			list 0x1F19C { 'two.lnum' 'N' 'D' 'S' 'C' 'R' } WideWidth1
 			list 0x1F1A8 { 'H' 'I' 'hyphen' 'R' 'E' 'S' } WideWidth1
 
 	do "Quadruple-digit two-row boxed"
 		createTwoRowBoxedGlyphs 4 : list
-			list null    { 'markBaseSpace' 'markBaseSpace' } WideWidth1
 			list 0x1F1A9 { 'L' 'O' 'S' 'S' 'L' 'E' 'S' 'S' } WideWidth1
 
-	do "Single-digit playing cards"
+	do "Playing cards"
+		# Here we always construct the two-digit cards to ensure that all digit and suit glyphs
+		# are aligned across all cards.
 		local compositions : list
-			list null    {'markBaseSpace' 'markBaseSpace'} WideWidth1
-			list 0x1F0A1 {'A' 'spadeSuit'} WideWidth4
-			list 0x1F0AB {'J/noDescend' 'spadeSuit'} WideWidth4
-			list 0x1F0AC {'C' 'spadeSuit'} WideWidth4
-			list 0x1F0AD {'Q' 'spadeSuit'} WideWidth4
-			list 0x1F0AE {'K' 'spadeSuit'} WideWidth4
-			list 0x1F0B1 {'A' 'whiteHeartSuit'} WideWidth4
-			list 0x1F0BB {'J/noDescend' 'whiteHeartSuit'} WideWidth4
-			list 0x1F0BC {'C' 'whiteHeartSuit'} WideWidth4
-			list 0x1F0BD {'Q' 'whiteHeartSuit'} WideWidth4
-			list 0x1F0BE {'K' 'whiteHeartSuit'} WideWidth4
-			list 0x1F0C1 {'A' 'whiteDiamondSuit'} WideWidth4
-			list 0x1F0CB {'J/noDescend' 'whiteDiamondSuit'} WideWidth4
-			list 0x1F0CC {'C' 'whiteDiamondSuit'} WideWidth4
-			list 0x1F0CD {'Q' 'whiteDiamondSuit'} WideWidth4
-			list 0x1F0CE {'K' 'whiteDiamondSuit'} WideWidth4
-			list 0x1F0D1 {'A' 'clubSuit'} WideWidth4
-			list 0x1F0DB {'J/noDescend' 'clubSuit'} WideWidth4
-			list 0x1F0DC {'C' 'clubSuit'} WideWidth4
-			list 0x1F0DD {'Q' 'clubSuit'} WideWidth4
-			list 0x1F0DE {'K' 'clubSuit'} WideWidth4
-		foreach [j : range 2 till 9] : compositions.push : list (0x1F0A0 + j) [[digitGlyphNames j].concat {'spadeSuit'}] WideWidth4
-		foreach [j : range 2 till 9] : compositions.push : list (0x1F0B0 + j) [[digitGlyphNames j].concat {'whiteHeartSuit'}] WideWidth4
-		foreach [j : range 2 till 9] : compositions.push : list (0x1F0C0 + j) [[digitGlyphNames j].concat {'whiteDiamondSuit'}] WideWidth4
-		foreach [j : range 2 till 9] : compositions.push : list (0x1F0D0 + j) [[digitGlyphNames j].concat {'clubSuit'}] WideWidth4
-		createPlayingCardGlyphs 1 compositions
-
-	do "Double-digit playing cards"
-		createPlayingCardGlyphs 2 : list
-			list null    { 'markBaseSpace' 'markBaseSpace' } WideWidth1
-			list 0x1F0AA { 'one.lnum' 'zero.lnum' 'spadeSuit' 'zwsp' } WideWidth4
-			list 0x1F0BA { 'one.lnum' 'zero.lnum' 'whiteHeartSuit' 'zwsp' } WideWidth4
-			list 0x1F0CA { 'one.lnum' 'zero.lnum' 'whiteDiamondSuit' 'zwsp' } WideWidth4
-			list 0x1F0DA { 'one.lnum' 'zero.lnum' 'clubSuit' 'zwsp' } WideWidth4
+			list 0x1F0A1 { 'A'             'sp1'       'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0AB { 'J/noDescend'   'sp1'       'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0AC { 'C'             'sp1'       'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0AD { 'Q'             'sp1'       'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0AE { 'K'             'sp1'       'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0B1 { 'A'             'sp1'       'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0BB { 'J/noDescend'   'sp1'       'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0BC { 'C'             'sp1'       'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0BD { 'Q'             'sp1'       'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0BE { 'K'             'sp1'       'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0C1 { 'A'             'sp1'       'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0CB { 'J/noDescend'   'sp1'       'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0CC { 'C'             'sp1'       'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0CD { 'Q'             'sp1'       'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0CE { 'K'             'sp1'       'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0D1 { 'A'             'sp1'       'clubSuit'         'zwsp' } WideWidth4
+			list 0x1F0DB { 'J/noDescend'   'sp1'       'clubSuit'         'zwsp' } WideWidth4
+			list 0x1F0DC { 'C'             'sp1'       'clubSuit'         'zwsp' } WideWidth4
+			list 0x1F0DD { 'Q'             'sp1'       'clubSuit'         'zwsp' } WideWidth4
+			list 0x1F0DE { 'K'             'sp1'       'clubSuit'         'zwsp' } WideWidth4
+			list 0x1F0AA { 'one.lnum'      'zero.lnum' 'spadeSuit'        'zwsp' } WideWidth4
+			list 0x1F0BA { 'one.lnum'      'zero.lnum' 'whiteHeartSuit'   'zwsp' } WideWidth4
+			list 0x1F0CA { 'one.lnum'      'zero.lnum' 'whiteDiamondSuit' 'zwsp' } WideWidth4
+			list 0x1F0DA { 'one.lnum'      'zero.lnum' 'clubSuit'         'zwsp' } WideWidth4
+		foreach [j : range 2 till 9] : begin
+			compositions.push : list (0x1F0A0 + j) [[digitGlyphNames j].concat {'sp1' 'spadeSuit'        'zwsp'}] WideWidth4
+			compositions.push : list (0x1F0B0 + j) [[digitGlyphNames j].concat {'sp1' 'whiteHeartSuit'   'zwsp'}] WideWidth4
+			compositions.push : list (0x1F0C0 + j) [[digitGlyphNames j].concat {'sp1' 'whiteDiamondSuit' 'zwsp'}] WideWidth4
+			compositions.push : list (0x1F0D0 + j) [[digitGlyphNames j].concat {'sp1' 'clubSuit'         'zwsp'}] WideWidth4
+		createPlayingCardGlyphs 2 compositions
 
 	do "Single-digit trump cards"
 		createTrumpCardGlyphs 1 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F0BF {'vShadeStar.NWID'} WideWidth4
 			list 0x1F0CF {'blackStar.NWID'} WideWidth4
 			list 0x1F0DF {'whiteStar.NWID'} WideWidth4
@@ -972,7 +963,6 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Double-digit trump cards"
 		createTrumpCardGlyphs 2 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F0E2 {'I' 'I'} WideWidth4
 			list 0x1F0E4 {'I' 'V'} WideWidth4
 			list 0x1F0E6 {'V' 'I'} WideWidth4
@@ -983,7 +973,6 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Triple-digit trump cards"
 		createTrumpCardGlyphs 3 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F0E3 {'I' 'I' 'I'} WideWidth4
 			list 0x1F0E7 {'V' 'I' 'I'} WideWidth4
 			list 0x1F0EC {'X' 'I' 'I'} WideWidth4
@@ -994,19 +983,17 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Quadruple-digit trump cards"
 		createTrumpCardGlyphs 4 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F0E8 {'V' 'I' 'I' 'I'} WideWidth4
 			list 0x1F0ED {'X' 'I' 'I' 'I'} WideWidth4
 			list 0x1F0F1 {'X' 'V' 'I' 'I'} WideWidth4
 
 	do "Quintuple-digit trump cards"
 		createTrumpCardGlyphs 5 : list
-			list null    {'markBaseSpace'} WideWidth1
 			list 0x1F0F2 {'X' 'V' 'I' 'I' 'I'} WideWidth4
 
 	do "Playing card back"
 		createPlayingCardBackGlyphs 1 : list
-			list 0x1F0A0 {'markBaseSpace'} WideWidth4
+			list 0x1F0A0 {'sp1'} WideWidth4
 
 	do "Single-digit dashed-boxed"
 		local compositions {}
@@ -1047,13 +1034,11 @@ glyph-block AutoBuild-Enclosure : begin
 
 	do "Single-digit double circled"
 		local compositions {}
-		compositions.push { null {'markBaseSpace'} WideWidth1 }
 		foreach [j : range 1 till 9] : compositions.push : list (0x24F5 + j - 1) [digitGlyphNames j] WideWidth1
 		createDoubleCircledGlyphs 1 compositions
 
 	do "Double-digit double circled"
 		local compositions {}
-		compositions.push { null {'markBaseSpace'} WideWidth1 }
 		foreach [j : range 10 till 10] : compositions.push : list (0x24F5 + j - 1) [digitGlyphNames j] WideWidth1
 		createDoubleCircledGlyphs 2 compositions
 
@@ -1223,7 +1208,7 @@ glyph-block Autobuild-Fractions : begin
 		list 0x215C { 'three.lnum' 'eight.lnum' }
 		list 0x215D { 'five.lnum' 'eight.lnum' }
 		list 0x215E { 'seven.lnum' 'eight.lnum' }
-		list 0x215F { 'one.lnum' 'markBaseSpace' }
+		list 0x215F { 'one.lnum' 'sp1' }
 		list 0x2189 { 'zero.lnum' 'three.lnum' }
 		list 0x214D { 'A' 'S' }
 
@@ -1363,7 +1348,7 @@ glyph-block Autobuild-Ligatures : begin
 
 	define [createLigatures prefix _shrink1 _shrinkN wadj1 wadjN kKern demands] : for-width-kinds WideWidth2
 		local plainLigature : FMosaicWide && para.isQuasiProportional
-		local ww : if FMosaicWide MosaicWidth (MosaicWidth * para.diversityM)
+		local ww : if FMosaicWide MosaicWidth (MosaicWidth * para.diversityMM)
 		local jobs : CollectJobs DECOMPOSABLE NOT-CENTERED ALLOW-PROPORTIONAL prefix MosaicNameSuffix demands
 		local shrink1 : if plainLigature 1 [clamp 0 1 (_shrink1 * [mix Width ww 0.5] / Width)]
 		local shrinkN : if plainLigature 1 [clamp 0 1 (_shrinkN * [mix Width ww 0.5] / Width)]
@@ -1452,10 +1437,17 @@ glyph-block Autobuild-Ligatures : begin
 
 		applyRelations jobs.relApplications
 
+	# Dutch IJ
 	define ijShrink : clamp 0.6 0.75 : StrokeWidthBlend 0.6 0.75
 	createLigatures 'compatLigature1' ijShrink ijShrink 1 1 [if (para.diversityI < 1) 0 0.2] : list
 		list 0x132 { 'I' 'J' }
 		list 0x133 { 'i' 'j' }
+		list 0xEF11 { 'IAcute' 'JAcute' }
+		list 0xEF12 { 'iAcute' 'jAcute' }
+
+	# Link Gr for acute variants
+	NLDAcuteVariant.set [glyphStore.queryByUnicodeEnsured 0x132] [glyphStore.queryNameByUnicodeEnsured 0xEF11]
+	NLDAcuteVariant.set [glyphStore.queryByUnicodeEnsured 0x133] [glyphStore.queryNameByUnicodeEnsured 0xEF12]
 
 	define stdShrink : clamp 0.75 0.9 : StrokeWidthBlend 0.75 0.9
 	createLigatures 'compatLigature2' stdShrink stdShrink 1 1 0 : list
@@ -1471,13 +1463,18 @@ glyph-block Autobuild-Ligatures : begin
 		list 0x1F1 { 'D' 'Z' }
 		list 0x1F2 { 'D' 'z' }
 		list 0x1F3 { 'd' 'z' }
-		list 0x478 { 'cyrl/O' 'cyrl/u' }
-		list 0x479 { 'cyrl/o' 'cyrl/u' }
+		list 0x478 { 'cyrl/Uk/O' 'cyrl/u' }
+		list 0x479 { 'cyrl/uk/o' 'cyrl/u' }
 		list 0x20A7 { 'P' 't' }
 		list 0x20A8 { 'R' 's' }
 		list 0x20AF { 'D' 'grek/rho' }
 		list 0x2116 { 'N' 'numeroRightHalf' }
 		list 0x1F190 { 'D' 'J' } WideWidth1
+
+	# Link Gr for caron variants
+	HBSCaronVariant.set [glyphStore.queryByUnicodeEnsured 0x1F1] [glyphStore.queryNameByUnicodeEnsured 0x1C4]
+	HBSCaronVariant.set [glyphStore.queryByUnicodeEnsured 0x1F2] [glyphStore.queryNameByUnicodeEnsured 0x1C5]
+	HBSCaronVariant.set [glyphStore.queryByUnicodeEnsured 0x1F3] [glyphStore.queryNameByUnicodeEnsured 0x1C6]
 
 	createLigatures 'romanNumerals1' 1 1 1 1 0 : list
 		list 0x2160 { 'I' }
@@ -1539,7 +1536,7 @@ glyph-block Autobuild-Pnonetic-Ligatures : begin
 		local shrink : clamp 0 1 _shrink
 		local kern 0
 		foreach [cycle : range 0 8] : begin
-			set kern : kKern * (2 * SB * shrink + (0.5 * Stroke * [HSwToV shrink] - OX * 2))
+			set kern : kKern * (2 * SB * shrink + (HalfStroke * [HSwToV shrink] - OX * 2))
 			local tmpShrink : (wwM + kern * (mockNParts - 1)) / (mockNParts * Width)
 			set shrink : Math.max _shrink : clamp 0 1 tmpShrink
 
@@ -1621,31 +1618,35 @@ glyph-block Autobuild-Pnonetic-Ligatures : begin
 	define [ToLetter] : glyph-proc
 
 	define stdShrink : clamp 0.625 0.9 : StrokeWidthBlend 0.625 0.9
-	createPhoneticLigatures ToLetter 'phonetic' para.diversityM 2 stdShrink 1 : list
-		list 0x02A3  { 'd/phoneticLeft'  'z/phoneticRight'              } 'b'
-		list 0x02A4  { 'd/phoneticLeft'  'ezh/phoneticRight'            } 'bp'
-		list 0x02A5  { 'd/phoneticLeft'  'zCurlyTail/phoneticRight'     } 'b'
-		list 0x02A6  { 't/phoneticLeft2' 's/phoneticRight'              } 'b'
-		list 0x02A7  { 't/teshLeft'      'esh'                          } 'bp'
-		list 0x02A8  { 't/phoneticLeft1' 'cCurlyTail'                   } 'b'
-		list 0x02A9  { 'f/phoneticLeft'  'eng/phoneticRight'            } 'bp'
-		list 0x02AA  { 'l/phoneticLeft'  's/phoneticRight'              } 'b'
-		list 0x02AB  { 'l/phoneticLeft'  'z'                            } 'b'
-		list 0xAB66  { 'd/phoneticLeft'  'zRTail/phoneticRight'         } 'bp'
-		list 0xAB67  { 't/phoneticLeft1' 'sRTail'                       } 'bp'
-		list 0x1DF12 { 'd/phoneticLeft'  'ezhPalatalHook/phoneticRight' } 'bp'
-		list 0x1DF17 { 't/teshLeft'      'eshPalatalHook'               } 'bp'
-		list 0xFB00  { 'f'               'f'                            } null
-		list 0xFB01  { 'f/compLigLeft1'  'dotlessi/compLigRight'        } null
-		list 0xFB02  { 'f/compLigLeft2'  'l/compLigRight'               } null
-		list 0xFB05  { 'longs/flatExt'   't/phoneticRight'              } null
-		list 0xFB06  { 's/compLigLeft'   't/phoneticRight'              } null
+	createPhoneticLigatures ToLetter 'phonetic1' 1 2 stdShrink 1 : list
+		list 0xFB00  { 'f'               'f'                     } null
+		list 0xFB01  { 'f/compLigLeft1'  'dotlessi/compLigRight' } null
+		list 0xFB02  { 'f/compLigLeft2'  'l/compLigRight'        } null
 
-	createPhoneticLigatures ToLetter 'phonetic2' [mix 1 para.diversityM 1.5] 3 stdShrink 1 : list
+	createPhoneticLigatures ToLetter 'phonetic2' para.diversityMM 2 stdShrink 1 : list
+		list 0x02A3  { 'd/phoneticLeft'    'z/phoneticRight'                } 'b'
+		list 0x02A4  { 'd/phoneticLeft'    'ezh/phoneticRight'              } 'bp'
+		list 0x02A5  { 'd/phoneticLeft'    'zCurlyTail/phoneticRight'       } 'b'
+		list 0x02A6  { 't/phoneticLeft2'   's/phoneticRight'                } 'b'
+		list 0x02A7  { 't/teshLeft'        'esh'                            } 'bp'
+		list 0x02A8  { 't/phoneticLeft1'   'cCurlyTail'                     } 'b'
+		list 0x02A9  { 'f/phoneticLeft'    'eng/phoneticRight'              } 'bp'
+		list 0x02AA  { 'l/phoneticLeft'    's/phoneticRight'                } 'b'
+		list 0x02AB  { 'l/phoneticLeft'    'z'                              } 'b'
+		list 0xAB66  { 'd/phoneticLeft'    'zRTail/phoneticRight'           } 'bp'
+		list 0xAB67  { 't/phoneticLeft1'   'sRTail'                         } 'bp'
+		list 0x1DF12 { 'd/phoneticLeft'    'ezhPalatalHook/phoneticRight'   } 'bp'
+		list 0x1DF17 { 't/teshLeft'        'eshPalatalHook'                 } 'bp'
+		list 0x1DF19 { 'd/phoneticLeft'    'ezhRetroflexHook/phoneticRight' } 'bp'
+		list 0x1DF1C { 't/teshLeft'        'eshRetroflexHook/teshRight'     } 'bp'
+		list 0xFB05  { 'longs/compLigLeft' 't/compLigRight'                 } null
+		list 0xFB06  { 's/compLigLeft'     't/compLigRight'                 } null
+
+	createPhoneticLigatures ToLetter 'phonetic3' para.diversityMM 3 stdShrink 1 : list
 		list 0xFB03  { 'f/compLigLeft1' 'f/compLigLeft1' 'dotlessi/compLigRight' } null
 		list 0xFB04  { 'f/compLigLeft3' 'f/compLigLeft2' 'l/compLigRight'        } null
 
-	createPhoneticLigatures ToLetter 'phonetic3' [mix 1 para.diversityM 2] 3 1 0.5 : list
+	createPhoneticLigatures ToLetter 'phoneticSmcp' (para.diversityM * para.diversityMM) 3 1 0.5 : list
 		list 0x2121  { 'smcpT' 'smcpE' 'smcpL' } 'e'
 		list 0x213B  { 'smcpF' 'smcpA' 'smcpX' } 'e'
 
@@ -1678,7 +1679,7 @@ glyph-block Autobuild-Double-Emotions : begin
 		define CWidth : if FMosaicWide MosaicWidth (Width * div)
 		define shrink1 : if FMosaicWide 1 _shrink1
 		define shrink2 : if FMosaicWide 1 _shrink2
-		define kern : SB * shrink1 + SB * shrink2 + 0.5 * Stroke * [mix shrink1 shrink2 0.5] - OX * 2
+		define kern : SB * shrink1 + SB * shrink2 + HalfStroke * [mix shrink1 shrink2 0.5] - OX * 2
 
 		define jobs : CollectJobs NON-DECOMPOSABLE NOT-CENTERED ALLOW-PROPORTIONAL prefix MosaicNameSuffix demands
 		define df1 : CreateDerivedFontFromJobs jobs {} : lambda [gs] : Thinner gs shrink1 true
@@ -1698,7 +1699,7 @@ glyph-block Autobuild-Double-Emotions : begin
 				include : Translate (dfg1.advanceWidth * wadj1 - kern) 0
 				include : union dfg1 [with-transform [Translate (dfg1.advanceWidth) 0] dfm1]
 				include : Ungizmo
-				include : Translate (-refW / 2) 0
+				include : Translate ((-refW) / 2) 0
 				include : Scale [clamp 0 1 ((CWidth - SB * 1.25) / (CWidth - SB * 2) * CWidth / refW)] 1
 				include : Translate (CWidth / 2) 0
 				include : Regizmo
@@ -1724,7 +1725,7 @@ glyph-block Autobuild-Grouped-Digits : begin
 				HBar.b 0 Width (Descender * 0.75) [AdviceStroke 4]
 				glyph-proc
 					include : refer-glyph "denseShade.WWID"
-					include : Translate (-Width / 2) 0
+					include : Translate ((-Width) / 2) 0
 			include : Translate (-Width) 0
 
 		foreach [gid : items-of numberGlyphIDs] : foreach [nd : items-of {0 1 2 3 4 5 6}]

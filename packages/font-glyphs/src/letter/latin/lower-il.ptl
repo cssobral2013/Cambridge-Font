@@ -10,8 +10,7 @@ glyph-block Letter-Latin-Lower-I : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Adjustment : LeaningAnchor ExtendBelowBaseAnchors
 	glyph-block-import Letter-Shared : CreateAccentedComposition CreateMultiAccentedComposition
-	glyph-block-import Letter-Shared : CreateCommaCaronComposition CreateOgonekComposition
-	glyph-block-import Letter-Shared : CreateTurnedLetter
+	glyph-block-import Letter-Shared : CreateCommaCaronComposition CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : FlatHookDepth DiagTail
 	glyph-block-import Letter-Shared-Shapes : CurlyTail BeltOverlay PalatalHook
 	glyph-block-import Letter-Shared-Shapes : RetroflexHook LetterBarOverlay RightwardTailedBar
@@ -66,7 +65,7 @@ glyph-block Letter-Latin-Lower-I : begin
 			local shift : TailedDotlessIShift df
 			local left : xMiddle - [HSwToV : 0.5 * df.mvs]
 			local right : mix df.leftSB df.rightSB (1.1 - shift)
-			local rightTerm : Math.max right (left + HVContrast * (df.mvs + 1.1 * fine)) (left + HVContrast * df.mvs + HookX)
+			local rightTerm : Math.max right (left + [HSwToV : df.mvs + 1.1 * fine]) (left + [HSwToV df.mvs] + HookX)
 			local middle : mix left right (0.55 * df.div)
 			local hookDepth : Math.max (df.mvs * 0.9) (Hook * [StrokeWidthBlend 0.85 1] * df.div)
 			include : dispiro
@@ -84,7 +83,7 @@ glyph-block Letter-Latin-Lower-I : begin
 			local tailLength : LongJut * 1.05 * [mix 1 df.div 0.75]
 			local hd : FlatHookDepth df
 
-			define xFinal : xMiddle + [Math.max (hd.x - [HSwToV : 0.5 * df.mvs] + 1) tailLength] + 0.5 * df.mvs * TanSlope
+			define xFinal : xMiddle + [Math.max tailLength : hd.x - [HSwToV : 0.5 * df.mvs] + 1] + 0.5 * df.mvs * TanSlope
 			include : dispiro
 				widths.center df.mvs
 				flat xMiddle top [heading Downward]
@@ -100,7 +99,7 @@ glyph-block Letter-Latin-Lower-I : begin
 			local hookScaleX  : mix 1 df.div 0.5
 			local hookScaleY  : mix 1 df.div 1.25
 			local x0 : mix (0.5 * df.mvs) (0.5 * df.mvs + (Hook - df.mvs + 1) * 0.85 * df.div + [IBalance2 df]) hookScaleX
-			local x1 : mix (0.5 * df.mvs) ([Math.max (Hook - 0.5 * df.mvs + 1) tailLength] + [IBalance2 df]) hookScaleX
+			local x1 : mix (0.5 * df.mvs) ([Math.max tailLength : Hook - 0.5 * df.mvs + 1] + [IBalance2 df]) hookScaleX
 			include : dispiro
 				widths.center df.mvs
 				flat xMiddle top [heading Downward]
@@ -113,7 +112,7 @@ glyph-block Letter-Latin-Lower-I : begin
 			set-base-anchor 'palatalHookMask' (xMiddle + x0) (HalfStroke + O)
 
 		export : define [ShortTailed df top xMiddle] : glyph-proc
-			include : RightwardTailedBar (xMiddle + [HSwToV : 0.5 * Stroke]) 0 top
+			include : RightwardTailedBar (xMiddle + [HSwToV HalfStroke]) 0 top
 
 		export : define [DiagTailed df top xMiddle] : glyph-proc
 			set-base-anchor 'trailing' (xMiddle + [HSwToV : 0.75 * df.mvs]) 0
@@ -133,10 +132,11 @@ glyph-block Letter-Latin-Lower-I : begin
 				curl xMiddle Hook
 				arcvh
 				flat (xMiddle + Hook - 0.5 * df.mvs) (0.5 * df.mvs)
-				curl [Math.max df.rightSB (xMiddle + [Math.max HookX (LongJut * 1.05 * df.div)])] (0.5 * df.mvs) [heading Rightward]
+				curl [Math.max df.rightSB : xMiddle + [Math.max HookX : LongJut * 1.05 * df.div]] (0.5 * df.mvs) [heading Rightward]
 
 	define Serifs : namespace
 		export : define [Hooky        df top xMiddle] : HSerif.lt xMiddle top (LongJut * df.div)                                         Stroke df.mvs
+		export : define [HookyShort   df top xMiddle] : HSerif.lt xMiddle top [mix Jut (LongJut * df.div) 0.5]                           Stroke df.mvs
 		export : define [Serifed      df top xMiddle] : HSerif.lt xMiddle top ((LongJut * df.div) - (xMiddle - df.middle))               Stroke df.mvs
 		export : define [SerifedShort df top xMiddle] : HSerif.lt xMiddle top [mix Jut ((LongJut * df.div) - (xMiddle - df.middle)) 0.5] Stroke df.mvs
 
@@ -145,7 +145,7 @@ glyph-block Letter-Latin-Lower-I : begin
 			g.gizmo.unapply g.baseAnchors.trailing
 			g.gizmo.unapply g.baseAnchors.overlay
 		local posX : if g.baseAnchors.trailing
-			attach.x + HVContrast * (0.5 * VJutStroke)
+			attach.x + [HSwToV : 0.5 * VJutStroke]
 			attach.x + [HSwToV HalfStroke] + [PalatalHook.adviceGap Stroke]
 		local maskY : if g.baseAnchors.palatalHookMask
 			begin [g.gizmo.unapply g.baseAnchors.palatalHookMask].y
@@ -159,6 +159,7 @@ glyph-block Letter-Latin-Lower-I : begin
 		'hooky'                 { Body.Serifless     Serifs.Hooky         Marks.Serifed    XMiddle.Hooky              para.diversityI   0      }
 		'hookyBottom'           { Body.HookyBottom   null                 Marks.Serifless  XMiddle.HookyBottom        para.diversityI   Stroke }
 		'zshaped'               { Body.HookyBottom   Serifs.Hooky         Marks.Serifed    XMiddle.Center             para.diversityI   Stroke }
+		'zshapedAsymmetric'     { Body.HookyBottom   Serifs.HookyShort    Marks.Serifed    XMiddle.Center             para.diversityI   Stroke }
 		'serifed'               { Body.Serifed       Serifs.Serifed       Marks.Serifed    XMiddle.Serifed            para.diversityI   Stroke }
 		'serifedAsymmetric'     { Body.Serifed       Serifs.SerifedShort  Marks.Serifed    XMiddle.Serifed            para.diversityI   Stroke }
 		'tailed'                { Body.Tailed        null                 Marks.Serifless  XMiddle.Tailed             para.diversityI   Stroke }
@@ -265,8 +266,8 @@ glyph-block Letter-Latin-Lower-I : begin
 				maskOut -- [MaskAbove maskY]
 
 		create-glyph "lHighBar.\(suffix)" : glyph-proc
-			include [refer-glyph "l.\(suffix)"] AS_BASE ALSO_METRICS
 			local df : DivFrame div
+			include [refer-glyph "l.\(suffix)"] AS_BASE ALSO_METRICS
 			include : LetterBarOverlay.m.in [xMiddleT df] XH (Ascender - [if Serif Stroke 0])
 
 		create-glyph "grek/tau.\(suffix)" : glyph-proc
@@ -276,7 +277,6 @@ glyph-block Letter-Latin-Lower-I : begin
 			include : Body df XH xMiddle
 			include : Marks df XH xMiddle
 			include : HBar.t df.leftSB df.rightSB XH
-
 			currentGlyph.deleteBaseAnchor 'trailing'
 
 		create-glyph "cyrl/Twe/middle.\(suffix)" : glyph-proc
@@ -288,8 +288,8 @@ glyph-block Letter-Latin-Lower-I : begin
 
 		create-glyph "cyrl/twe/middle.\(suffix)" : glyph-proc
 			local df : include : DivFrame div
-			include : Body df XH  [XMiddle.Center df]
-			include : Marks df XH  [XMiddle.Center df]
+			include : Body df XH [XMiddle.Center df]
+			include : Marks df XH [XMiddle.Center df]
 			currentGlyph.deleteBaseAnchor 'trailing'
 			set-mark-anchor 'cvDecompose' (df.width / 2) XH
 
@@ -298,14 +298,13 @@ glyph-block Letter-Latin-Lower-I : begin
 		link-reduced-variant 'dotlessi/sansSerif' 'dotlessi' MathSansSerif
 		select-variant 'dotlessi/compLigRight' (shapeFrom -- 'dotlessi')
 		select-variant 'dotlessiRetroflexHook' (follow -- 'dotlessi')
-		CreateOgonekComposition 'iOgonek.dotless' null 'dotlessi'
 
 		CreateAccentedComposition 'i' 'i' 'dotlessi' 'tittleAbove'
 		CreateAccentedComposition 'i/sansSerif' null 'dotlessi/sansSerif' 'tittleAbove'
 		CreateAccentedComposition 'i/compLigRight' null 'dotlessi/compLigRight' 'tittleAbove'
 		link-reduced-variant 'i/sansSerif' 'i' MathSansSerif
 
-		CreateAccentedComposition 'i.TRK' null 'dotlessi' 'dotAbove'
+		CreateAccentedComposition 'i.TRK' null 'dotlessi' 'i.TRK/tittleAbove'
 
 		alias 'cyrl/iUkrainian' 0x456 'i'
 		CreateAccentedComposition 'cyrl/yi' 0x457 'dotlessi' 'dieresisAbove'
@@ -320,16 +319,17 @@ glyph-block Letter-Latin-Lower-I : begin
 		alias 'cyrl/Iota' 0xA646 'latn/Iota'
 
 		select-variant 'cyrl/ghe.SRB/base' (shapeFrom -- 'dotlessi') (follow -- 'cyrl/ghe.SRB')
-		CreateAccentedComposition      'cyrl/ghe.SRB' null 'cyrl/ghe.SRB/base'   'macronAbove'
-		CreateMultiAccentedComposition 'cyrl/gje.SRB' null 'cyrl/ghe.SRB/base' { 'macronAbove' 'acuteAbove' }
+		CreateAccentedComposition      'cyrl/ghe.SRB' null 'cyrl/ghe.SRB/base'   'cyrl/ghe.SRB/overlineAbove'
+		CreateMultiAccentedComposition 'cyrl/gje.SRB' null 'cyrl/ghe.SRB/base' { 'cyrl/ghe.SRB/overlineAbove' 'acuteAbove' }
 
 		CreateTurnedLetter 'turni' 0x1D09 'i' HalfAdvance (XH / 2)
 		CreateTurnedLetter 'grek/turniota' 0x2129 'latn/iota' HalfAdvance (XH / 2)
 
 		CreateAccentedComposition 'dotlessiBarOver' null 'dotlessi' 'barOver'
 		CreateAccentedComposition 'iBarOver' 0x268 'dotlessiBarOver' 'tittleAbove'
-		CreateAccentedComposition 'iOgonek' 0x12F 'iOgonek.dotless' 'tittleAbove'
 		CreateAccentedComposition 'iRetroflexHook' 0x1D96 'dotlessiRetroflexHook' 'tittleAbove'
+
+		CreateAccentedComposition 'iAcute' 0xED 'dotlessi' 'acuteAbove'
 
 	do "l glyphs"
 		select-variant 'l' 'l'
@@ -341,23 +341,23 @@ glyph-block Letter-Latin-Lower-I : begin
 		CreateTurnedLetter 'turnl' 0xA781 'l' HalfAdvance (XH / 2)
 		select-variant 'l/phoneticLeft' (shapeFrom -- 'l')
 		select-variant 'l/compLigRight' (shapeFrom -- 'l')
-		select-variant 'lDotBase' null (follow -- 'l')
+		select-variant 'lDotBase' (follow -- 'l')
 		select-variant 'lRTail' 0x26D (follow -- 'l/reduced/rtail')
 		select-variant 'llWelsh' 0x1EFB (follow -- 'l')
 		select-variant 'lPalatalHook' 0x1D85 (follow -- 'l')
 		select-variant 'lPalatalHook/decompress' (shapeFrom -- 'lPalatalHook') (follow -- 'l/reduced/decompress')
 		select-variant 'lHighBar' 0xA749 (follow -- 'l')
 
-		derive-composites 'lTildeOver' 0x26B 'l/reduced/decompress' 'tildeOver'
+		derive-composites 'lTildeOver'    0x26B  'l/reduced/decompress' 'tildeOver'
 		derive-composites 'lInvLazySOver' 0xAB37 'l/reduced/decompress' 'invLazySOver'
 		derive-composites 'lDblTildeOver' 0xAB38 'l/reduced/decompress' 'dblTildeOver'
-		derive-composites 'lRingOver' 0xAB39 'l/reduced/decompress' 'ringOver'
+		derive-composites 'lRingOver'     0xAB39 'l/reduced/decompress' 'ringOver'
 
 		create-glyph 'lBeltOverlay' : glyph-proc
 			set-mark-anchor 'overlay' 0 0
 			include : BeltOverlay.at 0 0
-		derive-composites 'lBelt' 0x26C  'l/reduced/decompress' 'lBeltOverlay'
-		derive-composites 'lBeltRTail' 0xA78E 'lRTail/decompress' 'lBeltOverlay'
+		derive-composites 'lBelt'            0x26C   'l/reduced/decompress'    'lBeltOverlay'
+		derive-composites 'lBeltRTail'       0xA78E  'lRTail/decompress'       'lBeltOverlay'
 		derive-composites 'lBeltPalatalHook' 0x1DF13 'lPalatalHook/decompress' 'lBeltOverlay'
 
 		derive-composites 'lDot' 0x140 'lDotBase' 'LDotDot'
@@ -366,22 +366,22 @@ glyph-block Letter-Latin-Lower-I : begin
 		derive-glyphs 'lSlash' 0x142 'l' : lambda [src gr] : glyph-proc
 			include [refer-glyph src] AS_BASE ALSO_METRICS
 			local anchor    currentGlyph.baseAnchors.overlay
-			local stretch : Math.sqrt (currentGlyph.advanceWidth / UPM * 2)
+			local stretch : Math.sqrt : currentGlyph.advanceWidth / UPM * 2
 			include : FlatSlashShape anchor.x anchor.y (0.5 * OverlayStroke) (0.8 * stretch) (0.4 * stretch)
 
 		# Curly-tail shape
 		define [CurlyTailShape df fSerif] : glyph-proc
 			local fine : AdviceStroke 3.5
-			local rinner : LongJut / 2 - fine / 2
-			local m1 : df.middle + [HSwToV HalfStroke]
-			local x2 : mix SB m1 0.25
-			local y2 : - fine
+			# local rinner : LongJut / 2 - fine / 2
+			local m : df.middle + [HSwToV HalfStroke]
+			# local x2 : mix SB m 0.25
+			# local y2 : - fine
 			if fSerif : include : HSerif.lt df.middle Ascender LongJut
 			include : dispiro
 				widths.lhs
-				flat (m1 - [HSwToV Stroke]) Ascender [heading Downward]
-				curl (m1 - [HSwToV Stroke]) (fine + rinner * 2)
-				CurlyTail.n fine 0 (m1 + LongJut) SB 0
+				flat (m - [HSwToV Stroke]) Ascender [heading Downward]
+				curl (m - [HSwToV Stroke]) LongJut
+				CurlyTail.n fine 0 (m + LongJut) SB 0
 
 		create-glyph 'lCurlyTail.serifless' : glyph-proc
 			local df : include : DivFrame para.diversityI

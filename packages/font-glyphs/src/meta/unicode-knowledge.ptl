@@ -153,7 +153,7 @@ export : define decompOverrides : object
 	0x1D6C { 'b' 'tildeOverOnExension' }
 	0x1D6D { 'd' 'tildeOverOnExension' }
 	0x1D6E { 'f' 'tildeOver' }
-	0x1D6F { 'm' 'tildeStrikeDivM' }
+	0x1D6F { 'm' 'tildeStrikeDivMM' }
 	0x1D70 { 'n' 'tildeStrike' }
 	0x1D71 { 'p' 'tildeOverOnExension' }
 	0x1D74 { 's' 'tildeStrike' }
@@ -182,24 +182,13 @@ export : define decompOverrides : object
 	0x1FE2 { 'grek/upsilon' 'dialytikaVariaAbove' }
 	0x1FE3 { 'grek/upsilon' 'dialytikaOxiaAbove' }
 
-	0x2c61 { 'l' 'dblBarOver' }
-	0x2c65 { 'a' 'shortSlash' }
-	0x2c66 { 't' 'longSlash' }
+	0x2C61 { 'l' 'dblBarOver' }
+	0x2C65 { 'a' 'shortSlash' }
+	0x2C66 { 't' 'longSlash' }
 
 	0xA74A { 'O' 'hStrike' }
 	0xA74B { 'o' 'hStrike' }
 	0xA799 { 'f' 'barOver' }
-	0xA7B8 { 'U' 'longSlash' }
-	0xA7B9 { 'u' 'shortSlash' }
-	0xA7BA { 'grek/Alpha'  'EgyptologicalYodTonos' }
-	0xA7BC { 'grek/Iota'   'EgyptologicalYodTonos' }
-	0xA7BE { 'U/withTonos' 'EgyptologicalYodTonos' }
-	0xA7BB { 'a' 'EgyptologicalYodAbove' }
-	0xA7BD { 'i' 'EgyptologicalYodAbove' }
-	0xA7BF { 'u' 'EgyptologicalYodAbove' }
-	0xA7C9 { 'S' 'hStrike' }
-	0xA7CA { 's' 'hStrike' }
-
 	0xA7A0 { 'G' 'oblStrike' }
 	0xA7A1 { 'g' 'oblStrike' }
 	0xA7A2 { 'K' 'oblStrike' }
@@ -210,8 +199,20 @@ export : define decompOverrides : object
 	0xA7A7 { 'r' 'oblStrike' }
 	0xA7A8 { 'S' 'oblStrike' }
 	0xA7A9 { 's' 'oblStrike' }
+	0xA7B8 { 'U' 'longSlash' }
+	0xA7B9 { 'u' 'shortSlash' }
+	0xA7BA { 'grek/Alpha'  'EgyptologicalYodTonos' }
+	0xA7BC { 'grek/Iota'   'EgyptologicalYodTonos' }
+	0xA7BE { 'U/withTonos' 'EgyptologicalYodTonos' }
+	0xA7BB { 'a' 'EgyptologicalYodAbove' }
+	0xA7BD { 'i' 'EgyptologicalYodAbove' }
+	0xA7BF { 'u' 'EgyptologicalYodAbove' }
+	0xA7C9 { 'S' 'hStrike' }
+	0xA7CA { 's' 'hStrike' }
+	0xA7CC { 'S' 'longSlash' }
+	0xA7CD { 's' 'shortSlash' }
 
-	0xAB30 { 'scripta'   'hStrike' }
+	0xAB30 { 'aScript'   'hStrike' }
 	0xAB3E { 'frak/o'    'shortSlash' }
 	0xAB3F { 'turnc'     'shortSlash' }
 	0xAB4F { 'uShortLeg' 'hStrike' }
@@ -220,6 +221,11 @@ export : define decompOverrides : object
 	0x1DF0C { 'eshCurlyTail'   'dblBarOver' }
 	0x1DF1A { 'iRetroflexHook' 'barOver' }
 
+	# Aliasing of Armenian marks
+	0x559   { 'modifierLetterLeftHalfRing' }
+	0x55A   { 'modifierLetterRightHalfRing' }
+	0x55B   { 'prime' }
+	0x55D   { 'revprime' }
 
 # List of canonical and non-canonical combinations but applicable for ccmp feature
 export : define ccmpCombinations : list

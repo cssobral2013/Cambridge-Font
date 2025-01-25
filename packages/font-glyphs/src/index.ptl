@@ -4,7 +4,6 @@ import [GlyphBlock GlyphBuildExecutor GlyphSaveSink] from "@iosevka/glyph/block"
 import as Gr from "@iosevka/glyph/relation"
 import as SpiroKit from "@iosevka/font-kits/spiro-kit"
 import as BooleKit from "@iosevka/font-kits/boole-kit"
-import as DerivedCoordinates from "@iosevka/font-kits/derived-coordinates"
 import [DesignParameters calculateMetrics setFontMetrics GenDivFrame] from "./meta/aesthetics.mjs"
 import [$NamedParameterPair$] from "@iosevka/util"
 
@@ -44,7 +43,6 @@ export : define [buildGlyphs para recursive] : begin
 		Superness       DesignParameters.superness
 	define BooleFns : BooleKit.SetupBuilders : object
 		globalTransform Metrics.GlobalTransform
-	define DerivedCoordinateFns : DerivedCoordinates.SetupBuilders : object
 
 	# Setup the capture
 	define $$Capture$$ : object
@@ -57,7 +55,6 @@ export : define [buildGlyphs para recursive] : begin
 		glyphStore
 		SpiroFns
 		BooleFns
-		DerivedCoordinateFns
 		DivFrame
 		MarkSet
 		AS_BASE
@@ -74,10 +71,12 @@ export : define [buildGlyphs para recursive] : begin
 	run-glyph-module "./marks/index.mjs"
 
 	# Unified letters
+	run-glyph-module "./letter/accent-builder.mjs"
 	run-glyph-module "./letter/shared.mjs"
 	run-glyph-module "./letter/latin.mjs"
 	run-glyph-module "./letter/greek.mjs"
 	run-glyph-module "./letter/cyrillic.mjs"
+	run-glyph-module "./letter/armenian.mjs"
 
 	# Numbers
 	run-glyph-module "./number/index.mjs"
@@ -97,12 +96,12 @@ export : define [buildGlyphs para recursive] : begin
 	run-glyph-module "./symbol/math.mjs"
 	run-glyph-module "./symbol/letter.mjs"
 	run-glyph-module "./symbol/braille.mjs"
+	run-glyph-module "./symbol/counting-rod.mjs"
 	run-glyph-module "./symbol/ligation.mjs"
 
 	# Auto-builds
 	if [not recursive] : begin
 		run-glyph-module "./auto-build/recursive-build.mjs"
-		run-glyph-module "./auto-build/mark-doppelganger.mjs"
 		run-glyph-module "./auto-build/accents.mjs"
 		run-glyph-module "./auto-build/transformed.mjs"
 		run-glyph-module "./auto-build/composite.mjs"

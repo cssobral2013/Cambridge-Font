@@ -26,9 +26,9 @@ glyph-block Letter-Latin-K : begin
 		local kshRight       : right + [KBalanceRight true straightBar]
 		local serifLengthAdj : Ok + [HSwToV stroke]
 		return : shape.rSideJut
-			x -- kshRight - serifLengthAdj
-			y -- 0
-			jut -- Jut + serifLengthAdj
+			x   -- (kshRight - serifLengthAdj)
+			y   -- 0
+			jut -- (Jut + serifLengthAdj)
 
 	define [KSlabs mode top left right stroke straightBar] : glyph-proc
 		local Ok             : KO mode true top stroke
@@ -46,8 +46,8 @@ glyph-block Letter-Latin-K : begin
 			local kshRightBot : right + [KBalanceRight slabLegs true]
 			local kshRightTop : if fHookTop (kshRightBot - HookX * 0.5 + [HSwToV : 0.5 * stroke]) kshRightBot
 
-			local attach (top * 0.42 - stroke)
-			local attach2 (top * 0.72 + stroke)
+			local attach  : top * 0.42 - stroke
+			local attach2 : top * 0.72 + stroke
 
 			set-base-anchor 'trailing' (kshRightBot - Ok) 0
 
@@ -273,10 +273,10 @@ glyph-block Letter-Latin-K : begin
 			return : sink
 				g4.up.start (dim.arcStartX + offset) dim.arcStartY [widths.rhs.heading dim.arcFine Upward]
 				arch.rhs (top - offset)
-					sw -- dim.arcStroke
+					sw       -- dim.arcStroke
 					swBefore -- dim.arcFine
-					swAfter -- dim.arcStroke
-					p -- dim.pArcTopX
+					swAfter  -- dim.arcStroke
+					p        -- dim.pArcTopX
 
 				g4.down.mid (dim.arcRightX - offset) (dim.arcRightY - 0.5 * dim.arcRightSlope * [HSwToV dim.arcStroke])
 					heading {.y dim.arcRightSlope .x HVContrast}
@@ -310,7 +310,7 @@ glyph-block Letter-Latin-K : begin
 
 			define swDiagTail : AdviceStroke 2 (1 - (dim.kshLeft - SB) / Width)
 			define swDiagTailAdj : swDiagTail / [mix 1 HVContrast 0.375]
-			define xDTGap : 0.10 * (RightSB - SB) - (0.125 + [clamp 0 0.375 (0.5 * (Width / UPM * 2 - 1))]) * swDiagTail
+			define xDTGap : 0.10 * (RightSB - SB) - (0.125 + [clamp 0 0.375 : 0.5 * (Width / UPM * 2 - 1)]) * swDiagTail
 			define xDTStart : dim.arcTerminalX + [HSwToV swDiagTail] + xDTGap
 			define xDTEnd : dim.kshRight - 0.8 * Hook - [HSwToV : 0.25 * swDiagTail] + xDTGap * 0.625
 			define tailAngle : Math.min 85 (50 + [Math.atan2 (0.75 * swDiagTail) Hook] / Math.PI * 180)
@@ -324,8 +324,8 @@ glyph-block Letter-Latin-K : begin
 					DiagTail.F 1 xDTEnd 0 dtInnerRadius tailAngle (Hook + swDiagTail / 4) swDiagTail
 				CursiveLoopT spiro-outline (-O) left right stroke top slabLT slabLegs
 
-	define [KHookTopBar xBarLeft] : TopHook.lBarInner
-		x -- xBarLeft
+	define [KHookTopBar xBarLeft] : TopHook.toRight.lBarInner
+		x    -- xBarLeft
 		yBot -- 0
 		yTop -- Ascender
 
@@ -372,7 +372,7 @@ glyph-block Letter-Latin-K : begin
 	create-glyph 'UpperKaiSymbolAttachment' : glyph-proc
 		set-width 0
 		set-mark-anchor 'trailing' 0 0
-		define shapeDepth : 0.8 * Descender - 0.25 * Stroke
+		define shapeDepth : 0.8 * Descender - QuarterStroke
 		define kSw : mix 1 HVContrast Math.SQRT1_2
 		include : PointingTo 0 0 shapeDepth shapeDepth : function [mag] : union
 			dispiro
@@ -404,7 +404,7 @@ glyph-block Letter-Latin-K : begin
 		create-glyph "KDescender.\(suffix)" : glyph-proc
 			include : MarkSet.capital
 			include : KBaseShape Stroke CAP CyrDescender
-			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
+			include : ExtendBelowBaseAnchors ((-LongVJut) + QuarterStroke)
 
 		create-glyph "KStroke.\(suffix)" : glyph-proc
 			include [refer-glyph "K.\(suffix)"] AS_BASE ALSO_METRICS
@@ -432,7 +432,7 @@ glyph-block Letter-Latin-K : begin
 		create-glyph "smcpKDescender.\(suffix)" : glyph-proc
 			include : MarkSet.e
 			include : KBaseShape Stroke XH CyrDescender
-			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
+			include : ExtendBelowBaseAnchors ((-LongVJut) + QuarterStroke)
 
 		create-glyph "smcpKVBar.\(suffix)" : glyph-proc
 			include : MarkSet.e
@@ -448,14 +448,16 @@ glyph-block Letter-Latin-K : begin
 			if slabLB : include : UpperKLBSerif CAP Stroke xBarLeft slabLB
 
 		define [BashkirKaShape df top] : glyph-proc
-			local left : if SLAB ([mix SB RightSB 0.35] - [HSwToV : 0.5 * df.mvs]) [mix SB RightSB 0.2]
+			local left : if SLAB
+				[mix df.leftSB df.rightSB 0.35] - [HSwToV : 0.5 * df.mvs]
+				mix df.leftSB df.rightSB : if (df.div > 1) 0.25 0.2
 			local leftNB : left - [KBalance SLAB straightBar]
-			local xTopBarLeftEnd : mix 0 SB [if SLAB 0.25 0.375]
+			local xTopBarLeftEnd : mix 0 df.leftSB : if SLAB 0.25 0.375
 			local sw : AdviceStroke 3
 
-			include : HBar.t xTopBarLeftEnd (Stroke * 0.1 + left) top
+			include : HBar.t xTopBarLeftEnd (left + 0.1 * Stroke) top
 			include : VBar.l left 0 top sw
-			include : LegsImpl false leftNB RightSB sw top SLAB slabLegs
+			include : LegsImpl false leftNB df.rightSB sw top SLAB slabLegs
 			if SLAB : begin
 				include : VSerif.dl xTopBarLeftEnd top VJut
 					Math.min (VJutStroke * df.mvs / Stroke) (0.625 * (left - xTopBarLeftEnd))
@@ -463,12 +465,12 @@ glyph-block Letter-Latin-K : begin
 			if slabLB : include : UpperKLBSerif top sw left slabLB
 
 		create-glyph "cyrl/KaBashkir.\(suffix)" : glyph-proc
-			define df : include : DivFrame 1
+			define df : include : DivFrame para.diversityT
 			include : df.markSet.capital
 			include : BashkirKaShape df CAP
 
 		create-glyph "cyrl/kaBashkir.\(suffix)" : glyph-proc
-			define df : include : DivFrame 1
+			define df : include : DivFrame para.diversityT
 			include : df.markSet.e
 			include : BashkirKaShape df XH
 
@@ -506,7 +508,7 @@ glyph-block Letter-Latin-K : begin
 		create-glyph "kDescender.\(suffix)" : glyph-proc
 			include : MarkSet.b
 			include : kBaseShape CyrDescender
-			include : ExtendBelowBaseAnchors (-LongJut + 0.5 * Stroke)
+			include : ExtendBelowBaseAnchors ((-LongVJut) + QuarterStroke)
 
 		create-glyph "kPalatalHook.\(suffix)" : glyph-proc
 			include : MarkSet.b

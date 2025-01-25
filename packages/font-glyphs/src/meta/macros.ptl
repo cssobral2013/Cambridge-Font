@@ -7,18 +7,13 @@ define-operator "--" 890 'right' : syntax-rules
 define-operator "~>" 880 'right' : syntax-rules
 	`(@l ~> @r) `{.left @l .right @r}
 
-### The operator indicating a "delay"
+### The operator indicating a "delay" for the knot controls. Equivalent to a call to [decor@].
 define-operator prefix "~~~"  : syntax-rules
 	`(~~~ @x) : dirty `[decor@ @x]
 
-### This operator is a method variant of (+)
-define-operator infix "<+>" 350 'left' : syntax-rules
-	`(@l <+> @r) : dirty `[@l.op_add @r]
-
-### This operator is a method variant of (-)
-define-operator infix "<->" 350 'left' : syntax-rules
-	`(@l <-> @r) : dirty `[@l.op_sub @r]
-
+### Exponentiation operator
+define-operator "**" 150 "right" : syntax-rules
+    `(@l ** @r) `[Math.pow @l @r]
 
 ### Macro for identity match
 define-macro Just : begin
@@ -32,6 +27,118 @@ define-macro Just : begin
 				assign  : lambda [t locallyQ] : ex `[begin] env
 
 	return m
+
+# Macro for "at-lifting" form. In this form we could use @ sign to prefix some "ad-hoc" variables
+# which will be replaced with the actual values at the time of the form evaluation.
+#
+# This is a handy tool for defineing a stroke's coordinates. Given a form like
+#
+#     lift-@ : dispiro
+#         g4 (@1 = 0) (@y = XH)
+#         g2 [mix @1 @2 0.5] @y
+#         g4 (@2 = Width) @y
+#
+# The macro will transform it into something like
+#
+#     begin
+#         local t1 0
+#         local t2 Width
+#         local ty XH
+#         dispiro
+#             g4 t1 ty
+#             g2 [mix t1 t2 0.5] ty
+#             g4 t2 ty
+define-macro lift-@ : syntax-rules
+	`[lift-@ @x] : begin
+		define xEnv : scopeOf x
+
+		# Detect whether a form is {".unquote" <string>} (indicating @identifier) or
+		# {".unquote" {".quote" literal}} (indicating @literal)
+		# Return the string representation of the identifier or the literal, or null if neither
+		define [isUnquote form] : match form
+			{".unquote" {".quote" lit}} : String lit
+			{".unquote" ident} [atom ident] : String ident
+			otherwise null
+
+		# Detect whether a form is {".operatorPiece" x "=" ...} where x matches isUnquote
+		# Return the RHS when the form is a match, or null if not
+		define [isUnquoteAssign form] : match form
+			{".operatorPiece" lhs "=" rhs} : begin
+				local unquoteId : isUnquote lhs
+				if unquoteId : return {unquoteId rhs}
+				else : return null
+			{".operatorPiece" lhs "=" :: rhs} : begin
+				local unquoteId : isUnquote lhs
+				if unquoteId : return {unquoteId {".operatorPiece" :: rhs}}
+				else : return null
+			otherwise null
+
+		define atFormMap {.}
+		define [fetchAtFormMappedObj identifier] : begin
+			local existing atFormMap.(identifier)
+			if existing : return existing
+
+			local t : env.newt
+			local mapObj : object
+				t t
+				def `[begin undefined]
+				dependencies {}
+				sorted false
+			set atFormMap.(identifier) mapObj
+			return mapObj
+
+		define [addDeps mapObj form] : begin
+			if [not : Array.isArray form] : return nothing
+
+			local unquoteId : isUnquote form
+			if unquoteId : begin
+				mapObj.dependencies.push unquoteId
+				return nothing
+
+			foreach [j : range 0 form.length] : begin
+				addDeps mapObj form.(j)
+
+		define [transform form] : begin
+			if [not : Array.isArray form] : return form
+
+			# Handle definitions
+			local unquoteDef : isUnquoteAssign form
+			if unquoteDef : begin
+				local {unquoteId rhs} unquoteDef
+				local mapObj : fetchAtFormMappedObj unquoteId
+				addDeps mapObj rhs
+				set mapObj.def : transform rhs
+				return mapObj.t
+
+			# Handle usages
+			local unquoteId : isUnquote form
+			if unquoteId : begin
+				local mapObj : fetchAtFormMappedObj unquoteId
+				return mapObj.t
+
+			# None of the cases above match, perform in-place transformation of the form's children
+			foreach [j : range 0 form.length] : begin
+				set form.(j) : transform form.(j)
+			return form
+
+		define [pushAtDef sink identifier] : begin
+			local mapObj : fetchAtFormMappedObj identifier
+			if mapObj.sorted : return nothing
+
+			foreach [dep : items-of mapObj.dependencies] : begin
+				pushAtDef sink dep
+
+			sink.push `[local @(mapObj.t) @(mapObj.def)]
+			set mapObj.sorted true
+
+		local body : transform : formOf x
+
+		local result `[begin]
+		foreach k [items-of : Object.keys atFormMap] : begin
+			pushAtDef result k
+
+		result.push body
+		return : dirty result
 
 define-macro $$InitFlexParameters$$ : syntax-rules
 	`[$$InitFlexParameters$$ @::$pairs] : begin
@@ -200,12 +307,12 @@ define-macro glyph-block-import : syntax-rules
 
 			CommonShapes `[no-shape tagged Rect SquareAt Ring RingAt DotAt RingStroke
 			RingStrokeAt DotStrokeAt Circle Ellipse OShapeT OShape OShapeOutline OShapeFlatTB HSerif
-			VSerif NeedSlab NeedNotItalic HBar HOverlayBar VBar FlatSlashShape hookstart hookend
-			arch Ungizmo Regizmo FlipAround ScaleAround Realign ForceUpright DiagCor NameUni
-			PointingTo with-transform with-outlined remove-holes radicalize clear-geometry
+			VSerif NeedSlab NeedNotItalic HBar HOverlayBar HOverlayObliqueBar VBar FlatSlashShape
+			hookstart hookend flatside arch Ungizmo Regizmo FlipAround ScaleAround Realign ForceUpright
+			DiagCor NameUni PointingTo with-transform with-outlined remove-holes radicalize clear-geometry
 			clear-anchors ExtLineCenter ExtLineLhs ExtLineRhs DiagCorDs HCrossBar MaskAbove
 			MaskBelow MaskLeft MaskRight HalfRectTriangle MaskAboveLine MaskBelowLine
-			MaskLeftLine MaskRightLine DotVariants WithDotVariants]
+			MaskLeftLine MaskRightLine DotVariants WithDotVariants TangentToNormal VectorDot sharp-corner]
 
 		define vartiableFilter : if externEnv.$glyphBlockVariableUsage$
 			lambda [x] externEnv.$glyphBlockVariableUsage$.(x)
@@ -270,27 +377,28 @@ define-macro glyph-block : syntax-rules
 
 		define metricImports `[DesignParameters UPM HalfUPM Width SB CAP XH Ascender Descender
 			Contrast SymbolMid ParenTop ParenBot OperTop OperBot TackTop TackBot PlusTop PlusBot
-			PictTop PictBot BgOpTop BgOpBot Italify Upright Scale Translate ApparentTranslate Rotate
-			GlobalTransform TanSlope HVContrast Upward Downward Rightward Leftward O OX OXHook Hook
-			AHook SHook RHook JHook HookX TailX TailY ArchDepth SmallArchDepth Stroke DotSize
-			PeriodSize HBarPos OverlayPos LongJut Jut VJut VJutStroke AccentStackOffset AccentWidth
-			AccentClearance AccentHeight CThin CThinB SLAB IBalance IBalance2 JBalance JBalance2
-			TBalance TBalance2 RBalance RBalance2 FBalance OneBalance WideWidth0 WideWidth1
-			WideWidth2 WideWidth3 WideWidth4 EssUpper EssLower EssQuestion HalfStroke RightSB
-			Middle DotRadius PeriodRadius SideJut ArchDepthA ArchDepthB SmallArchDepthA
-			SmallArchDepthB CorrectionOMidX CorrectionOMidS AdviceStroke AdviceStroke2
+			PictTop PictBot BgOpTop BgOpBot BgTkTop BgTkBot Italify Upright Scale Translate
+			ApparentTranslate Rotate GlobalTransform TanSlope HVContrast Upward Downward Rightward
+			Leftward O OX OXHook Hook AHook SHook RHook JHook HookX TailX TailY ArchDepth
+			SmallArchDepth Stroke HalfStroke QuarterStroke DotSize PeriodSize HBarPos OverlayPos
+			Jut VJut LongJut LongVJut VJutStroke AccentStackOffset AccentWidth AccentClearance
+			AccentHeight CThin CThinB SLAB IBalance IBalance2 JBalance JBalance2 TBalance
+			TBalance2 RBalance RBalance2 FBalance OneBalance WideWidth0 WideWidth1 WideWidth2
+			WideWidth3 WideWidth4 EssUpper EssLower EssQuestion RightSB Middle DotRadius
+			PeriodRadius ArchDepthA ArchDepthB SmallArchDepthA SmallArchDepthB CorrectionOMidX
+			CorrectionOMidS compositeBaseAnchors AdviceStroke AdviceStroke2 AdviceStrokeInSpace
 			OverlayStroke OperatorStroke GeometryStroke ShoulderFine AdviceGlottalStopArchDepth
-			StrokeWidthBlend ArchDepthAOf ArchDepthBOf SmoothAdjust MidJutSide MidJutCenter
-			compositeBaseAnchors YSmoothMidR YSmoothMidL HSwToV NarrowUnicodeT WideUnicodeT
+			StrokeWidthBlend ArchDepthAOf ArchDepthBOf SmoothAdjust SideJut MidJutSide
+			MidJutCenter YSmoothMidR YSmoothMidL HSwToV VSwToH NarrowUnicodeT WideUnicodeT
 			VERY-FAR TINY]
+
 		define spiroFnImports `[g4 g2 corner flat curl virt close end straight g2c cg2 flatc ccurl
 			widths disable-contrast heading unimportant important alsoThru alsoThruThem bezControls
 			quadControls archv arcvh dispiro spiro-outline spiro-collect]
 
-		define booleFnImports `[union intersection difference with-knockout]
+		define spiroFnImportsAlways `[decor@ decor@@ decor@@@]
 
-		define drvCoordImports `[pre@ post@ pre@mix@post post@mix@pre pre@slope post@slope min@ max@
-			decor@ decor@@ decor@@@ pre@tang-in post@tang-in pre@tang-out post@tang-out]
+		define booleFnImports `[union intersection difference with-knockout]
 
 		dirty `[$GlyphBlocks$.push : lambda [$Capture_Ext$] : begin \\
 			$Capture_Ext$.$Exec$.defineGlyphBlock $Capture_Ext$ @blockName
@@ -298,8 +406,8 @@ define-macro glyph-block : syntax-rules
 					define [object @::[captureImports.filter : lambda [x] variableSet.(x)]] $Capture$
 					define [object @::[metricImports.filter  : lambda [x] variableSet.(x)]] $Capture$.Metrics
 					define [object @::[spiroFnImports.filter : lambda [x] variableSet.(x)]] $Capture$.SpiroFns
+					define [object @::spiroFnImportsAlways] $Capture$.SpiroFns
 					define [object @::[booleFnImports.filter : lambda [x] variableSet.(x)]] $Capture$.BooleFns
-					define [object @::drvCoordImports] $Capture$.DerivedCoordinateFns
 
 					* @body
 

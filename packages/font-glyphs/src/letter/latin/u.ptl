@@ -8,14 +8,10 @@ glyph-module
 glyph-block Letter-Latin-U : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
-	glyph-block-import Mark-Shared-Metrics : markHalfStroke
 	glyph-block-import Mark-Adjustment : LeaningAnchor
-	glyph-block-import Letter-Shared : CreateAccentedComposition CreateOgonekComposition
-	glyph-block-import Letter-Shared : SetGrekUpperTonos
-	glyph-block-import Letter-Shared-Shapes : nShoulder RightwardTailedBar DToothlessRise SerifFrame
-	glyph-block-import Letter-Shared-Shapes : CyrDescender CyrTailDescender RetroflexHook VerticalHook
-
-	glyph-block-export UShape USerifs
+	glyph-block-import Letter-Shared : CreateAccentedComposition SetGrekUpperTonos
+	glyph-block-import Letter-Shared-Shapes : uBowl RightwardTailedBar DToothlessRise SerifFrame
+	glyph-block-import Letter-Shared-Shapes : CyrDescender CyrTailDescender RetroflexHook TopHook
 
 	define [UArcT] : with-params [sink df top bottom [stroke Stroke] [ada ArchDepthA] [adb ArchDepthB] [offset 0]] : sink
 		widths.lhs stroke
@@ -25,46 +21,45 @@ glyph-block Letter-Latin-U : begin
 		flat (df.rightSB - offset) (bottom + ada + offset)
 		[if (sink == spiro-outline) corner curl] (df.rightSB - offset) top [heading Upward]
 
+	glyph-block-export UShape
 	define [UShape] : with-params [df top bottom [stroke Stroke] [ada ArchDepthA] [adb ArchDepthB] [offset 0]] : glyph-proc
 		include : UArcT dispiro
-			df -- df
-			top -- top
+			df     -- df
+			top    -- top
 			bottom -- bottom
 			stroke -- stroke
-			ada -- ada
-			adb -- adb
+			ada    -- ada
+			adb    -- adb
 			offset -- offset
 
 	glyph-block-export UShapeGroup
 	define [UShapeGroup ada adb] : namespace
 		export : define [Toothed df top sw fHookLeft fShortLeg] : glyph-proc
 			set-base-anchor 'trailing' df.rightSB 0
-			include : nShoulder
-				top -- top
-				bottom -- [if fHookLeft (TailY + HalfStroke) 0]
-				left -- (df.leftSB + [HSwToV sw])
-				right -- df.rightSB
+			include : uBowl.shape
+				top    -- (top - [if fHookLeft (TailY + HalfStroke) 0])
+				bottom -- 0
+				left   -- df.leftSB
+				right  -- (df.rightSB - [HSwToV sw])
 				stroke -- sw
-				fine -- ShoulderFine
-				ada -- ada
-				adb -- adb
-			if fHookLeft : include : RetroflexHook.rExt df.rightSB (TailY + HalfStroke) (sw -- sw)
-			include : FlipAround df.middle (top / 2)
+				fine   -- ShoulderFine
+				ada    -- ada
+				adb    -- adb
+			if fHookLeft : include : TopHook.toLeft.lBarInner df.leftSB (adb + TINY) top (sw -- sw)
 			include : tagged 'strokeR' : VBar.r df.rightSB 0 [if fShortLeg [mix ada top 0.5] top] sw
 
 		export : define [Tailed df top sw fHookLeft fShortLeg] : glyph-proc
 			set-base-anchor 'trailing' (df.rightSB + SideJut) 0
-			include : nShoulder
-				top -- top
-				bottom -- [if fHookLeft (TailY + HalfStroke) 0]
-				left -- (df.leftSB + [HSwToV sw])
-				right -- df.rightSB
+			include : uBowl.shape
+				top    -- (top - [if fHookLeft (TailY + HalfStroke) 0])
+				bottom -- 0
+				left   -- df.leftSB
+				right  -- (df.rightSB - [HSwToV sw])
 				stroke -- sw
-				fine -- ShoulderFine
-				ada -- ada
-				adb -- adb
-			if fHookLeft : include : RetroflexHook.rExt df.rightSB (TailY + HalfStroke) (sw -- sw)
-			include : FlipAround df.middle (top / 2)
+				fine   -- ShoulderFine
+				ada    -- ada
+				adb    -- adb
+			if fHookLeft : include : TopHook.toLeft.lBarInner df.leftSB (adb + TINY) top (sw -- sw)
 			include : tagged 'strokeR' : RightwardTailedBar df.rightSB 0 [if fShortLeg [mix ada top 0.5] top] (sw -- sw)
 
 		export : define [ToothlessRounded df top sw fHookLeft fShortLeg] : glyph-proc
@@ -102,7 +97,7 @@ glyph-block Letter-Latin-U : begin
 	define UUpper : UShapeGroup ArchDepthA ArchDepthB
 	define ULower : UShapeGroup SmallArchDepthA SmallArchDepthB
 
-	define [UTopLeftSerif df yTop _sw]  : tagged 'serifLT'
+	define [UTopLeftSerif df yTop _sw] : tagged 'serifLT'
 		HSerif.lt df.leftSB yTop SideJut _sw
 
 	define [UTopRightSerif df yTop _sw] : tagged 'serifRT'
@@ -114,6 +109,7 @@ glyph-block Letter-Latin-U : begin
 		if trAnchor : begin
 			set-base-anchor 'trailing' (trAnchor.x + SideJut) trAnchor.y
 
+	glyph-block-export USerifs
 	define USerifs : namespace
 		export : define [Toothed df top _sw] : glyph-proc
 			include : UTopLeftSerif df top _sw
@@ -300,18 +296,19 @@ glyph-block Letter-Latin-U : begin
 		create-glyph "uDieresisSidewaysBase.\(suffix)" : glyph-proc
 			local df : DivFrame (XH / Width) 2 (XH * 0.1 / SB)
 			include : df.markSet.e
-			local ww : Width * para.diversityM
+			local ww : Width * para.diversityT
 			set-width ww
 			set-base-anchor 'cvDecompose' 0 0
 			include : PointingTo ww XH ww 0 : function [] : glyph-proc
-				include : Base  df (ww - SB - 0.75 * para.diversityM * AccentHeight) Stroke
-				include : Slabs df (ww - SB - 0.75 * para.diversityM * AccentHeight)
+				include : Base  df (ww - SB - 0.75 * para.diversityT * AccentHeight) Stroke
+				include : Slabs df (ww - SB - 0.75 * para.diversityT * AccentHeight)
 				include : Translate 0 (SB / 2)
 
 	select-variant 'U' 'U'
 	select-variant 'U/withTonos' (follow -- 'U')
 	link-reduced-variant 'U/sansSerif' 'U' MathSansSerif
 	select-variant 'smcpU' 0x1D1C (follow -- 'U')
+
 	select-variant 'u' 'u'
 	link-reduced-variant 'u/sansSerif' 'u' MathSansSerif
 	select-variant 'u/uRTailBase' (shapeFrom -- 'u')
@@ -352,50 +349,14 @@ glyph-block Letter-Latin-U : begin
 
 	derive-glyphs 'cyrl/pe.SRB' null 'cyrl/i.italic' : lambda [src gr] : glyph-proc
 		include [refer-glyph src] AS_BASE ALSO_METRICS
-		include [refer-glyph 'macronAbove']
+		include [refer-glyph 'cyrl/pe.SRB/overlineAbove']
 
 	derive-glyphs 'cyrl/tetse.italic' null 'cyrl/tse.italic' : lambda [src gr] : glyph-proc
 		include [refer-glyph src] AS_BASE ALSO_METRICS
 		include [refer-glyph 'tildeAbove']
 
-	derive-composites 'uRTailBR' 0x1D99 'u/uRTailBase'
+	derive-composites 'uRetroflexHook' 0x1D99 'u/uRTailBase'
 		RetroflexHook.rSideJut RightSB 0 (yOverflow -- Stroke)
-
-	do "Labiodental Approximant"
-		local df : DivFrame 1
-		define [VHookTopShape top ada adb] : glyph-proc
-			include : dispiro
-				widths.lhs
-				flat df.leftSB top [heading Downward]
-				curl df.leftSB adb
-				arch.lhs 0
-				flat df.rightSB ada
-				curl df.rightSB (top - Hook - HalfStroke) [heading Upward]
-			include : VerticalHook.r
-				x -- df.rightSB
-				y -- (top - Hook - HalfStroke)
-				xDepth -- (-(RightSB - [HSwToV HalfStroke] - Middle))
-				yDepth -- (-Hook)
-
-		create-glyph 'VHookTop.serifless' : glyph-proc
-			include : MarkSet.capital
-			include : VHookTopShape CAP ArchDepthA ArchDepthB
-
-		create-glyph 'VHookTop.serifed' : glyph-proc
-			include [refer-glyph "VHookTop.serifless"] AS_BASE ALSO_METRICS
-			include : UTopLeftSerif df CAP
-
-		select-variant 'VHookTop' 0x1B2
-
-		create-glyph 'vHookTop.serifless' : glyph-proc
-			include : MarkSet.e
-			include : VHookTopShape XH SmallArchDepthA SmallArchDepthB
-
-		create-glyph 'vHookTop.serifed' : glyph-proc
-			include [refer-glyph "vHookTop.serifless"] AS_BASE ALSO_METRICS
-			include : UTopLeftSerif df XH
-
-		select-variant 'vHookTop' 0x28B
 
 	derive-glyphs 'uWithLightCentralizationStroke' null 'u' : function [src gr] : glyph-proc
 		include : MarkSet.p
@@ -418,6 +379,22 @@ glyph-block Letter-Latin-U : begin
 		if SLAB : begin
 			include : HSerif.lt SB XH SideJut
 
+	CreateAccentedComposition 'uDieresis' 0xFC 'u' 'dieresisAbove'
+	CreateAccentedComposition 'uBar' 0x289 'u' 'hStrike'
+	CreateAccentedComposition 'smcpUStroke' 0x1D7E 'smcpU' 'hStrike'
+
+	# Sideways dieresis for U+1D1E
+	derive-glyphs "uDieresisSidewaysMark" null "dieresisAboveAlwaysUpright" : function [gns] : glyph-proc
+		local ww : Width * para.diversityT
+		set-width 0
+		set-mark-anchor 'cvDecompose' 0 0
+		include : PointingTo ww XH ww 0 : function [] : glyph-proc
+			include : refer-glyph gns
+			include : Translate (XH / 2 + Width / 2) (ww - SB - XH - AccentHeight)
+			include : Translate 0 (SB / 2)
+
+	CreateAccentedComposition 'uDieresisSideways' 0x1D1E 'uDieresisSidewaysBase' 'uDieresisSidewaysMark'
+
 	glyph-block-import Letter-Blackboard : BBS BBD BBBarRight
 	create-glyph 'mathbb/U' 0x1D54C : glyph-proc
 		include : MarkSet.capital
@@ -428,30 +405,10 @@ glyph-block Letter-Latin-U : begin
 			VBar.l (SB + BBD) 0 CAP BBS
 			UArcT spiro-outline [DivFrame 1] CAP 0
 				stroke -- BBS
-				oper -- true
+				oper   -- true
 				offset -- 1
 
 	create-glyph 'mathbb/u' 0x1D566 : glyph-proc
-		local df : DivFrame 1 2
-		include : df.markSet.e
+		include : MarkSet.e
 		include [refer-glyph 'mathbb/n']
 		include : FlipAround Middle (XH / 2)
-
-	CreateAccentedComposition 'uDieresis' 0xFC 'u' 'dieresisAbove'
-	CreateAccentedComposition 'uLongBarOver' 0x289 'u' 'hStrike'
-	CreateAccentedComposition 'smcpUStroke' 0x1D7E 'smcpU' 'hStrike'
-
-	# Sideways dieresis for U+1D1E
-	derive-glyphs "uDieresisSidewaysMark" null "dieresisAboveAlwaysUpright" : function [gns] : glyph-proc
-		local ww : Width * para.diversityM
-		set-width 0
-		set-mark-anchor 'cvDecompose' 0 0
-		include : PointingTo ww XH ww 0 : function [] : glyph-proc
-			include : refer-glyph gns
-			include : Translate (XH / 2 + Width / 2) (ww - SB - XH - AccentHeight)
-			include : Translate 0 (SB / 2)
-
-	CreateAccentedComposition 'uDieresisSideways' 0x1D1E 'uDieresisSidewaysBase' 'uDieresisSidewaysMark'
-
-	CreateOgonekComposition 'UOgonek' 0x172 'U'
-	CreateOgonekComposition 'uOgonek' 0x173 'u'

@@ -11,19 +11,20 @@ glyph-block Letter-Latin-Upper-A : begin
 	glyph-block-import CommonShapes
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Shared-Metrics : markHalfStroke
-	glyph-block-import Letter-Shared : SetGrekUpperTonos CreateOgonekComposition CreateTurnedLetter
+	glyph-block-import Letter-Shared : CreateAccentedComposition
+	glyph-block-import Letter-Shared : SetGrekUpperTonos CreateTurnedLetter
 	glyph-block-import Letter-Shared-Shapes : SerifFrame
 	glyph-block-import Letter-Latin-V : VShapeOutline VShape VCornerHalfWidth
 
-	define BODY-CURLY     0
-	define BODY-STRAIGHT  1
-	define BODY-ROUND-TOP 2
+	define BODY-CURLY      0
+	define BODY-STRAIGHT   1
+	define BODY-ROUND-TOP  2
 
-	define SLAB-NONE     0
-	define SLAB-TOP      1
-	define SLAB-LEFT     2
-	define SLAB-RIGHT    4
-	define SLAB-CYRL-BGR 8
+	define SLAB-NONE       0
+	define SLAB-TOP        1
+	define SLAB-LEFT       2
+	define SLAB-RIGHT      4
+	define SLAB-SMALL-CYRL 8
 
 	glyph-block-export AShape
 	define AShape : namespace
@@ -38,11 +39,11 @@ glyph-block Letter-Latin-Upper-A : begin
 				include : VShapeOutline df bodyShape top sw
 				include : FlipAround df.middle (top / 2)
 			[Just BODY-ROUND-TOP] : spiro-outline
-				corner   df.leftSB 0
-				curl     pre@ (post@ <-> ArchDepthA)
-				arch.rhs top (sw -- sw)
-				flat     post@ (pre@ <-> ArchDepthB)
-				corner   df.rightSB 0
+				corner   df.leftSB   0
+				curl     df.leftSB  (top - ArchDepthA)
+				arch.rhs (sw -- sw)  top
+				flat     df.rightSB (top - ArchDepthB)
+				corner   df.rightSB  0
 
 		export : define [Outer df bodyShape top sw] : match bodyShape
 			([Just BODY-CURLY] || [Just BODY-STRAIGHT]) : new-glyph : glyph-proc
@@ -50,11 +51,11 @@ glyph-block Letter-Latin-Upper-A : begin
 				include : FlipAround df.middle (top / 2)
 			[Just BODY-ROUND-TOP] : dispiro
 				widths.rhs sw
-				flat     df.leftSB 0 [heading Upward]
-				curl     pre@ (post@ <-> ArchDepthA)
-				arch.rhs top (sw -- sw)
-				flat     post@ (pre@ <-> ArchDepthB)
-				curl     df.rightSB 0 [heading Downward]
+				flat     df.leftSB   0 [heading Upward]
+				curl     df.leftSB  (top - ArchDepthA)
+				arch.rhs (sw -- sw)  top
+				flat     df.rightSB (top - ArchDepthB)
+				curl     df.rightSB  0 [heading Downward]
 
 		define [CrossBar df bodyShape top sw] : begin
 			define yBar : BarPos bodyShape slabKind top
@@ -121,9 +122,9 @@ glyph-block Letter-Latin-Upper-A : begin
 	define [ASerifs df top sw slabKind] : glyph-proc : begin
 		local sf : SerifFrame.fromDf df top 0
 		if [maskBits slabKind SLAB-LEFT] : include
-			if ([maskBits slabKind SLAB-CYRL-BGR] && para.isItalic) sf.lb.outer sf.lb.full
+			if ([maskBits slabKind SLAB-SMALL-CYRL] && para.isItalic) sf.lb.outer sf.lb.full
 		if [maskBits slabKind SLAB-RIGHT] : include
-			if ([maskBits slabKind SLAB-CYRL-BGR] && para.isItalic) sf.rb.outer sf.rb.full
+			if ([maskBits slabKind SLAB-SMALL-CYRL] && para.isItalic) sf.rb.outer sf.rb.full
 		if [maskBits slabKind SLAB-TOP] : include : intersection [MaskLeft df.middle]
 			if [maskBits slabKind : bitOr SLAB-LEFT SLAB-RIGHT]
 			: then : HSerif.lt df.middle top (MidJutSide + [HSwToV : 0.25 * sw]) sf.swSerif
@@ -185,5 +186,3 @@ glyph-block Letter-Latin-Upper-A : begin
 				BBVInnerMaskShape SB RightSB 1 1 CAP
 				HBar.t 0 Width (CAP - XH / 2) BBS
 		include : FlipAround Middle (CAP / 2)
-
-	CreateOgonekComposition 'AOgonek' 0x104 'A'

@@ -7,8 +7,10 @@ import {
 	UserCloseKnotPair,
 	UserControlKnot,
 	VirtualControlKnot,
+	DecorInterpolator,
 } from "@iosevka/geometry/spiro-control";
 import { bez3, fallback, mix } from "@iosevka/util";
+
 import { BiKnotCollector } from "../../geometry/src/spiro-expand.mjs";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +232,7 @@ export function SetupBuilders(bindings) {
 
 	widths.heading = function (l, r, d) {
 		if (!isFinite(l)) throw new TypeError("NaN detected for left width");
-		if (!isFinite(r)) throw new TypeError("NaN detected for left width");
+		if (!isFinite(r)) throw new TypeError("NaN detected for right width");
 		if (!isFinite(d.x) || !isFinite(d.y))
 			throw new TypeError("NaN detected for heading directions");
 		return new AfWidthsHeading(l, r, d);
@@ -308,6 +310,9 @@ export function SetupBuilders(bindings) {
 	};
 	alsoThru.g2 = function (rx, ry, raf) {
 		return new SimpleMixInterpolator(g2, rx, ry, 0, 0, raf);
+	};
+	alsoThru.g4 = function (rx, ry, raf) {
+		return new SimpleMixInterpolator(g4, rx, ry, 0, 0, raf);
 	};
 
 	/// Multi-mix interpolator
@@ -499,5 +504,8 @@ export function SetupBuilders(bindings) {
 		dispiro,
 		"spiro-outline": spiroOutline,
 		"spiro-collect": spiroCollect,
+		"decor@": x => new DecorInterpolator(x),
+		"decor@@": x => new DecorInterpolator(new DecorInterpolator(x)),
+		"decor@@@": x => new DecorInterpolator(new DecorInterpolator(new DecorInterpolator(x))),
 	};
 }

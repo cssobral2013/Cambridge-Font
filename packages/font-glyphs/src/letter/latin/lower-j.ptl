@@ -35,14 +35,14 @@ glyph-block Letter-Latin-Lower-J : begin
 		set-base-anchor 'overlay' barCenter (top / 2)
 
 	define XMiddle : namespace
-		export : define [Straight df] : begin df.middle
-		export : define [Hooky df] : df.middle + [IBalance2 df]
-		export : define [Regular df] : df.middle + JBalance
+		export : define [StraightSerifless df] : begin df.middle
+		export : define [StraightSerifed df]   : df.middle + [IBalance2 df]
+		export : define [BentHook df]          : df.middle + JBalance
 		export : define [FlatHookSerifless df] : df.middle + 0.25 * JBalance * df.div * [mix 1 df.div 2]
-		export : define [FlatHookSerifed df] : df.middle + JBalance * df.div
+		export : define [FlatHookSerifed df]   : df.middle + JBalance * df.div
 
 	define Body : namespace
-		export : define [Regular df top xMiddle] : glyph-proc
+		export : define [BentHook df top xMiddle] : glyph-proc
 			local hookx : Math.min (xMiddle - (Width * 0.5) - [HSwToV HalfStroke] + OXHook) (xMiddle - 1.5 * [HSwToV Stroke] + OXHook)
 			set-base-anchor "below" [mix hookx xMiddle 0.5] Descender
 			include : dispiro
@@ -74,28 +74,41 @@ glyph-block Letter-Latin-Lower-J : begin
 			set-base-anchor "trailing" (xMiddle - [HSwToV HalfStroke]) Descender
 
 	define Serifs : namespace
-		export : define [Long df top xMiddle] : HSerif.lt xMiddle top (LongJut * df.div)
+		export : define [None  df top xMiddle] : no-shape
+		export : define [Long  df top xMiddle] : HSerif.lt xMiddle top (LongJut * df.div)
+		export : define [Short df top xMiddle] : HSerif.lt xMiddle top Jut
 
 	define Marks : namespace
+		export : define [Serifless df top xMiddle] : glyph-proc
+			set-base-anchor 'above'   xMiddle  top
+			set-base-anchor 'overlay' xMiddle (top / 2)
+
 		export : define [Serifed df top xMiddle] : glyph-proc
 			include : Serifless df top xMiddle
 			include : LeaningAnchor.Above.At [mix df.middle xMiddle (7/8)]
 
-		export : define [Serifless df top xMiddle] : glyph-proc
-			set-base-anchor 'above' xMiddle top
-			set-base-anchor 'overlay' xMiddle (top / 2)
+	define Div : namespace
+		export : define BentHook          1
+		export : define StraightSerifless para.diversityII
+		export : define StraightSerifed   para.diversityI
+		export : define FlatHookSerifless para.diversityII
+		export : define FlatHookSerifed   para.diversityI
 
 	define JConfig : object
-		'serifless'               { "Regular"         null         XMiddle.Regular            Marks.Serifless  1                }
-		'serifed'                 { "Regular"         Serifs.Long  XMiddle.Regular            Marks.Serifed    1                }
-		'straightLine'            { "Straight"        null         XMiddle.Straight           Marks.Serifless  para.diversityII }
-		'hooky'                   { "Straight"        Serifs.Long  XMiddle.Hooky              Marks.Serifed    para.diversityI  }
-		'flatHookSerifless'       { "FlatHook"        null         XMiddle.FlatHookSerifless  Marks.Serifless  para.diversityII }
-		'flatHookSerifed'         { "FlatHook"        Serifs.Long  XMiddle.FlatHookSerifed    Marks.Serifed    para.diversityI  }
-		'diagonalTailedSerifless' { "DiagonalTailed"  null         XMiddle.FlatHookSerifless  Marks.Serifless  para.diversityII }
-		'diagonalTailedSerifed'   { "DiagonalTailed"  Serifs.Long  XMiddle.FlatHookSerifed    Marks.Serifed    para.diversityI  }
+		'bentHookSerifless'          { "BentHook"        Serifs.None   XMiddle.BentHook           Marks.Serifless  Div.BentHook          }
+		'bentHookSerifed'            { "BentHook"        Serifs.Long   XMiddle.BentHook           Marks.Serifed    Div.BentHook          }
+		'bentHookShortSerifed'       { "BentHook"        Serifs.Short  XMiddle.BentHook           Marks.Serifed    Div.BentHook          }
+		'straightSerifless'          { "Straight"        Serifs.None   XMiddle.StraightSerifless  Marks.Serifless  Div.StraightSerifless }
+		'straightSerifed'            { "Straight"        Serifs.Long   XMiddle.StraightSerifed    Marks.Serifed    Div.StraightSerifed   }
+		'straightShortSerifed'       { "Straight"        Serifs.Short  XMiddle.StraightSerifed    Marks.Serifed    Div.StraightSerifed   }
+		'flatHookSerifless'          { "FlatHook"        Serifs.None   XMiddle.FlatHookSerifless  Marks.Serifless  Div.FlatHookSerifless }
+		'flatHookSerifed'            { "FlatHook"        Serifs.Long   XMiddle.FlatHookSerifed    Marks.Serifed    Div.FlatHookSerifed   }
+		'flatHookShortSerifed'       { "FlatHook"        Serifs.Short  XMiddle.FlatHookSerifed    Marks.Serifed    Div.FlatHookSerifed   }
+		'diagonalTailedSerifless'    { "DiagonalTailed"  Serifs.None   XMiddle.FlatHookSerifless  Marks.Serifless  Div.FlatHookSerifless }
+		'diagonalTailedSerifed'      { "DiagonalTailed"  Serifs.Long   XMiddle.FlatHookSerifed    Marks.Serifed    Div.FlatHookSerifed   }
+		'diagonalTailedShortSerifed' { "DiagonalTailed"  Serifs.Short  XMiddle.FlatHookSerifed    Marks.Serifed    Div.FlatHookSerifed   }
 
-	foreach {suffix { shapeId Serif xMiddleT Marks div } } [Object.entries JConfig] : do
+	foreach { suffix { shapeId Serif xMiddleT Marks div } } [Object.entries JConfig] : do
 		local df : DivFrame div
 		local xMiddle : xMiddleT df
 
@@ -103,7 +116,7 @@ glyph-block Letter-Latin-Lower-J : begin
 			set-width df.width
 			include : df.markSet.p
 			include : Body.(shapeId) df XH xMiddle
-			if Serif : include : tagged 'serifLT' : Serif df XH xMiddle
+			include : tagged 'serifLT' : Serif df XH xMiddle
 			include : Marks df XH xMiddle
 
 		create-glyph "dotlessjBar.\(suffix)" : glyph-proc
@@ -112,23 +125,23 @@ glyph-block Letter-Latin-Lower-J : begin
 
 		create-glyph "dotlessjBarHookTop.\(suffix)" : glyph-proc
 			include [refer-glyph "dotlessjBar.\(suffix)"] AS_BASE ALSO_METRICS
-			include : TopHook.mBarOuter xMiddle (XH + O) XH
+			include : TopHook.toRight.mBarOuter xMiddle (XH + O) XH
 
 	select-variant 'dotlessj' 0x237
 
 	link-reduced-variant 'dotlessj/sansSerif' 'dotlessj' MathSansSerif
-	CreateAccentedComposition 'j'           'j'   'dotlessj'           'tittleAbove'
-	CreateAccentedComposition 'j/sansSerif' null  'dotlessj/sansSerif' 'tittleAbove'
+	CreateAccentedComposition 'j'           'j'  'dotlessj'           'tittleAbove'
+	CreateAccentedComposition 'j/sansSerif' null 'dotlessj/sansSerif' 'tittleAbove'
 	link-reduced-variant 'j/sansSerif' 'j' MathSansSerif
 
 	select-variant 'dotlessjBar'        0x25F (follow -- 'dotlessj')
-	select-variant 'dotlessjBarHookTop' 0x284 (follow -- 'dotlessj/sansSerif')
+	select-variant 'dotlessjBarHookTop' 0x284 (follow -- 'dotlessjHookTop')
 	CreateAccentedComposition 'jBar'    0x249 'dotlessjBar' 'tittleAbove'
 
 	alias 'grek/yot' 0x3F3 'j'
 	alias 'cyrl/je'  0x458 'j'
 
-	create-glyph 'dotlessjCurlyTail.serifless' : glyph-proc
+	create-glyph 'dotlessjCurlyTail.bentHookSerifless' : glyph-proc
 		include : MarkSet.p
 		set-base-anchor 'above' (Middle + JBalance) XH
 		local fine : AdviceStroke 3.5
@@ -142,12 +155,14 @@ glyph-block Letter-Latin-Lower-J : begin
 				x2 -- RightSB + [HSwToV : 0.5 * fine]
 				y2 -- Descender + 0.5 * fine
 
-	create-glyph 'dotlessjCurlyTail.serifed' : glyph-proc
-		include [refer-glyph 'dotlessjCurlyTail.serifless'] AS_BASE ALSO_METRICS
+	create-glyph 'dotlessjCurlyTail.bentHookSerifed' : glyph-proc
+		include [refer-glyph 'dotlessjCurlyTail.bentHookSerifless'] AS_BASE ALSO_METRICS
 		include : HSerif.lt (Middle + JBalance) XH LongJut
 
 	select-variant 'dotlessjCurlyTail'
 	CreateAccentedComposition 'jCurlyTail' 0x29D 'dotlessjCurlyTail' 'tittleAbove'
+
+	CreateAccentedComposition 'jAcute' null 'dotlessj' 'acuteAbove'
 
 	create-glyph 'mathbb/dotlessj' : glyph-proc
 		include : MarkSet.p
