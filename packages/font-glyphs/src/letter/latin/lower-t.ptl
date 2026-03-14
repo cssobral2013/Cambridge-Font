@@ -9,9 +9,9 @@ glyph-block Letter-Latin-Lower-T : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Adjustment : LeaningAnchor
 	glyph-block-import Letter-Shared : CreateAccentedComposition CreateCommaCaronComposition CreateTurnedLetter
-	glyph-block-import Letter-Shared-Shapes : CurlyTail FlatHookDepth ConnectedCedilla SerifedArcEnd
-	glyph-block-import Letter-Shared-Shapes : DiagTail DToothlessRise
-	glyph-block-import Letter-Shared-Shapes : TopHook PalatalHook
+	glyph-block-import Letter-Shared-Shapes : CurlyTail FlatHookDepth ConnectedCedilla
+	glyph-block-import Letter-Shared-Shapes : DiagTail TopHook PalatalHook
+	glyph-block-import Letter-Shared-Shapes : SerifedArcEnd InwardSlabArcEnd
 	glyph-block-import Letter-Latin-S : SAutoSlabEnd AdviceSArchDepth
 	glyph-block-import Letter-Blackboard : BBS BBD
 
@@ -20,13 +20,13 @@ glyph-block Letter-Latin-Lower-T : begin
 	define SYM-PR-LEFT       2
 	define SYM-PR-BALANCED   3
 
-	define dfNarrowT : DivFrame para.diversityF
-	define [xSmallTBarLeftT  df] : df.middle - (df.div ** 2) * TBalance - [HSwToV HalfStroke]
-	define [xSmallTCrossRefT df] : [xSmallTBarLeftT df] + df.div * TBalance2 + [HSwToV HalfStroke]
+	define dfNarrowT : DivFrame para.advanceScaleF
+	define [xSmallTBarLeftT  df] : df.middle - df.adws * df.adws * TBalance - [HSwToV HalfStroke]
+	define [xSmallTCrossRefT df] : [xSmallTBarLeftT df] + df.adws * TBalance2 + [HSwToV HalfStroke]
 
 	define yCrossBar     XH
 	define yShortNeck1 : Math.max [mix XH Ascender 0.5] ([mix XH Ascender 0.875] - Stroke * 0.125)
-	define yShortNeck2 : Math.max [mix XH Ascender 0.5] ([mix XH Ascender 0.75]  - Stroke * 0.125)
+	define yShortNeck2 : Math.max [mix XH Ascender 0.5] ([mix XH Ascender 0.750] - Stroke * 0.125)
 
 	define BentHook : namespace
 		export : define [BarLeftPos df sym] : match sym
@@ -35,8 +35,8 @@ glyph-block Letter-Latin-Lower-T : begin
 			([Just SYM-PR-LEFT] || [Just SYM-PR-BALANCED]) : df.middle - [HSwToV HalfStroke]
 
 		define [xCrossBarPos df sym] : match sym
-			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) ([xSmallTCrossRefT df] + LongJut * [Math.sqrt df.div])}
-			__                         {([xSmallTCrossRefT df] - LongJut * [Math.sqrt df.div]) ([xSmallTCrossRefT df] + LongJut * [Math.sqrt df.div])}
+			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) ([xSmallTCrossRefT df] + LongJut * [Math.sqrt df.adws])}
+			__                         {([xSmallTCrossRefT df] - LongJut * [Math.sqrt df.adws]) ([xSmallTCrossRefT df] + LongJut * [Math.sqrt df.adws])}
 
 		define [XHookTerminal df sym] : match sym
 			[Just SYM-LEFT]        df.rightSB
@@ -81,7 +81,7 @@ glyph-block Letter-Latin-Lower-T : begin
 	define DiagonalTailed : namespace
 		define [HookShape df sym top bot sw] : begin
 			local xMid : [BarLeftPos df sym] + [HSwToV HalfStroke]
-			local hookDepth : [if (sym === SYM-LEFT) 1.375 1] * [DiagTail.StdDepth [DivFrame : Math.sqrt df.div] sw] - [HSwToV HalfStroke]
+			local hookDepth : [if (sym === SYM-LEFT) 1.375 1] * [DiagTail.StdDepth [DivFrame : Math.sqrt df.adws] sw] - [HSwToV HalfStroke]
 			return : dispiro
 				flat xMid top [widths.center.heading sw Downward]
 				DiagTail.R xMid bot hookDepth sw
@@ -107,12 +107,8 @@ glyph-block Letter-Latin-Lower-T : begin
 
 	define Flat : namespace
 		export : define [xCrossBarPos df sym] : match sym
-			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) [mix df.width df.rightSB : mix 1 df.div 2]}
-			__ {[mix 0 df.leftSB  [mix 1 df.div 2]] [mix df.width df.rightSB : mix 1 df.div 2]}
-
-
-		define [CrossLeft df]  : mix 0        df.leftSB  [mix 1 df.div 2]
-		define [CrossRight df] : mix df.width df.rightSB [mix 1 df.div 2]
+			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) [mix df.width df.rightSB : mix 1 df.adws 2]}
+			__ {[mix 0 (df.leftSB * 0.6) : mix 1 df.adws 2] [mix df.width df.rightSB : mix 1 df.adws 2]}
 
 		define NORMAL    0
 		define RETROFLEX 1
@@ -120,7 +116,7 @@ glyph-block Letter-Latin-Lower-T : begin
 
 		export : define [BarLeftPos df sym] : match sym
 			[Just SYM-LEFT]      : mix df.leftSB [xSmallTBarLeftT df] 0.5
-			[Just SYM-BALANCED]  : [mix [CrossLeft df] [CrossRight df] 0.42] - [HSwToV : 0.375 * Stroke]
+			[Just SYM-BALANCED]  : xSmallTBarLeftT df
 			([Just SYM-PR-LEFT] || [Just SYM-PR-BALANCED]) : df.middle - [HSwToV HalfStroke]
 
 		export : define [Body        df sym top bot] : Impl NORMAL    df sym top bot 0
@@ -179,8 +175,8 @@ glyph-block Letter-Latin-Lower-T : begin
 			__              : df.middle - [HSwToV HalfStroke]
 
 		define [xCrossBarPos df sym] : match sym
-			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) (df.middle + LongJut * [Math.sqrt df.div])}
-			__              {(df.middle - LongJut * [Math.sqrt df.div]) (df.middle + LongJut * [Math.sqrt df.div])}
+			([Just SYM-LEFT] || [Just SYM-PR-LEFT]) {([BarLeftPos df sym] + TanSlope * Stroke) (df.middle + LongJut * [Math.sqrt df.adws])}
+			__              {(df.middle - LongJut * [Math.sqrt df.adws]) (df.middle + LongJut * [Math.sqrt df.adws])}
 
 		export : define [Body df sym top bot] : glyph-proc
 			local xLeft : BarLeftPos df sym
@@ -252,7 +248,7 @@ glyph-block Letter-Latin-Lower-T : begin
 				difference [Style.Body df sym top 0] [MaskAbove XH]
 				TopHook.toRight.mBarInner attach.x XH Ascender
 
-		create-glyph "tLTail.\(suffix)" : glyph-proc
+		create-glyph "tPalatalHook.\(suffix)" : glyph-proc
 			set-width df.width
 			include : df.markSet.bp
 			include : Style.Body df sym top 0
@@ -294,23 +290,49 @@ glyph-block Letter-Latin-Lower-T : begin
 				curl xLeft LongJut
 				CurlyTail.n fine 0 (xLeft + [HSwToV Stroke] + LongJut) 0 0
 
+		if (top == Ascender) : begin
+			create-glyph "turntCurlyTail.\(suffix)" : glyph-proc
+				# local df : DivFrame 1
+
+				set-width df.width
+				include : df.markSet.b
+
+				local fine : AdviceStroke2 3.5 2.5 (-Descender)
+				# local rinner : LongJut / 2 - fine / 2
+
+				local xLeft : Style.BarLeftPos df sym
+
+				include : Style.Body df sym XH 0
+				include : FlipAround df.middle (XH / 2)
+
+				local xRight : df.width - xLeft
+				include : dispiro
+					widths.rhs
+					flat xRight TINY [heading Downward]
+					curl xRight 0    [heading Downward]
+					CurlyTail.n fine Descender (xRight - [HSwToV Stroke] - LongJut) df.rightSB Descender (Descender / 2 + fine)
+
+
 	select-variant 't' 't'
 	select-variant 't/teshLeft' (follow -- 't')
 	select-variant 't/phoneticLeft1' (shapeFrom -- 't')
 	select-variant 't/phoneticLeft2'
 	select-variant 't/compLigRight'
-	CreateCommaCaronComposition 'tcaron' 0x165 't'
+
+	CreateCommaCaronComposition 'tCaron' 0x165 't'
+	CreateAccentedComposition 'tWedge' null 't' 'caronAbove'
+
 	derive-glyphs 'tCedilla' 0x163 't' ConnectedCedilla
 	CreateAccentedComposition 'tComma' 0x21B 't' 'commaBelow'
 
-	select-variant "tHookTop" 0x1AD
-	select-variant 'tLTail' 0x1AB
+	select-variant 'tHookTop' 0x1AD
+	select-variant 'tPalatalHook' 0x1AB (follow -- 't')
 	select-variant 'tRTail' 0x288
 	select-variant 'tCurlyTail' 0x236
-
 	select-variant "tHookTopRTail" 0x1DF09
 
 	CreateTurnedLetter "turnt" 0x287 "t" HalfAdvance (XH / 2)
+	select-variant 'turntCurlyTail' 0x1DF0D (follow -- 'tHookTop')
 
 	# U+01BE is actually "t" and "s" combined together
 	define SLAB-NONE        0
@@ -323,15 +345,13 @@ glyph-block Letter-Latin-Lower-T : begin
 			flat [xSmallTBarLeftT df] top [heading Downward]
 			curl [xSmallTBarLeftT df] XH  [heading Downward]
 			alsoThru.g2 0.5 0.5 [widths.center stroke]
-			g4   df.rightSB (archDepth) [widths.rhs stroke]
+			g4   df.rightSB (0 + archDepth) [widths.rhs stroke]
 			match sb
 				[Just SLAB-CLASSICAL] : SerifedArcEnd.RtlRhs df.leftSB 0 stroke SHook
-				[Just SLAB-INWARD] : list
-					arch.rhs 0 (sw -- stroke) (blendPost -- {})
-					g4 df.leftSB DToothlessRise
+				[Just SLAB-INWARD] : InwardSlabArcEnd.RtlRhs df.leftSB 0 stroke SHook
 				__ : list
 					hookend 0 (sw -- stroke)
-					g4      df.leftSB SHook
+					g4   df.leftSB (0 + SHook)
 
 	define TSUpperConfig : object
 		bentHook            { Ascender    }

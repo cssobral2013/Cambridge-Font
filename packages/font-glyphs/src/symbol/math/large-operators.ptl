@@ -9,7 +9,6 @@ glyph-block Symbol-Math-Large-Operators : for-width-kinds WideWidth1
 	glyph-block-import Common-Derivatives
 	glyph-block-import Shared-Symbol-Shapes : TriangleShape
 	glyph-block-import Letter-Latin-Long-S : LongSShape
-	glyph-block-import Letter-Latin-U : UShape
 	glyph-block-import Letter-Greek-Upper-Sigma : SigmaShape
 	glyph-block-import Letter-Greek-Pi : PiShape
 	glyph-block-import Letter-Blackboard : BBS BBD
@@ -18,8 +17,8 @@ glyph-block Symbol-Math-Large-Operators : for-width-kinds WideWidth1
 	define MosaicBottom fontMetrics.os2.sTypoDescender
 	define MosaicHeight : MosaicTop - MosaicBottom
 
-	define diversityLargeOperators : Math.max para.diversityM (MosaicWidth / Width)
-	define df : DivFrame diversityLargeOperators 0 [if FMosaicWide diversityLargeOperators 1]
+	define advanceScaleLargeOperators : Math.max para.advanceScaleM (MosaicWidth / Width)
+	define df : DivFrame advanceScaleLargeOperators 0 [if FMosaicWide advanceScaleLargeOperators 1]
 
 	create-glyph [MangleName 'sum'] [MangleUnicode 0x2211] : glyph-proc
 		set-width df.width
@@ -29,19 +28,19 @@ glyph-block Symbol-Math-Large-Operators : for-width-kinds WideWidth1
 		set-width df.width
 		include : intersection
 			MaskAbove MosaicBottom
-			SigmaShape df BgOpTop (BgOpBot - MosaicHeight * 2) OperatorStroke (pCenter -- 0.75)
+			SigmaShape df BgOpTop (BgOpBot - MosaicHeight * 2) OperatorStroke (pxMid -- 0.75)
 
 	create-glyph [MangleName 'sumLower'] [MangleUnicode 0x23B3] : glyph-proc
 		set-width df.width
 		include : intersection
 			MaskBelow MosaicTop
-			SigmaShape df (BgOpTop + MosaicHeight * 2) BgOpBot OperatorStroke (pCenter -- 0.75)
+			SigmaShape df (BgOpTop + MosaicHeight * 2) BgOpBot OperatorStroke (pxMid -- 0.75)
 
 	create-glyph [MangleName 'mathbb/sum'] [MangleUnicode 0x2140] : glyph-proc
 		set-width df.width
 		local kDiag : DiagCorDs (BgOpTop - BgOpBot) (df.rightSB - df.leftSB) BBD
-		include : SigmaShape df BgOpTop BgOpBot BBS (noSerif -- true)
-		include : SigmaShape df BgOpTop BgOpBot BBS (noSerif -- true) (offsetLeft -- kDiag * BBD)
+		include : SigmaShape df BgOpTop BgOpBot BBS (doSerif -- false)
+		include : SigmaShape df BgOpTop BgOpBot BBS (doSerif -- false) (offsetLeft -- (kDiag * BBD))
 
 	create-glyph [MangleName 'product'] [MangleUnicode 0x220F] : glyph-proc
 		set-width df.width
@@ -64,10 +63,9 @@ glyph-block Symbol-Math-Large-Operators : for-width-kinds WideWidth1
 
 	create-glyph [MangleName 'Cup'] [MangleUnicode 0x22C3] : glyph-proc
 		set-width df.width
-		include : UShape df BgOpTop BgOpBot
-			stroke -- OperatorStroke
-			ada -- [ArchDepthAOf (ArchDepth * [Math.sqrt df.div]) (df.width)]
-			adb -- [ArchDepthBOf (ArchDepth * [Math.sqrt df.div]) (df.width)]
+		include : UShape BgOpTop BgOpBot df.leftSB df.rightSB OperatorStroke
+			df.archDepthAOf (ArchDepth / [Math.sqrt df.adws]) OperatorStroke
+			df.archDepthBOf (ArchDepth / [Math.sqrt df.adws]) OperatorStroke
 
 	turned [MangleName 'Cap'] [MangleUnicode 0x22C2] [MangleName 'Cup'] df.middle SymbolMid
 
@@ -111,7 +109,7 @@ glyph-block Symbol-Math-Large-Operators : for-width-kinds WideWidth1
 
 	create-glyph [MangleName 'Bowtie'] [MangleUnicode 0x2A1D] : glyph-proc
 		set-width df.width
-		define swBowtie : Math.min OperatorStroke : AdviceStroke 4.25 MosaicWidthScalar
+		define swBowtie   : Math.min OperatorStroke : AdviceStroke 4.25 MosaicWidthScalar
 		define swBowtieHv : Math.min OperatorStroke : AdviceStroke 4.75 MosaicWidthScalar
 		include : union
 			intersection

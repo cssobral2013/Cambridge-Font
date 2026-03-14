@@ -13,38 +13,42 @@ glyph-block Letter-Cyrillic-Te-MidHook : begin
 	define [Shape df top pArc slabTop slabBot] : glyph-proc
 		local sw : Math.min df.mvs : AdviceStroke 2.75
 		local left : [mix df.leftSB df.rightSB 0.3] + OX
+		local right : df.rightSB - OX
 
 		local xTopBarLeft : df.leftSB - SideJut
-		local xTopBarRightSym : 2 * left + [HSwToV sw] - xTopBarLeft
-		local xTopBarRight : Math.max xTopBarRightSym : mix left df.rightSB 0.475
+		local xTopBarRight : Math.max
+			mix xTopBarLeft (left + [HSwToV : 0.5 * sw]) 2
+			mix left right 0.475
+		include : HBar.t xTopBarLeft xTopBarRight top sw
 
 		include : VBar.l left 0 top sw
-		include : HBar.t xTopBarLeft xTopBarRight top sw
 		include : MidHook.general
 			left   -- (left + [HSwToV sw])
-			right  -- df.rightSB
+			right  -- right
 			top    -- (top * HBarPos + sw / 4)
 			ada    -- (ArchDepthA * pArc)
 			adb    -- (ArchDepthB * pArc)
 			sw     -- sw
 
 		if slabTop : begin
-			include : VSerif.dl  xTopBarLeft top VJut
-			include : VSerif.dr xTopBarRight top VJut
+			local swVJut : Math.min (VJutStroke * (sw / Stroke)) : VSwToH : 0.625 * (left - xTopBarLeft)
+			include : VSerif.dl  xTopBarLeft top VJut swVJut
+			include : VSerif.dr xTopBarRight top VJut swVJut
 
 		if slabBot : begin
+			local jut : Math.max Jut : mix [HSwToV HalfStroke] MidJutCenter ((6 / 7) * df.adws)
 			include : intersection
-				MaskLeft : mix (left + [HSwToV sw]) (df.rightSB - [HSwToV sw]) 0.625
-				HSerif.mb (left + [HSwToV : 0.5 * sw]) 0 Jut
+				MaskLeft : mix (left + [HSwToV sw]) (right - [HSwToV sw]) 0.625
+				HSerif.mb (left + [HSwToV : 0.5 * sw]) 0 (jut - [HSwToV : 0.5 * (Stroke - sw)]) sw
 
-	foreach { suffix { div doST doSB } } [Object.entries TConfig] : do
+	foreach { suffix { adws doST doSB } } [Object.entries TConfig] : do
 		create-glyph "cyrl/TeMidHook.\(suffix)" : glyph-proc
-			local df : include : DivFrame div
+			local df : include : DivFrame adws
 			include : df.markSet.capDesc
 			include : Shape df CAP 1 doST doSB
 
 		create-glyph "cyrl/teMidHook.upright.\(suffix)" : glyph-proc
-			local df : include : DivFrame div
+			local df : include : DivFrame adws
 			include : df.markSet.p
 			include : Shape df XH (HBarPos ** 0.3) doST doSB
 

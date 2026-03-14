@@ -80,8 +80,8 @@ glyph-block Autobuild-Transformed-Shared : begin
 					[query-glyph origDstName].tryBecomeMirrorOf [query-glyph relDstName] rs
 
 	glyph-block-export ToSuperscript
-	define [ToSuperscript div] : glyph-proc
-		local df : DivFrame div
+	define [ToSuperscript adws] : glyph-proc
+		local df : DivFrame adws
 		include [Ungizmo] true
 		include [Translate (-df.middle) (-CAP)] true
 		include [Scale ToSuperscript.crowdAdjScale] true
@@ -91,8 +91,8 @@ glyph-block Autobuild-Transformed-Shared : begin
 	set ToSuperscript.crowdAdjScale 0.7
 
 	glyph-block-export ToSubscript
-	define [ToSubscript div] : glyph-proc
-		local df : DivFrame div
+	define [ToSubscript adws] : glyph-proc
+		local df : DivFrame adws
 		include [Ungizmo] true
 		include [Translate (-df.middle) 0] true
 		include [Scale ToSubscript.crowdAdjScale] true
@@ -295,13 +295,13 @@ glyph-block Autobuild-Transformed-Texture : begin
 		local forkedPara : Object.assign {.} para
 		if (extL + extR > 0)
 		: then : begin
-			forkedPara.diversityMM = 1 + extL + extR
-			forkedPara.diversityM  = 1 + extL + extR
-			forkedPara.diversityT  = 1 + extL + extR
+			forkedPara.advanceScaleMM = 1 + extL + extR
+			forkedPara.advanceScaleM  = 1 + extL + extR
+			forkedPara.advanceScaleT  = 1 + extL + extR
 		: else : begin
-			forkedPara.diversityF  = 1 + extL + extR
-			forkedPara.diversityI  = 1 + extL + extR
-			forkedPara.diversityII = 1 + extL + extR
+			forkedPara.advanceScaleF  = 1 + extL + extR
+			forkedPara.advanceScaleI  = 1 + extL + extR
+			forkedPara.advanceScaleII = 1 + extL + extR
 
 		local forked : Fork pendingGlyphs forkedPara
 		foreach {unicode glyphid} [items-of records] : begin
@@ -468,35 +468,3 @@ glyph-block Autobuild-Transformed-Mathematical : begin
 
 	CreateMathBoldFraktur 0x1D56C UpperLatin
 	CreateMathBoldFraktur 0x1D586 LowerLatin
-
-glyph-block Autobuild-Rotated : begin
-	glyph-block-import CommonShapes
-	glyph-block-import Common-Derivatives
-	glyph-block-import Recursive-Build : Miniature
-	glyph-block-import Symbol-Math-APL : LinkAplFormForNwidWwid
-
-	for-width-kinds WideWidth1 : do
-		local s : (RightSB - SB - O * 4 + (MosaicWidth - Width) * 0.5) / CAP
-		local df : Miniature {'eight.lnum.crossing' 'rotatedPropto' 'revS.serifless'}
-			crowd        -- (4 / [Math.sqrt MosaicWidthScalar])
-			scale        -- s
-			forceUpright -- true
-
-		define [InftyLikeShape gn u gns] : begin
-			create-glyph [MangleName gn] [MangleUnicode u] : glyph-proc
-				set-width MosaicWidth
-				if [not : df.queryByName gns] : throw : new Error "Cannot find glyph \(gns)"
-				include : df.queryByName gns
-				include : Translate ((-Width) / 2) ((-CAP) / 2)
-				include : Rotate (Math.PI / 2)
-				include : Scale s
-				include : Translate (MosaicWidth / 2) SymbolMid
-				include : Italify
-
-		InftyLikeShape 'propto'   0x221D 'rotatedPropto'
-		InftyLikeShape 'infty'    0x221E 'eight.lnum.crossing'
-		InftyLikeShape 'invLazyS' 0x223E 'revS.serifless'
-
-	# Link APLF for BQN
-	LinkAplFormForNwidWwid 'infty'
-	LinkAplFormForNwidWwid 'invLazyS'

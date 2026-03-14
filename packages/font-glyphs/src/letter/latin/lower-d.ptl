@@ -10,70 +10,69 @@ glyph-block Letter-Latin-Lower-D : begin
 	glyph-block-import Common-Derivatives
 	glyph-block-import Mark-Shared-Metrics : markExtend
 	glyph-block-import Mark-Adjustment : LeaningAnchor
-	glyph-block-import Letter-Shared : CreateCommaCaronComposition
-	glyph-block-import Letter-Shared-Shapes : OBarRight RightwardTailedBar DToothlessRise DMBlend
-	glyph-block-import Letter-Shared-Shapes : CurlyTail LetterBarOverlay SerifFrame
-	glyph-block-import Letter-Shared-Shapes : UpwardHookShape PalatalHook RetroflexHook TopHook
+	glyph-block-import Letter-Shared : CreateAccentedComposition CreateCommaCaronComposition
+	glyph-block-import Letter-Shared-Shapes : OBarRight RightwardTailedBar CurlyTail
+	glyph-block-import Letter-Shared-Shapes : LetterBarOverlay SerifFrame UpwardHookShape
+	glyph-block-import Letter-Shared-Shapes : PalatalHook RetroflexHook TopHook
 
 	define [ToothedBody df yTop] : union
 		OBarRight.shape
 			left  -- df.leftSB
 			right -- df.rightSB
 			sw    -- df.mvs
+			fine  -- df.shoulderFine
 			ada   -- df.smallArchDepthA
 			adb   -- df.smallArchDepthB
-		tagged 'rightBar' : VBar.r df.rightSB 0 yTop
-
-	define [ToothlessCornerBody df yTop] : union
-		OBarRight.toothless
-			left   -- df.leftSB
-			right  -- df.rightSB
-			sw     -- df.mvs
-			rise   -- DToothlessRise
-			mBlend -- DMBlend
-			ada    -- df.smallArchDepthA
-			adb    -- df.smallArchDepthB
-		tagged 'rightBar' : VBar.r df.rightSB DToothlessRise yTop
-
-	define [ToothlessCornerHBBBody df yTop] : union
-		OBarRight.toothless
-			left   -- df.leftSB
-			right  -- df.rightSB
-			sw     -- df.mvs
-			rise   -- DToothlessRise
-			mBlend -- DMBlend
-			ada    -- df.smallArchDepthA
-			adb    -- df.smallArchDepthB
-		tagged 'rightBar' : VBar.r df.rightSB 0 yTop
-
-	define [ToothlessRoundedBody df yTop] : OBarRight.rounded
-		left      -- df.leftSB
-		right     -- df.rightSB
-		sw        -- df.mvs
-		yTerminal -- yTop
-		ada       -- df.smallArchDepthA
-		adb       -- df.smallArchDepthB
+		tagged 'rightBar' : VBar.r df.rightSB 0 yTop df.mvs
 
 	define [TailedBody df yTop] : union
 		OBarRight.shape
 			left  -- df.leftSB
 			right -- df.rightSB
 			sw    -- df.mvs
+			fine  -- df.shoulderFine
 			ada   -- df.smallArchDepthA
 			adb   -- df.smallArchDepthB
-		RightwardTailedBar df.rightSB 0 yTop
+		tagged 'rightBar' : RightwardTailedBar df.rightSB 0 yTop df.mvs
 
-	define [TopSerif df yTop] : tagged 'serifRT'
-		HSerif.lt (df.rightSB - [HSwToV Stroke]) yTop SideJut
+	define [ToothlessCornerBody df yTop] : union
+		OBarRight.toothlessCorner (rise -- DToothlessRise) (mBlend -- DMBlend)
+			left  -- df.leftSB
+			right -- df.rightSB
+			sw    -- df.mvs
+			fine  -- df.shoulderFine
+			ada   -- df.smallArchDepthA
+			adb   -- df.smallArchDepthB
+		tagged 'rightBar' : VBar.r df.rightSB DToothlessRise yTop df.mvs
 
-	define [BaseSerif df yTop] : tagged 'serifRB'
-		HSerif.rb df.rightSB 0 SideJut
+	define [ToothlessCornerRTBBody df yTop] : union
+		OBarRight.toothlessCorner (rise -- DToothlessRise) (mBlend -- DMBlend)
+			left  -- df.leftSB
+			right -- df.rightSB
+			sw    -- df.mvs
+			fine  -- df.shoulderFine
+			ada   -- df.smallArchDepthA
+			adb   -- df.smallArchDepthB
+		tagged 'rightBar' : VBar.r df.rightSB 0 yTop df.mvs
+
+	define [ToothlessRoundedBody df yTop] : begin
+		return : OBarRight.toothlessRounded (yTerminal -- yTop)
+			left  -- df.leftSB
+			right -- df.rightSB
+			sw    -- df.mvs
+			fine  -- df.shoulderFine
+			ada   -- df.smallArchDepthA
+			adb   -- df.smallArchDepthB
+
+	define [TopSerif df yTop] : tagged 'serifRT' : HSerif.lt (df.rightSB - [HSwToV df.mvs]) yTop SideJut df.mvs
+
+	define [BaseSerif df yTop] : tagged 'serifRB' : HSerif.rb df.rightSB 0 SideJut df.mvs
 
 	define DConfig : SuffixCfg.weave
 		object # body
 			toothed                   ToothedBody
 			toothlessCorner           ToothlessCornerBody
-			toothlessCornerHBB        ToothlessCornerHBBBody
+			toothlessCornerRTB        ToothlessCornerRTBBody
 			toothlessRounded          ToothlessRoundedBody
 			tailed                    TailedBody
 
@@ -87,15 +86,18 @@ glyph-block Letter-Latin-Lower-D : begin
 		local yOverlay : mix XH (Ascender - [if topSerif Stroke 0]) 0.5
 
 		do
-			create-glyph "d.\(suffix)" : make [DivFrame 1]
-			create-glyph "dCaronBase.\(suffix)" : make [DivFrame 0.95]
+			create-glyph "d.\(suffix)"           : make [DivFrame 1]
+			create-glyph "dCaron/base.\(suffix)" : make [DivFrame 0.95]
 		: where : [make df] : glyph-proc
+			include : DivFrame 1
 			include : df.markSet.b
 			include : Body df Ascender
-			if topSerif    : include : topSerif df Ascender
+			if topSerif    : include : topSerif    df Ascender
 			if bottomSerif : include : bottomSerif df Ascender
-			include : LeaningAnchor.Above.VBar.r df.rightSB
-			set-base-anchor 'overlayOnExtension' (df.rightSB - [HSwToV HalfStroke]) yOverlay
+			include : LeaningAnchor.Above.VBar.r df.rightSB df.mvs
+			set-base-anchor 'overlayOnExtension' (df.rightSB - [HSwToV : 0.5 * df.mvs]) yOverlay
+			set-base-anchor 'overlay' df.middle (XH / 2)
+			set-base-anchor 'strike'  df.middle (XH / 2)
 
 		create-glyph "dStroke.\(suffix)" : glyph-proc
 			local df : DivFrame 1
@@ -103,20 +105,19 @@ glyph-block Letter-Latin-Lower-D : begin
 			include : LetterBarOverlay.r.in df.rightSB XH (Ascender - [if topSerif Stroke 0])
 
 		create-glyph "latn/de.\(suffix)" : glyph-proc
-			local df : DivFrame 1
+			local df : include : DivFrame 1
 			include : df.markSet.b
 			include : Body df Ascender
-			local xLeft : mix df.rightSB df.leftSB 0.9
-			local xRight : df.rightSB + O
-			include : HBar.t xLeft xRight Ascender
+			local xTopLeft : mix df.leftSB df.rightSB 0.1
+			include : HBar.t xTopLeft (df.rightSB + O) Ascender
 			if topSerif : begin
-				include : VSerif.dl xLeft Ascender [Math.min VJut : 0.8 * (Ascender - XH)]
+				include : VSerif.dl xTopLeft Ascender [Math.min VJut : mix Stroke (Ascender - XH) 0.5]
 				if [not para.isItalic] : include : HSerif.rt df.rightSB Ascender SideJut
 			if bottomSerif : include : bottomSerif df Ascender
-			include : LeaningAnchor.Above.VBar.m [mix xLeft xRight 0.5]
+			include : LeaningAnchor.Above.At [mix xTopLeft df.rightSB 0.5]
 
 		if [not topSerif] : create-glyph "dHookTop.\(suffix)" : glyph-proc
-			local df : DivFrame 1
+			local df : include : DivFrame 1
 			include : df.markSet.b
 			include : Body df (Ascender - Hook - HalfStroke)
 			include : TopHook.toRight.rBarInner df.rightSB (XH / 2) Ascender
@@ -124,7 +125,7 @@ glyph-block Letter-Latin-Lower-D : begin
 			include : LeaningAnchor.Above.VBar.r df.rightSB
 
 		if [not bottomSerif] : create-glyph "cyrl/djeKomi.\(suffix)" : glyph-proc
-			local df : include : DivFrame para.diversityMM 3
+			local df : include : DivFrame para.advanceScaleMM 3
 			include : df.markSet.b
 
 			local dfHalf : df.slice 3 2
@@ -135,47 +136,50 @@ glyph-block Letter-Latin-Lower-D : begin
 				left   -- dfHalf.leftSB
 				right  -- dfHalf.rightSB
 				ybegin -- Ascender
-				yend   -- (XH / 2)
-				ada    -- [dfHalf.archDepthAOf SmallArchDepth df.mvs]
-				adb    -- [dfHalf.archDepthBOf SmallArchDepth df.mvs]
+				yend   -- (XH / 2 + HalfStroke)
+				ada    -- (ArchDepthA * (2 / df.hPack) * df.adws)
+				adb    -- (ArchDepthB * (2 / df.hPack) * df.adws)
 				sw     -- df.mvs
 
 			if topSerif : include : topSerif dfHalf Ascender
 			if SLAB : begin
-				local sf2 : [SerifFrame.fromDf df (XH / 2) 0].slice 1 2
+				local sf2 : [SerifFrame.fromDf df (XH / 2 + HalfStroke) 0].slice 1 2
 				include sf2.rt.full
 
 	select-variant 'd' 'd'
-	select-variant 'dCaronBase' (follow -- 'd')
-	select-variant 'dStroke' 0x111 (follow -- 'd')
-	select-variant 'latn/de' 0x18C (follow -- 'd')
-	alias 'cyrl/deKomi' 0x501 'd'
 	link-reduced-variant 'd/sansSerif' 'd' MathSansSerif
 	link-reduced-variant 'd/phoneticLeft' 'd'
-	link-reduced-variant 'd/hookBottomBase' 'd'
+	select-variant 'dCaron/base' (follow -- 'd')
 
+	select-variant 'dStroke' 0x111 (follow -- 'd')
+	CreateAccentedComposition 'dBar' null 'd' 'hStrike'
+
+	select-variant 'latn/de' 0x18C (follow -- 'd')
 	select-variant 'dHookTop' 0x257
-	link-reduced-variant 'dHookTop/hookBottomBase' 'dHookTop'
 
+	alias 'cyrl/deKomi' 0x501 'd'
 	select-variant 'cyrl/djeKomi' 0x503
 
 	link-reduced-variant 'd/descBase' 'd'
 	derive-composites 'dPalatalHook' 0x1D81 'd/descBase' : PalatalHook.r
 		xLink -- RightSB
-		x -- (RightSB + SideJut)
-		y -- 0
+		x     -- (RightSB + SideJut)
+		y     -- 0
 
-	derive-glyphs 'dHookBottom' 0x256 "d/hookBottomBase" : function [src gr] : glyph-proc
+	link-reduced-variant 'd/rTailBase' 'd'
+	derive-glyphs 'dRTail' 0x256 "d/rTailBase" : function [src gr] : glyph-proc
 		include [refer-glyph src] AS_BASE ALSO_METRICS
 		include : RetroflexHook.rExt RightSB 0
 		include : LeaningAnchor.Below.VBar.r RightSB
 
-	derive-glyphs 'dHookTopBottom' 0x1D91 "dHookTop/hookBottomBase" : function [src gr] : glyph-proc
+	link-reduced-variant 'dHookTop/rTailBase' 'dHookTop'
+	derive-glyphs 'dHookTopRTail' 0x1D91 "dHookTop/rTailBase" : function [src gr] : glyph-proc
 		include [refer-glyph src] AS_BASE ALSO_METRICS
 		include : RetroflexHook.rExt RightSB 0
 		include : LeaningAnchor.Below.VBar.r RightSB
 
-	CreateCommaCaronComposition 'dCaron' 0x10F 'dCaronBase' (Width - [HSwToV QuarterStroke])
+	CreateCommaCaronComposition 'dCaron' 0x10F 'dCaron/base' (Width - [HSwToV QuarterStroke])
+	CreateAccentedComposition 'dWedge' null 'd' 'caronAbove'
 
 	derive-multi-part-glyphs 'dDot' 0x1E0B {'d' 'dotAbove'} : lambda [srcs gr] : glyph-proc
 		local { base mark } srcs
@@ -184,8 +188,7 @@ glyph-block Letter-Latin-Lower-D : begin
 		include [refer-glyph base] AS_BASE
 		include : LeaningAnchor.Above.VBar.r Middle
 
-	derive-composites 'dBar' 0xA7C8 'd'
-		HBar.m (SB - OX) (RightSB + OX) (XH * 0.5) OverlayStroke
+	derive-composites 'tauGallicum' 0xA7C8 'd' : HBar.m (SB - OX) (RightSB + OX) (XH * 0.5) OverlayStroke
 
 	define DCurlyTailConfig : object
 		toothedSerifless  { false }
@@ -211,10 +214,9 @@ glyph-block Letter-Latin-Lower-D : begin
 					y2 -- (0.37 * Descender)
 					swBefore -- sw
 					terminalSlopeAdj -- 0.25
-			if fSerif : include : HSerif.lt (m - [HSwToV sw]) Ascender SideJut
+			if fSerif : include : HSerif.lt (m - [HSwToV sw]) Ascender SideJut sw
 
 	select-variant 'dCurlyTail' 0x221
-
 
 	glyph-block-import Letter-Blackboard : BBS BBD BBBarRight
 	create-glyph 'mathbb/d' 0x1D555 : glyph-proc

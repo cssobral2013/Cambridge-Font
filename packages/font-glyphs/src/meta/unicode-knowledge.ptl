@@ -38,7 +38,6 @@ export : define decompOverrides : object
 	# Latvians use comma instead of cedillas in several letters.
 	# Record them as custom decomposition.
 	0x122  { 'G' 'commaBelow' }
-	0x123  { 'g' 'turnCommaAbove' }
 	0x136  { 'K' 'commaBelow' }
 	0x137  { 'k' 'commaBelow' }
 	0x13B  { 'L' 'commaBelow' }
@@ -53,8 +52,8 @@ export : define decompOverrides : object
 	# Spacing marks
 	0xA8   { 'markBaseSpace' 'dieresisAbove' }
 	0xB8   { 'markBaseSpace' 'cedillaBelow' }
-	0x2C2  { 'markBaseSpace' 'lessAbove' }
-	0x2C3  { 'markBaseSpace' 'greaterAbove' }
+	0x2C2  { 'markBaseSpace' 'leftArrowHeadAbove' }
+	0x2C3  { 'markBaseSpace' 'rightArrowHeadAbove' }
 	0x2C4  { 'markBaseSpace' 'upArrowHeadAbove' }
 	0x2C5  { 'markBaseSpace' 'downArrowHeadAbove' }
 	0x2C6  { 'markBaseSpace' 'circumflexAbove' }
@@ -65,8 +64,8 @@ export : define decompOverrides : object
 	0x2CD  { 'markBaseSpace' 'macronBelow' }
 	0x2CE  { 'markBaseSpace' 'graveBelow' }
 	0x2CF  { 'markBaseSpace' 'acuteBelow' }
-	0x2D2  { 'markBaseSpace' 'rightHalfCircleOver' }
-	0x2D3  { 'markBaseSpace' 'leftHalfCircleOver' }
+	0x2D2  { 'markBaseSpace' 'rightHalfRingOver' }
+	0x2D3  { 'markBaseSpace' 'leftHalfRingOver' }
 	0x2D4  { 'markBaseSpace' 'upTackOver' }
 	0x2D5  { 'markBaseSpace' 'downTackOver' }
 	0x2D6  { 'markBaseSpace' 'plusOver' }
@@ -81,8 +80,8 @@ export : define decompOverrides : object
 	0x2EC  { 'markBaseSpace' 'caronBelow' }
 	0x2EF  { 'markBaseSpace' 'downArrowHeadBelow' }
 	0x2F0  { 'markBaseSpace' 'upArrowHeadBelow' }
-	0x2F1  { 'markBaseSpace' 'lessBelow' }
-	0x2F2  { 'markBaseSpace' 'greaterBelow' }
+	0x2F1  { 'markBaseSpace' 'leftArrowHeadBelow' }
+	0x2F2  { 'markBaseSpace' 'rightArrowHeadBelow' }
 	0x2F3  { 'markBaseSpace' 'ringBelow' }
 	0x2F7  { 'markBaseSpace' 'tildeBelow' }
 	0x2FF  { 'markBaseSpace' 'leftArrowBelow' }
@@ -115,6 +114,7 @@ export : define decompOverrides : object
 	0x197  { 'I' 'barOver' }
 	0x19A  { 'l' 'barOver' }
 	0x1BB  { 'two.lnum' 'hStrike' }
+	0x1FA  { 'ARing' 'acuteAbove' }
 	0x23A  { 'A' 'longSlash' }
 	0x23B  { 'C' 'longSlash' }
 	0x23C  { 'c' 'shortSlash' }
@@ -143,8 +143,8 @@ export : define decompOverrides : object
 	0x3CD { 'grek/upsilon' 'tonosAbove' }
 	0x3CE { 'grek/omega'   'tonosAbove' }
 
-	0x46E  { 'cyrl/KsiBase' 'caronAbove' }
-	0x46F  { 'cyrl/ksiBase' 'caronAbove' }
+	0x46E  { 'cyrl/Ksi/base' 'caronAbove' }
+	0x46F  { 'cyrl/ksi/base' 'caronAbove' }
 	0x47C  { 'cyrl/BroadOmega' 'cyrlPsiliAbove' 'cyrlPokrytieAbove' }
 	0x47D  { 'cyrl/broadOmega' 'cyrlPsiliAbove' 'cyrlPokrytieAbove' }
 	0x47E  { 'cyrl/Omega' 'cyrl/teAbove' }
@@ -153,14 +153,17 @@ export : define decompOverrides : object
 	0x1D6C { 'b' 'tildeOverOnExension' }
 	0x1D6D { 'd' 'tildeOverOnExension' }
 	0x1D6E { 'f' 'tildeOver' }
-	0x1D6F { 'm' 'tildeStrikeDivMM' }
+	0x1D6F { 'm' 'tildeStrike/adwsMM' }
 	0x1D70 { 'n' 'tildeStrike' }
 	0x1D71 { 'p' 'tildeOverOnExension' }
+	0x1D72 { 'r' 'tildeOver' }
+	0x1D73 { 'rFlap' 'tildeOver' }
 	0x1D74 { 's' 'tildeStrike' }
 	0x1D75 { 't' 'tildeOver' }
 	0x1D76 { 'z/reduced' 'tildeStrike2' }
 	0x1D7C { 'latn/iota'    'barOver' }
 	0x1D7D { 'p'            'hStrike' }
+	0x1D7E { 'smcpU'        'hStrike' }
 	0x1D7F { 'latn/upsilon' 'hStrike' }
 
 	0x1E08 { 'CCedilla' 'acuteAbove' }
@@ -212,14 +215,12 @@ export : define decompOverrides : object
 	0xA7CC { 'S' 'longSlash' }
 	0xA7CD { 's' 'shortSlash' }
 
-	0xAB30 { 'aScript'   'hStrike' }
 	0xAB3E { 'frak/o'    'shortSlash' }
-	0xAB3F { 'turnc'     'shortSlash' }
 	0xAB4F { 'uShortLeg' 'hStrike' }
+	0xAB68 { 'turnr'     'tildeOver' }
 
-	0x1DF0B { 'esh'            'dblBarOver' }
-	0x1DF0C { 'eshCurlyTail'   'dblBarOver' }
-	0x1DF1A { 'iRetroflexHook' 'barOver' }
+	0x1DF0B { 'esh'          'dblBarOver' }
+	0x1DF0C { 'eshCurlyTail' 'dblBarOver' }
 
 	# Aliasing of Armenian marks
 	0x559   { 'modifierLetterLeftHalfRing' }
@@ -227,7 +228,7 @@ export : define decompOverrides : object
 	0x55B   { 'prime' }
 	0x55D   { 'revprime' }
 
-# List of canonical and non-canonical combinations but applicable for ccmp feature
+# List of canonical and non-canonical combinations which may be applicable for ccmp feature
 export : define ccmpCombinations : list
 	# Long solidus overlays
 	list {0x003C 0x0338} 0x226E     # <
@@ -276,7 +277,7 @@ export : define ccmpCombinations : list
 	list {0x22B5 0x0338} 0x22ED     # ⊵
 	list {0x2ADD 0x0338} 0x2ADC     # ⫝
 
-	########## Data from L2/24-021
+	########## Data from DoNotEmit.txt
 
 	# Tilde overlays
 	list {0x004C 0x0334} 0x2C62     # L
@@ -372,7 +373,7 @@ export : define ccmpCombinations : list
 	list {0x107A6 0x0322} 0x107A7   # 𐞦
 	list {0x107AC 0x0322} 0x107AD   # 𐞬
 
-	########## Additional composites which cannot be inferred from L2/24-021
+	########## Additional composites which cannot be inferred from DoNotEmit.txt
 
 	# Retroflex hooks
 	list {0x0053 0x0322} 0xA7C5     # S
@@ -384,16 +385,6 @@ export : define ccmpCombinations : list
 	list {0x02B4 0x0322} 0x02B5     # ʴ
 	list {0x02E2 0x0322} 0x1DB3     # ˢ
 	list {0xA71D 0x0322} 0x107B9    # ꜝ
-
-	# Short stroke overlays
-	list {0x0044 0x0335} 0xA7C7     # D
-	list {0x0053 0x0335} 0xA7C9     # S
-	list {0x0064 0x0335} 0xA7C8     # d
-	list {0x0073 0x0335} 0xA7CA     # s
-
-	# Long stroke overlays
-	list {0x004F 0x0336} 0xA74A     # O
-	list {0x006F 0x0336} 0xA74B     # o
 
 	# Smooth breathings
 	list {0x0041 0x0486} 0xA7BA     # A

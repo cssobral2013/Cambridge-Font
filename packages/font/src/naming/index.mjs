@@ -144,6 +144,12 @@ function setInformaticNames(font, naming) {
 	if (naming.licenseURL) {
 		nameFont(font, Ot.Name.NameID.LicenseInfoUrl, ancNameEntry(naming.licenseURL));
 	}
+	if (naming.sampleText) {
+		nameFont(font, Ot.Name.NameID.SampleText, ancNameEntry(naming.sampleText));
+	}
+	if (naming.vendorIdTag) {
+		font.os2.achVendID = naming.vendorIdTag;
+	}
 }
 
 function setVersion(font, naming) {
@@ -171,6 +177,7 @@ function applyMiscProps(font) {
 		[Ot.Head.Flags.ForcePpemToBeInteger, true],
 		[Ot.Head.Flags.InstructionMayAlterAdvanceWidth, true],
 	);
+	font.maxp.maxZones = 2; // Make OTS happy
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +219,7 @@ function getStyleLinkedStyles(menuNameMap, weight, width, slope) {
 	};
 }
 
-function nameFont(font, nameID, str) {
+export function nameFont(font, nameID, str) {
 	nameFontImpl(font.name.records, 1, 0, 0, nameID, Buffer.from(str, "utf-8")); // Mac Roman
 	nameFontImpl(font.name.records, 3, 1, 1033, nameID, str); // Windows Unicode English
 }

@@ -14,17 +14,21 @@ glyph-block Spaces : begin
 		set currentGlyph.glyphRank   (9998)
 
 	create-glyph 'space' ' ' : glyph-proc
-		local df : include : DivFrame para.diversityI
+		local df : include : DivFrame para.advanceScaleSp
 
 	alias 'nbsp' 0xA0 'space'
 
-	create-glyph 'markDemoBaseSpace' 0xEF0E : glyph-proc
+	create-glyph 'markBaseSpace' 0xf89D : glyph-proc
+		local df : include : DivFrame para.advanceScaleSp
+		include : df.markSet.e
+
+	create-glyph 'markBaseSpace/adwsN' : glyph-proc
+		local df : include : DivFrame 1
+		include : df.markSet.e
+
+	create-glyph 'markDemoBaseSpace' 0xf89E : glyph-proc
 		local df : include : DivFrame 1
 		include : df.markSet.plus
-
-	create-glyph 'markBaseSpace' 0xEF0D : glyph-proc
-		local df : include : DivFrame para.diversityI
-		include : df.markSet.e
 
 	create-glyph 'sp1' : glyph-proc
 		local df : include : DivFrame 1
@@ -35,7 +39,7 @@ glyph-block Spaces : begin
 	alias 'figureSpace'      0x2007 'sp1'
 
 	create-glyph 'punctuationSpace' 0x2008 : glyph-proc
-		local df : include : DivFrame para.diversityF
+		local df : include : DivFrame para.advanceScaleI
 
 	create-glyph 'zwsp' 0x200B : glyph-proc
 		set-width 0
@@ -57,7 +61,7 @@ glyph-block Spaces : begin
 	# The following spaces has explicit em-number. They will follow the em-number
 	# in quasiproportional, and identical to SPACE in monospace
 	define [FractionEmSp name code d] : create-glyph name code : glyph-proc
-		local df : include : DivFrame : if (para.diversityII < 1) (2 / d) 1
+		local df : include : DivFrame : if (para.advanceScaleII < 1) (2 / d) 1
 
 	FractionEmSp 'threePerEmSp' 0x2004 3
 	FractionEmSp 'fourPerEmsp'  0x2005 4

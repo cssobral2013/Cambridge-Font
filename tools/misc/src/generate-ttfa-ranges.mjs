@@ -1,23 +1,13 @@
 "use strict";
 
 import fs from "fs";
-import path from "path";
-import url from "url";
 
 import { ArrayUtil } from "@iosevka/util";
-
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
-setImmediate(() => {
-	main().catch(e => {
-		console.error(e);
-		process.exit(1);
-	});
-});
+import { format, resolveConfig } from "prettier";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-async function main() {
+export default async function main(argv) {
 	for (const target of Targets) {
 		await target.filter.load();
 	}
@@ -50,14 +40,17 @@ async function main() {
 		});
 	}
 
-	await fs.promises.writeFile(
-		path.resolve(__dirname, "../../../packages/font/src/generated/ttfa-ranges.mjs"),
+	// Perform codegen
+	const options = await resolveConfig(argv.out);
+	const sourceRaw =
 		`/* eslint-disable */\n` +
-			`// Machine generated. Do not modify。\n` +
-			`export default ` +
-			JSON.stringify(out, null, "\t") +
-			";\n",
-	);
+		`// Machine generated. Do not modify.\n` +
+		`export default ` +
+		JSON.stringify(out, null, "\t") +
+		";\n";
+	const sourceFormatted = await format(sourceRaw, { ...options, parser: "babel" });
+
+	await fs.promises.writeFile(argv.out, sourceFormatted);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +63,7 @@ class InUnicodeDataSet {
 
 	async load() {
 		if (this.dataset) return;
-		const d = (await import(`@unicode/unicode-16.0.0/${this.subpath}/code-points.js`)).default;
+		const d = (await import(`@unicode/unicode-17.0.0/${this.subpath}/code-points.js`)).default;
 		this.dataset = new Set(d);
 	}
 

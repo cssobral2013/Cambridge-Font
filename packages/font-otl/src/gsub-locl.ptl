@@ -16,6 +16,13 @@ export : define [buildLOCL gsub para glyphStore] : begin
 	define cyrlBGR  : gsub.copyLanguage 'cyrl_BGR ' 'cyrl_DFLT'
 	define cyrlBSH  : gsub.copyLanguage 'cyrl_BSH ' 'cyrl_DFLT'
 	define cyrlCHU  : gsub.copyLanguage 'cyrl_CHU ' 'cyrl_DFLT'
+	define latnNSM  : gsub.copyLanguage 'latn_NSM ' 'latn_DFLT'
+	define latnISM  : gsub.copyLanguage 'latn_ISM ' 'latn_DFLT'
+	define latnLSM  : gsub.copyLanguage 'latn_LSM ' 'latn_DFLT'
+	define latnSJE  : gsub.copyLanguage 'latn_SJE ' 'latn_DFLT'
+	define latnSJU  : gsub.copyLanguage 'latn_SJU ' 'latn_DFLT'
+	define latnSKS  : gsub.copyLanguage 'latn_SKS ' 'latn_DFLT'
+	define latnSSM  : gsub.copyLanguage 'latn_SSM ' 'latn_DFLT'
 	define latnPLK  : gsub.copyLanguage 'latn_PLK ' 'latn_DFLT'
 	define latnROM  : gsub.copyLanguage 'latn_ROM ' 'latn_DFLT'
 	define latnMOL  : gsub.copyLanguage 'latn_MOL ' 'latn_DFLT'
@@ -32,6 +39,8 @@ export : define [buildLOCL gsub para glyphStore] : begin
 	define latnUDI  : gsub.copyLanguage 'latn_UDI ' 'latn_DFLT'
 	define latnZZA  : gsub.copyLanguage 'latn_ZZA ' 'latn_DFLT'
 	define latnVIT  : gsub.copyLanguage 'latn_VIT ' 'latn_DFLT'
+	define latnIPPH : gsub.copyLanguage 'latn_IPPH' 'latn_DFLT'
+	define latnAPPH : gsub.copyLanguage 'latn_APPH' 'latn_DFLT'
 	define grekIPPH : gsub.copyLanguage 'grek_IPPH' 'grek_DFLT'
 	define grekAPPH : gsub.copyLanguage 'grek_APPH' 'grek_DFLT'
 
@@ -55,6 +64,20 @@ export : define [buildLOCL gsub para glyphStore] : begin
 	# CHU
 	define loclCHU : cyrlCHU.addFeature : gsub.createFeature 'locl'
 	loclCHU.addLookup : createGsubLookupFromGr gsub glyphStore LocalizedForm.CHU
+
+	# NSM
+	define loclNSM : gsub.createFeature 'locl'
+	latnNSM.addFeature loclNSM
+	latnISM.addFeature loclNSM
+	latnLSM.addFeature loclNSM
+	latnSJE.addFeature loclNSM
+	latnSJU.addFeature loclNSM
+	latnSKS.addFeature loclNSM
+	latnSSM.addFeature loclNSM
+	loclNSM.addLookup : gsub.createLookup
+		.type 'gsub_single'
+		.substitutions : object
+			'Eng' : glyphStore.ensureExists 'Eng.NSM'
 
 	# PLK
 	define loclPLK : latnPLK.addFeature : gsub.createFeature 'locl'
@@ -125,6 +148,8 @@ export : define [buildLOCL gsub para glyphStore] : begin
 
 	# IPPH
 	define loclIPPH : gsub.createFeature 'locl'
+	latnIPPH.addFeature loclIPPH
+	latnAPPH.addFeature loclIPPH
 	grekIPPH.addFeature loclIPPH
 	grekAPPH.addFeature loclIPPH
 	loclIPPH.addLookup : createGsubLookupFromGr gsub glyphStore LocalizedForm.IPPH

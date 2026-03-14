@@ -2,9 +2,11 @@ FROM node:lts-slim
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
-        apt-transport-https ca-certificates curl ttfautohint \
+        ttfautohint \
+        curl \
+        ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-COPY build.sh /
+COPY --chmod=755 build.sh /
 WORKDIR /work
 ENTRYPOINT ["bash", "/build.sh"]

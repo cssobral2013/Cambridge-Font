@@ -72,6 +72,15 @@ Inside the plan, top-level properties include:
         - `U+27FE` LONG RIGHTWARDS DOUBLE ARROW FROM BAR
         - `U+27FF` LONG RIGHTWARDS SQUIGGLE ARROW
         - `U+2B33` LONG LEFTWARDS SQUIGGLE ARROW
+        - `U+1F8D0` LONG RIGHTWARDS ARROW OVER LONG LEFTWARDS ARROW
+        - `U+1F8D1` LONG RIGHTWARDS HARPOON OVER LONG LEFTWARDS HARPOON
+        - `U+1F8D2` LONG RIGHTWARDS HARPOON ABOVE SHORT LEFTWARDS HARPOON
+        - `U+1F8D3` SHORT RIGHTWARDS HARPOON ABOVE LONG LEFTWARDS HARPOON
+        - `U+1F8D4` LONG LEFTWARDS HARPOON ABOVE SHORT RIGHTWARDS HARPOON
+        - `U+1F8D5` SHORT LEFTWARDS HARPOON ABOVE LONG RIGHTWARDS HARPOON
+        - `U+1F8D6` LONG RIGHTWARDS ARROW THROUGH X
+        - `U+1F8D7` LONG RIGHTWARDS ARROW WITH DOUBLE SLASH
+        - `U+1F8D8` LONG LEFT RIGHT ARROW WITH DEPENDENT LOBE
     - Remove `NWID` and `WWID` features typographic features
   - `fixed`: Apply `fontconfig-mono` changes and further remove ligations.
   - `wide-mosaic`: Similar to `normal`, but all mosaic (box-drawing characters and block elements) will be wide.
@@ -91,7 +100,7 @@ Build plan could have 9 optional subsections:
 * `widths`
 * `slopes`
 * `compatibilityLigatures`
-* `excludeChars`
+* `subset`
 * `metricOverride`
 * `namingOverride`
 
@@ -133,23 +142,32 @@ Subsection `ligations` is used to customize the ligation set assigned to `calt` 
 
 * `disables` and `enables`: Optional, String Array, Cherry-picking ligation groups to be disabled or enabled. Valid values include:
 
-  - `center-ops`: Vertically align some of the operators (like `*`) to the center position it is before or after a "center" operator (like `+`).
-  - `center-op-trigger-plus-minus-l`: Plus (`+`) and Minus (`-`) will trigger other operator characters at left to be centered.
-  - `center-op-trigger-plus-minus-r`: Plus (`+`) and Minus (`-`) will trigger other operator characters at right to be centered.
-  - `center-op-trigger-equal-l`: Equal (`=`) will trigger other operator characters at left to be centered.
-  - `center-op-trigger-equal-r`: Equal (`=`) will trigger other operator characters at right to be centered.
-  - `center-op-trigger-bar-l`: Bars (`|`) will trigger other operator characters at left to be centered.
-  - `center-op-trigger-bar-r`: Bars (`|`) will trigger other operator characters at right to be centered.
-  - `center-op-trigger-angle-inside`: Less (`<`) and Greater (`>`) will trigger other operator characters at inside to be centered.
-  - `center-op-trigger-angle-outside`: Less (`<`) and Greater (`>`) will trigger other operator characters at outside to be centered.
-  - `center-op-influence-dot`: Treat dot (`.`) as operator and perform chained centering.
-  - `center-op-influence-colon`: Treat colon (`:`) as operator and perform chained centering.
-  - `arrow-l`: Enable ligation set that forms left-pointing arrows.
-  - `arrow-r`: Enable ligation set that forms right-pointing arrows.
-  - `arrow-lr`: Enable ligation set that forms dual-pointing arrows.
-  - `counter-arrow-l`: Enable ligation that produces left-pointing counter-arrows.
-  - `counter-arrow-r`: Enable ligation that produces right-pointing counter-arrows.
-  - `trig`: Enable ligation for `<|`, `|>` , `<||`, and other bar-and-angle-bracket symbols.
+  - `arrow-l`: Left-pointing arrows.
+  - `arrow-r`: Right-pointing arrows.
+  - `arrow-lr`: Dual-pointing arrows.
+  - `counter-arrow-l`: Left-pointing counter-arrows.
+  - `counter-arrow-r`: Right-pointing counter-arrows.
+  - `arrow-hyphen`: Arrows using hyphen-minus (`-`) as the rod.
+  - `arrow-equal`: Arrows using equal sign (`=`) as the rod.
+  - `arrow-wave`: Arrows using tilde (`~`) as the rod.
+  - `counter-arrow-hyphen`: Counter-arrows using hyphen-minus (`-`) as the rod.
+  - `counter-arrow-equal`: Counter-arrows using equal sign (`=`) as the rod.
+  - `counter-arrow-wave`: Counter-arrows using tilde (`~`) as the rod.
+  - `arrow-l-hyphen`: Left-pointing arrows with hyphen-minus (`-`) being the rod.
+  - `arrow-r-hyphen`: Right-pointing arrows with hyphen-minus (`-`) being the rod.
+  - `arrow-lr-hyphen`: Dual-pointing arrows with hyphen-minus (`-`) being the rod.
+  - `counter-arrow-l-hyphen`: Left-pointing counter-arrows with hyphen-minus (`-`) being the rod.
+  - `counter-arrow-r-hyphen`: Right-pointing counter-arrows with hyphen-minus (`-`) being the rod.
+  - `arrow-l-equal`: Left-pointing arrows with equal sign (`=`) being the rod.
+  - `arrow-r-equal`: Right-pointing arrows with equal sign (`=`) being the rod.
+  - `arrow-lr-equal`: Dual-pointing arrows with equal sign (`=`) being the rod.
+  - `counter-arrow-l-equal`: Left-pointing counter-arrows with equal sign (`=`) being the rod.
+  - `counter-arrow-r-equal`: Right-pointing counter-arrows with equal sign (`=`) being the rod.
+  - `arrow-l-wave`: Left-pointing arrows with tilde (`~`) being the rod.
+  - `arrow-r-wave`: Right-pointing arrows with tilde (`~`) being the rod.
+  - `arrow-lr-wave`: Dual-pointing arrows with tilde (`~`) being the rod.
+  - `counter-arrow-l-wave`: Left-pointing counter-arrows with tilde (`~`) being the rod.
+  - `counter-arrow-r-wave`: Right-pointing counter-arrows with tilde (`~`) being the rod.
   - `eqeqeq`: Enable special ligation for `===` with triple lines.
   - `eqeq`: Enable ligation for `==` and `===`.
   - `lteq`: Enable ligation for `<=` as less-than-or-equal sign.
@@ -166,6 +184,7 @@ Subsection `ligations` is used to customize the ligation set assigned to `calt` 
   - `tildeeq`: Enable ligation for `~=` as inequality.
   - `eqslasheq`: Enable special triple-line ligation for `=/=` as inequality.
   - `slasheq`: Enable ligation for `/=` and `=/=` as inequality.
+  - `trig`: Enable ligation for `<|`, `|>` , `<||`, and other bar-and-angle-bracket symbols.
   - `ltgt-ne`: Enable ligation for `<>` as inequality.
   - `ltgt-diamond`: Enable ligation for `<>` as diamond.
   - `ltgt-diamond-tag`: Enable ligation for `<>` as diamond-shaped empty HTML/XML tag.
@@ -174,13 +193,17 @@ Subsection `ligations` is used to customize the ligation set assigned to `calt` 
   - `slash-asterisk`: Shift asterisk in `/*` and `*/`.
   - `kern-dotty`: Move connecting dotty punctuations closer, like for `::`, `:::` and `...`.
   - `kern-bars`: Move consecutive bars closer, like for `||`, `|||` and `//`.
-  - `logic`: Enable ligation for `/\` and `\/`.
-  - `llgg`: Enable ligation for `<<`, `>>` and other angle-bracket chaining.
-  - `llggeq`: Enable ligation for `<<=`, `>>=` as shift operator.
-  - `html-comment`: Enable ligation for `<!--` and `<!---`.
-  - `colon-greater-as-colon-arrow`: Transform `:>` into `:` and a narrow arrow.
-  - `brace-bar`: Enable ligation for `{|` and `|}`.
-  - `brack-bar`: Enable ligation for `[|` and `|]`.
+  - `center-ops`: Vertically align some of the operators (like `*`) to the center position it is before or after a "center" operator (like `+`).
+  - `center-op-trigger-plus-minus-l`: Plus (`+`) and Minus (`-`) will trigger other operator characters at left to be centered.
+  - `center-op-trigger-plus-minus-r`: Plus (`+`) and Minus (`-`) will trigger other operator characters at right to be centered.
+  - `center-op-trigger-equal-l`: Equal (`=`) will trigger other operator characters at left to be centered.
+  - `center-op-trigger-equal-r`: Equal (`=`) will trigger other operator characters at right to be centered.
+  - `center-op-trigger-bar-l`: Bars (`|`) will trigger other operator characters at left to be centered.
+  - `center-op-trigger-bar-r`: Bars (`|`) will trigger other operator characters at right to be centered.
+  - `center-op-trigger-angle-inside`: Less (`<`) and Greater (`>`) will trigger other operator characters at inside to be centered.
+  - `center-op-trigger-angle-outside`: Less (`<`) and Greater (`>`) will trigger other operator characters at outside to be centered.
+  - `center-op-influence-dot`: Treat dot (`.`) as operator and perform chained centering.
+  - `center-op-influence-colon`: Treat colon (`:`) as operator and perform chained centering.
   - `tilde-tilde`: Make 2 or more contiguous ASCII tildes (like `~~`, `~~~` and `~~~~`) connected as a wave line.
   - `tilde-tilde-tilde`: Make 3 or more contiguous ASCII tildes (like `~~~` and `~~~~`) connected as a wave line.
   - `minus-minus`: Make 2 or more contiguous hyphen-minuses (like `--`, `---` and `----`) connected as a straight solid line.
@@ -191,6 +214,14 @@ Subsection `ligations` is used to customize the ligation set assigned to `calt` 
   - `underscore-underscore-underscore`: Make 3 or more contiguous underscores (like `___` and `____`) connected.
   - `hash-hash`: Make 2 or more contiguous hash signs (number signs) (like `##`, `###` and `####`) connected.
   - `hash-hash-hash`: Make 3 or more contiguous hash signs (number signs) (like `##` and `###`) connected.
+  - `logic`: Enable ligation for `/\` and `\/`.
+  - `llgg`: Enable ligation for `<<`, `>>` and other angle-bracket chaining.
+  - `llggeq`: Enable ligation for `<<=`, `>>=` as shift operator.
+  - `html-comment`: Enable ligation for `<!--` and `<!---`.
+  - `colon-greater-as-colon-arrow`: Transform `:>` into `:` and a narrow arrow.
+  - `brace-bar`: Enable ligation for `{|` and `|}`.
+  - `brack-bar`: Enable ligation for `[|` and `|]`.
+  - `markdown-checkboxes`: Enable ligation for Markdown checkboxes like `- [ ]` and `- [x]`.
 
 <!-- END Section-Cherry-Picking-Ligation-Sets -->
 
@@ -324,7 +355,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>4</code> with open contour, horizontal bar that does not overflow the vertical bar, and serifs</td></tr>
     </table></details>
   - Styles for `5`
-    <details><summary>8 variants</summary>
+    <details><summary>12 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-five-upright-arched-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-upright-arched-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'upright-arched-serifless'</code>, <code>cv05 = 1</code></td></tr>
     <tr><td><code>5</code> with upright upper-left bar, and arched middle part; without serifs (default for Sans)</td></tr>
@@ -334,14 +365,22 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>5</code> with upright upper-left bar, and flat middle part; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-five-upright-flat-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-upright-flat-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'upright-flat-serifed'</code>, <code>cv05 = 4</code></td></tr>
     <tr><td><code>5</code> with upright upper-left bar, flat middle part, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-arched-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-arched-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-arched-serifless'</code>, <code>cv05 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-upright-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-upright-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'upright-flat-hook-serifless'</code>, <code>cv05 = 5</code></td></tr>
+    <tr><td><code>5</code> with upright upper-left bar, and flat middle part and hook; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-upright-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-upright-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'upright-flat-hook-serifed'</code>, <code>cv05 = 6</code></td></tr>
+    <tr><td><code>5</code> with upright upper-left bar, flat middle part and hook, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-arched-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-arched-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-arched-serifless'</code>, <code>cv05 = 7</code></td></tr>
     <tr><td><code>5</code> with arched middle part; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-arched-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-arched-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-arched-serifed'</code>, <code>cv05 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-arched-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-arched-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-arched-serifed'</code>, <code>cv05 = 8</code></td></tr>
     <tr><td><code>5</code> with arched middle part, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-serifless'</code>, <code>cv05 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-serifless'</code>, <code>cv05 = 9</code></td></tr>
     <tr><td><code>5</code> with flat middle part; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-serifed'</code>, <code>cv05 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-serifed'</code>, <code>cv05 = 10</code></td></tr>
     <tr><td><code>5</code> with flat middle part, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-hook-serifless'</code>, <code>cv05 = 11</code></td></tr>
+    <tr><td><code>5</code> with flat middle part and hook; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-five-oblique-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-five-oblique-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>five = 'oblique-flat-hook-serifed'</code>, <code>cv05 = 12</code></td></tr>
+    <tr><td><code>5</code> with flat middle part and hook, and serifs</td></tr>
     </table></details>
   - Styles for `6`
     <details><summary>3 variants</summary>
@@ -732,7 +771,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>J</code> with descending height, flat hook, and serifs</td></tr>
     </table></details>
   - Styles for `K`
-    <details><summary>20 variants</summary>
+    <details><summary>32 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'straight-serifless'</code>, <code>cv21 = 1</code></td></tr>
     <tr><td><code>K</code> with straight shape; without serifs (default for Sans)</td></tr>
@@ -774,6 +813,30 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>K</code> with symmetric legs connected to the vertical bar, and serifs at top left and bottom right</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-connected-serifed'</code>, <code>cv21 = 20</code></td></tr>
     <tr><td><code>K</code> with symmetric legs connected to the vertical bar, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-straight-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-straight-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'straight-top-right-serifed'</code>, <code>cv21 = 21</code></td></tr>
+    <tr><td><code>K</code> with straight shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'straight-tri-serifed'</code>, <code>cv21 = 22</code></td></tr>
+    <tr><td><code>K</code> with straight shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-straight-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-straight-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'straight-full-serifed'</code>, <code>cv21 = 23</code></td></tr>
+    <tr><td><code>K</code> with straight shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-curly-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-curly-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'curly-top-right-serifed'</code>, <code>cv21 = 24</code></td></tr>
+    <tr><td><code>K</code> with curly shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'curly-tri-serifed'</code>, <code>cv21 = 25</code></td></tr>
+    <tr><td><code>K</code> with curly shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-curly-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-curly-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'curly-full-serifed'</code>, <code>cv21 = 26</code></td></tr>
+    <tr><td><code>K</code> with curly shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-touching-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-touching-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-touching-top-right-serifed'</code>, <code>cv21 = 27</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs touching the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-touching-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-touching-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-touching-tri-serifed'</code>, <code>cv21 = 28</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs touching the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-touching-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-touching-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-touching-full-serifed'</code>, <code>cv21 = 29</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs touching the vertical bar, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-connected-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-connected-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-connected-top-right-serifed'</code>, <code>cv21 = 30</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs connected to the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-connected-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-connected-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-connected-tri-serifed'</code>, <code>cv21 = 31</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs connected to the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-k-symmetric-connected-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-k-symmetric-connected-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-k = 'symmetric-connected-full-serifed'</code>, <code>cv21 = 32</code></td></tr>
+    <tr><td><code>K</code> with symmetric legs connected to the vertical bar, and full serifs at legs</td></tr>
     </table></details>
   - Styles for `L`
     <details><summary>3 variants</summary>
@@ -846,7 +909,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>P</code> with open shape, and serifs</td></tr>
     </table></details>
   - Styles for `Q`
-    <details><summary>10 variants</summary>
+    <details><summary>11 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-q-curly-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-q-curly-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-q = 'curly-tailed'</code>, <code>cv26 = 1</code></td></tr>
     <tr><td><code>Q</code> with a curly tail (default)</td></tr>
@@ -868,6 +931,8 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>Q</code> with a bend tail detached</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-q-open-swash.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-q-open-swash.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-q = 'open-swash'</code>, <code>cv26 = 10</code></td></tr>
     <tr><td><code>Q</code> with open contour and swash-y shape</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-q-closed-swash.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-q-closed-swash.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-q = 'closed-swash'</code>, <code>cv26 = 11</code></td></tr>
+    <tr><td><code>Q</code> with a swashy tail</td></tr>
     </table></details>
   - Styles for `R`
     <details><summary>30 variants</summary>
@@ -1008,50 +1073,98 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>V</code> with curly shape, and serifs</td></tr>
     </table></details>
   - Styles for `W`
-    <details><summary>21 variants</summary>
+    <details><summary>45 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-serifless'</code>, <code>cv32 = 1</code></td></tr>
-    <tr><td><code>W</code> with standard, straight body; without serifs (default for Sans)</td></tr>
+    <tr><td><code>W</code> with straight body shape; without serifs (default for Sans)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-motion-serifed'</code>, <code>cv32 = 2</code></td></tr>
-    <tr><td><code>W</code> with standard, straight body, and motion serifs</td></tr>
+    <tr><td><code>W</code> with straight body shape, and motion serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-serifed'</code>, <code>cv32 = 3</code></td></tr>
-    <tr><td><code>W</code> with standard, straight body, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-serifless'</code>, <code>cv32 = 4</code></td></tr>
-    <tr><td><code>W</code> with curly body; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-motion-serifed'</code>, <code>cv32 = 5</code></td></tr>
-    <tr><td><code>W</code> with curly body, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-serifed'</code>, <code>cv32 = 6</code></td></tr>
-    <tr><td><code>W</code> with curly body, and serifs</td></tr>
+    <tr><td><code>W</code> with straight body shape, and serifs (default for Slab)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-almost-flat-top-serifless'</code>, <code>cv32 = 4</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-almost-flat-top-motion-serifed'</code>, <code>cv32 = 5</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-almost-flat-top-serifed'</code>, <code>cv32 = 6</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, a middle stem almost aligned to the top, and serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-flat-top-serifless'</code>, <code>cv32 = 7</code></td></tr>
-    <tr><td><code>W</code> with straight body shape that the middle is forced to be aligned the top; without serifs</td></tr>
+    <tr><td><code>W</code> with straight body shape, and a middle stem aligned to the top; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-flat-top-motion-serifed'</code>, <code>cv32 = 8</code></td></tr>
-    <tr><td><code>W</code> with straight body shape that the middle is forced to be aligned the top, and motion serifs</td></tr>
+    <tr><td><code>W</code> with straight body shape, a middle stem aligned to the top, and motion serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-flat-top-serifed'</code>, <code>cv32 = 9</code></td></tr>
-    <tr><td><code>W</code> with straight body shape that the middle is forced to be aligned the top, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-serifless'</code>, <code>cv32 = 10</code></td></tr>
-    <tr><td><code>W</code> with body shape like double V; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-motion-serifed'</code>, <code>cv32 = 11</code></td></tr>
-    <tr><td><code>W</code> with body shape like double V, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-serifed'</code>, <code>cv32 = 12</code></td></tr>
-    <tr><td><code>W</code> with body shape like double V, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-serifless'</code>, <code>cv32 = 13</code></td></tr>
-    <tr><td><code>W</code> with asymmetric shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-motion-serifed'</code>, <code>cv32 = 14</code></td></tr>
-    <tr><td><code>W</code> with asymmetric shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-serifed'</code>, <code>cv32 = 15</code></td></tr>
-    <tr><td><code>W</code> with asymmetric shape, and serifs</td></tr>
+    <tr><td><code>W</code> with straight body shape, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-serifless'</code>, <code>cv32 = 10</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, and asymmetric center; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-motion-serifed'</code>, <code>cv32 = 11</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, asymmetric center, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-asymmetric-serifed'</code>, <code>cv32 = 12</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, asymmetric center, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-serifless'</code>, <code>cv32 = 13</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, and crossing center, like double V; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-motion-serifed'</code>, <code>cv32 = 14</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, crossing center, like double V, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-double-v-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-double-v-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-double-v-serifed'</code>, <code>cv32 = 15</code></td></tr>
+    <tr><td><code>W</code> with straight body shape, crossing center, like double V, and serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-serifless'</code>, <code>cv32 = 16</code></td></tr>
     <tr><td><code>W</code> with straight body shape with vertical sides; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-motion-serifed'</code>, <code>cv32 = 17</code></td></tr>
     <tr><td><code>W</code> with straight body shape with vertical sides, and motion serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-serifed'</code>, <code>cv32 = 18</code></td></tr>
     <tr><td><code>W</code> with straight body shape with vertical sides, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-serifless'</code>, <code>cv32 = 19</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-almost-flat-top-serifless'</code>, <code>cv32 = 19</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-almost-flat-top-motion-serifed'</code>, <code>cv32 = 20</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-almost-flat-top-serifed'</code>, <code>cv32 = 21</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-flat-top-serifless'</code>, <code>cv32 = 22</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-flat-top-motion-serifed'</code>, <code>cv32 = 23</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-straight-vertical-sides-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'straight-vertical-sides-flat-top-serifed'</code>, <code>cv32 = 24</code></td></tr>
+    <tr><td><code>W</code> with straight body shape with vertical sides, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-serifless'</code>, <code>cv32 = 25</code></td></tr>
     <tr><td><code>W</code> with rounded body shape with vertical sides; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-motion-serifed'</code>, <code>cv32 = 20</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-motion-serifed'</code>, <code>cv32 = 26</code></td></tr>
     <tr><td><code>W</code> with rounded body shape with vertical sides, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-serifed'</code>, <code>cv32 = 21</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-serifed'</code>, <code>cv32 = 27</code></td></tr>
     <tr><td><code>W</code> with rounded body shape with vertical sides, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-almost-flat-top-serifless'</code>, <code>cv32 = 28</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-almost-flat-top-motion-serifed'</code>, <code>cv32 = 29</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-almost-flat-top-serifed'</code>, <code>cv32 = 30</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-flat-top-serifless'</code>, <code>cv32 = 31</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-flat-top-motion-serifed'</code>, <code>cv32 = 32</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-rounded-vertical-sides-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'rounded-vertical-sides-flat-top-serifed'</code>, <code>cv32 = 33</code></td></tr>
+    <tr><td><code>W</code> with rounded body shape with vertical sides, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-serifless'</code>, <code>cv32 = 34</code></td></tr>
+    <tr><td><code>W</code> with curly body shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-motion-serifed'</code>, <code>cv32 = 35</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-serifed'</code>, <code>cv32 = 36</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-almost-flat-top-serifless'</code>, <code>cv32 = 37</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-almost-flat-top-motion-serifed'</code>, <code>cv32 = 38</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-almost-flat-top-serifed'</code>, <code>cv32 = 39</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-flat-top-serifless'</code>, <code>cv32 = 40</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-flat-top-motion-serifed'</code>, <code>cv32 = 41</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-flat-top-serifed'</code>, <code>cv32 = 42</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-asymmetric-serifless'</code>, <code>cv32 = 43</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, and asymmetric center; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-asymmetric-motion-serifed'</code>, <code>cv32 = 44</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, asymmetric center, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-w-curly-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-w-curly-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-w = 'curly-asymmetric-serifed'</code>, <code>cv32 = 45</code></td></tr>
+    <tr><td><code>W</code> with curly body shape, asymmetric center, and serifs</td></tr>
     </table></details>
   - Styles for `X`
     <details><summary>8 variants</summary>
@@ -1184,24 +1297,24 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>a</code> with single-storey body, and curly tail (default for Italic)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-tailed-serifed'</code>, <code>cv36 = 15</code></td></tr>
     <tr><td><code>a</code> with single-storey body, and curly tail; with serifs at top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-serifless'</code>, <code>cv36 = 16</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, and earless (cornered top-right); without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-serifed'</code>, <code>cv36 = 17</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, earless (cornered top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-tailed'</code>, <code>cv36 = 18</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, earless (cornered top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-serifless'</code>, <code>cv36 = 19</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, and earless (rounded top-right); without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-serifed'</code>, <code>cv36 = 20</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, earless (rounded top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-tailed'</code>, <code>cv36 = 21</code></td></tr>
-    <tr><td><code>a</code> with single-storey body, earless (rounded top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-serifless'</code>, <code>cv36 = 22</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-serifless'</code>, <code>cv36 = 16</code></td></tr>
     <tr><td><code>a</code> with single-storey body, and a diagonal cut at top; without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-serifed'</code>, <code>cv36 = 23</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-serifed'</code>, <code>cv36 = 17</code></td></tr>
     <tr><td><code>a</code> with single-storey body, a diagonal cut at top, and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-tailed'</code>, <code>cv36 = 24</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-top-cut-tailed'</code>, <code>cv36 = 18</code></td></tr>
     <tr><td><code>a</code> with single-storey body, a diagonal cut at top, and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-serifless'</code>, <code>cv36 = 19</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, and earless (cornered top-right); without serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-serifed'</code>, <code>cv36 = 20</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, earless (cornered top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-corner-tailed'</code>, <code>cv36 = 21</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, earless (cornered top-right), and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-serifless'</code>, <code>cv36 = 22</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, and earless (rounded top-right); without serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-serifed'</code>, <code>cv36 = 23</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, earless (rounded top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-a-single-storey-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-a-single-storey-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>a = 'single-storey-earless-rounded-tailed'</code>, <code>cv36 = 24</code></td></tr>
+    <tr><td><code>a</code> with single-storey body, earless (rounded top-right), and curly tail</td></tr>
     </table></details>
   - Styles for `b`
     <details><summary>9 variants</summary>
@@ -1212,18 +1325,18 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>b</code> with toothed shape, and motion serifs (default for Slab Italic)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothed-serifed'</code>, <code>cv37 = 3</code></td></tr>
     <tr><td><code>b</code> with toothed shape, and serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-corner-serifless'</code>, <code>cv37 = 4</code></td></tr>
-    <tr><td><code>b</code> with toothless (cornered) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-corner-serifed'</code>, <code>cv37 = 5</code></td></tr>
-    <tr><td><code>b</code> with toothless (cornered) shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-rounded-serifless'</code>, <code>cv37 = 6</code></td></tr>
-    <tr><td><code>b</code> with toothless (rounded) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-rounded-serifed'</code>, <code>cv37 = 7</code></td></tr>
-    <tr><td><code>b</code> with toothless (rounded) shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-bottom-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-bottom-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'bottom-cut-serifless'</code>, <code>cv37 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-bottom-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-bottom-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'bottom-cut-serifless'</code>, <code>cv37 = 4</code></td></tr>
     <tr><td><code>b</code> with a diagonal cut at bottom; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-b-bottom-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-bottom-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'bottom-cut-serifed'</code>, <code>cv37 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-bottom-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-bottom-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'bottom-cut-serifed'</code>, <code>cv37 = 5</code></td></tr>
     <tr><td><code>b</code> with a diagonal cut at bottom, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-corner-serifless'</code>, <code>cv37 = 6</code></td></tr>
+    <tr><td><code>b</code> with toothless (cornered) shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-corner-serifed'</code>, <code>cv37 = 7</code></td></tr>
+    <tr><td><code>b</code> with toothless (cornered) shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-rounded-serifless'</code>, <code>cv37 = 8</code></td></tr>
+    <tr><td><code>b</code> with toothless (rounded) shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-b-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-b-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>b = 'toothless-rounded-serifed'</code>, <code>cv37 = 9</code></td></tr>
+    <tr><td><code>b</code> with toothless (rounded) shape, and serifs</td></tr>
     </table></details>
   - Styles for `c`
     <details><summary>5 variants</summary>
@@ -1326,22 +1439,22 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>g</code> with single-storey shape (default for Sans Upright, Sans Italic, Slab Italic)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-serifed'</code>, <code>cv42 = 4</code></td></tr>
     <tr><td><code>g</code> with single-storey shape, and top-right serif (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-earless-corner'</code>, <code>cv42 = 5</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, and earless (cornered top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-earless-rounded'</code>, <code>cv42 = 6</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, and earless (rounded top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-serifless'</code>, <code>cv42 = 7</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, and flat bottom hook</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-serifed'</code>, <code>cv42 = 8</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and top-right serif</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-earless-corner'</code>, <code>cv42 = 9</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and earless (cornered top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-earless-rounded'</code>, <code>cv42 = 10</code></td></tr>
-    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and earless (rounded top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-top-cut'</code>, <code>cv42 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-top-cut'</code>, <code>cv42 = 5</code></td></tr>
     <tr><td><code>g</code> with single-storey shape, and a diagonal cut at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-top-cut'</code>, <code>cv42 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-earless-corner'</code>, <code>cv42 = 6</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, and earless (cornered top-right)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-earless-rounded'</code>, <code>cv42 = 7</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, and earless (rounded top-right)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-serifless'</code>, <code>cv42 = 8</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, and flat bottom hook</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-serifed'</code>, <code>cv42 = 9</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and top-right serif</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-top-cut'</code>, <code>cv42 = 10</code></td></tr>
     <tr><td><code>g</code> with single-storey shape, flat bottom hook, and a diagonal cut at top</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-earless-corner'</code>, <code>cv42 = 11</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and earless (cornered top-right)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-g-single-storey-flat-hook-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-g-single-storey-flat-hook-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>g = 'single-storey-flat-hook-earless-rounded'</code>, <code>cv42 = 12</code></td></tr>
+    <tr><td><code>g</code> with single-storey shape, flat bottom hook, and earless (rounded top-right)</td></tr>
     </table></details>
   - Styles for `h`
     <details><summary>7 variants</summary>
@@ -1414,7 +1527,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>j</code> with top serif and diagonal tail</td></tr>
     </table></details>
   - Styles for `k`
-    <details><summary>27 variants</summary>
+    <details><summary>40 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-k-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'straight-serifless'</code>, <code>cv46 = 1</code></td></tr>
     <tr><td><code>k</code> with standard shape; without serifs (default for Sans Upright)</td></tr>
@@ -1470,6 +1583,32 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>k</code> with cursive loop plus diagonal tail; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-k-diagonal-tailed-cursive-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-diagonal-tailed-cursive-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'diagonal-tailed-cursive-top-left-serifed'</code>, <code>cv46 = 27</code></td></tr>
     <tr><td><code>k</code> with cursive loop plus diagonal tail, and serifs at top left (default for Slab Italic)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-straight-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-straight-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'straight-top-right-serifed'</code>, <code>cv46 = 28</code></td></tr>
+    <tr><td><code>k</code> with standard shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'straight-tri-serifed'</code>, <code>cv46 = 29</code></td></tr>
+    <tr><td><code>k</code> with standard shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-straight-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-straight-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'straight-full-serifed'</code>, <code>cv46 = 30</code></td></tr>
+    <tr><td><code>k</code> with standard shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-curly-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-curly-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'curly-top-right-serifed'</code>, <code>cv46 = 31</code></td></tr>
+    <tr><td><code>k</code> with curly shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'curly-tri-serifed'</code>, <code>cv46 = 32</code></td></tr>
+    <tr><td><code>k</code> with curly shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-curly-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-curly-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'curly-full-serifed'</code>, <code>cv46 = 33</code></td></tr>
+    <tr><td><code>k</code> with curly shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-touching-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-touching-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-touching-top-right-serifed'</code>, <code>cv46 = 34</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs touching the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-touching-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-touching-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-touching-tri-serifed'</code>, <code>cv46 = 35</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs touching the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-touching-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-touching-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-touching-full-serifed'</code>, <code>cv46 = 36</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs touching the vertical bar, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-connected-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-connected-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-connected-top-right-serifed'</code>, <code>cv46 = 37</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs connected to the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-connected-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-connected-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-connected-tri-serifed'</code>, <code>cv46 = 38</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs connected to the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-symmetric-connected-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-symmetric-connected-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'symmetric-connected-full-serifed'</code>, <code>cv46 = 39</code></td></tr>
+    <tr><td><code>k</code> with symmetric legs connected to the vertical bar, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-k-cursive-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-k-cursive-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>k = 'cursive-full-serifed'</code>, <code>cv46 = 40</code></td></tr>
+    <tr><td><code>k</code> with cursive loop, and full serifs at legs</td></tr>
     </table></details>
   - Styles for `l`
     <details><summary>14 variants</summary>
@@ -1670,30 +1809,30 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>q</code> with diagonally tailed terminal; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-q-diagonal-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-diagonal-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'diagonal-tailed-motion-serifed'</code>, <code>cv51 = 8</code></td></tr>
     <tr><td><code>q</code> with diagonally tailed terminal, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-straight-serifless'</code>, <code>cv51 = 9</code></td></tr>
-    <tr><td><code>q</code> with earless (cornered) shape, and straight terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-straight-serifed'</code>, <code>cv51 = 10</code></td></tr>
-    <tr><td><code>q</code> with earless (cornered) shape, straight terminal, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-tailed-serifless'</code>, <code>cv51 = 11</code></td></tr>
-    <tr><td><code>q</code> with earless (cornered) shape, and tailed terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-diagonal-tailed-serifless'</code>, <code>cv51 = 12</code></td></tr>
-    <tr><td><code>q</code> with earless (cornered) shape, and diagonally tailed terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-straight-serifless'</code>, <code>cv51 = 13</code></td></tr>
-    <tr><td><code>q</code> with earless (rounded) shape, and straight terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-straight-serifed'</code>, <code>cv51 = 14</code></td></tr>
-    <tr><td><code>q</code> with earless (rounded) shape, straight terminal, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-tailed-serifless'</code>, <code>cv51 = 15</code></td></tr>
-    <tr><td><code>q</code> with earless (rounded) shape, and tailed terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-diagonal-tailed-serifless'</code>, <code>cv51 = 16</code></td></tr>
-    <tr><td><code>q</code> with earless (rounded) shape, and diagonally tailed terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-straight-serifless'</code>, <code>cv51 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-straight-serifless'</code>, <code>cv51 = 9</code></td></tr>
     <tr><td><code>q</code> with a diagonal cut at top, and straight terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-straight-serifed'</code>, <code>cv51 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-straight-serifed'</code>, <code>cv51 = 10</code></td></tr>
     <tr><td><code>q</code> with a diagonal cut at top, straight terminal, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-tailed-serifless'</code>, <code>cv51 = 19</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-tailed-serifless'</code>, <code>cv51 = 11</code></td></tr>
     <tr><td><code>q</code> with a diagonal cut at top, and tailed terminal; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-diagonal-tailed-serifless'</code>, <code>cv51 = 20</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-top-cut-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-top-cut-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'top-cut-diagonal-tailed-serifless'</code>, <code>cv51 = 12</code></td></tr>
     <tr><td><code>q</code> with a diagonal cut at top, and diagonally tailed terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-straight-serifless'</code>, <code>cv51 = 13</code></td></tr>
+    <tr><td><code>q</code> with earless (cornered) shape, and straight terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-straight-serifed'</code>, <code>cv51 = 14</code></td></tr>
+    <tr><td><code>q</code> with earless (cornered) shape, straight terminal, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-tailed-serifless'</code>, <code>cv51 = 15</code></td></tr>
+    <tr><td><code>q</code> with earless (cornered) shape, and tailed terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-corner-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-corner-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-corner-diagonal-tailed-serifless'</code>, <code>cv51 = 16</code></td></tr>
+    <tr><td><code>q</code> with earless (cornered) shape, and diagonally tailed terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-straight-serifless'</code>, <code>cv51 = 17</code></td></tr>
+    <tr><td><code>q</code> with earless (rounded) shape, and straight terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-straight-serifed'</code>, <code>cv51 = 18</code></td></tr>
+    <tr><td><code>q</code> with earless (rounded) shape, straight terminal, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-tailed-serifless'</code>, <code>cv51 = 19</code></td></tr>
+    <tr><td><code>q</code> with earless (rounded) shape, and tailed terminal; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-q-earless-rounded-diagonal-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-q-earless-rounded-diagonal-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>q = 'earless-rounded-diagonal-tailed-serifless'</code>, <code>cv51 = 20</code></td></tr>
+    <tr><td><code>q</code> with earless (rounded) shape, and diagonally tailed terminal; without serifs</td></tr>
     </table></details>
   - Styles for `r`
     <details><summary>20 variants</summary>
@@ -1856,54 +1995,102 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td><code>v</code> with cursive body, and serifs</td></tr>
     </table></details>
   - Styles for `w`
-    <details><summary>23 variants</summary>
+    <details><summary>47 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-serifless'</code>, <code>cv57 = 1</code></td></tr>
-    <tr><td><code>w</code> with standard, straight body; without serifs (default for Sans)</td></tr>
+    <tr><td><code>w</code> with straight body shape; without serifs (default for Sans)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-motion-serifed'</code>, <code>cv57 = 2</code></td></tr>
-    <tr><td><code>w</code> with standard, straight body, and motion serifs (default for Slab Italic)</td></tr>
+    <tr><td><code>w</code> with straight body shape, and motion serifs (default for Slab Italic)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-serifed'</code>, <code>cv57 = 3</code></td></tr>
-    <tr><td><code>w</code> with standard, straight body, and serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-serifless'</code>, <code>cv57 = 4</code></td></tr>
-    <tr><td><code>w</code> with curly body; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-motion-serifed'</code>, <code>cv57 = 5</code></td></tr>
-    <tr><td><code>w</code> with curly body, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-serifed'</code>, <code>cv57 = 6</code></td></tr>
-    <tr><td><code>w</code> with curly body, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-serifless'</code>, <code>cv57 = 7</code></td></tr>
-    <tr><td><code>w</code> with straight body shape with vertical sides; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-motion-serifed'</code>, <code>cv57 = 8</code></td></tr>
-    <tr><td><code>w</code> with straight body shape with vertical sides, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-serifed'</code>, <code>cv57 = 9</code></td></tr>
-    <tr><td><code>w</code> with straight body shape with vertical sides, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-serifless'</code>, <code>cv57 = 10</code></td></tr>
-    <tr><td><code>w</code> with straight body shape that the middle is forced to be aligned the top; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-motion-serifed'</code>, <code>cv57 = 11</code></td></tr>
-    <tr><td><code>w</code> with straight body shape that the middle is forced to be aligned the top, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-serifed'</code>, <code>cv57 = 12</code></td></tr>
-    <tr><td><code>w</code> with straight body shape that the middle is forced to be aligned the top, and serifs</td></tr>
+    <tr><td><code>w</code> with straight body shape, and serifs (default for Slab Upright)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-almost-flat-top-serifless'</code>, <code>cv57 = 4</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-almost-flat-top-motion-serifed'</code>, <code>cv57 = 5</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-almost-flat-top-serifed'</code>, <code>cv57 = 6</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-serifless'</code>, <code>cv57 = 7</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-motion-serifed'</code>, <code>cv57 = 8</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-flat-top-serifed'</code>, <code>cv57 = 9</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-serifless'</code>, <code>cv57 = 10</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, and asymmetric center; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-motion-serifed'</code>, <code>cv57 = 11</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, asymmetric center, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-serifed'</code>, <code>cv57 = 12</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, asymmetric center, and serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-double-v-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-double-v-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-double-v-serifless'</code>, <code>cv57 = 13</code></td></tr>
-    <tr><td><code>w</code> with body shape like double V; without serifs</td></tr>
+    <tr><td><code>w</code> with straight body shape, and crossing center, like double V; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-double-v-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-double-v-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-double-v-motion-serifed'</code>, <code>cv57 = 14</code></td></tr>
-    <tr><td><code>w</code> with body shape like double V, and motion serifs</td></tr>
+    <tr><td><code>w</code> with straight body shape, crossing center, like double V, and motion serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-double-v-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-double-v-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-double-v-serifed'</code>, <code>cv57 = 15</code></td></tr>
-    <tr><td><code>w</code> with body shape like double V, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-serifless'</code>, <code>cv57 = 16</code></td></tr>
-    <tr><td><code>w</code> with asymmetric shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-motion-serifed'</code>, <code>cv57 = 17</code></td></tr>
-    <tr><td><code>w</code> with asymmetric shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-asymmetric-serifed'</code>, <code>cv57 = 18</code></td></tr>
-    <tr><td><code>w</code> with asymmetric shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'cursive-serifless'</code>, <code>cv57 = 19</code></td></tr>
-    <tr><td><code>w</code> with cursive shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'cursive-serifed'</code>, <code>cv57 = 20</code></td></tr>
-    <tr><td><code>w</code> with cursive shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-serifless'</code>, <code>cv57 = 21</code></td></tr>
+    <tr><td><code>w</code> with straight body shape, crossing center, like double V, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-serifless'</code>, <code>cv57 = 16</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-motion-serifed'</code>, <code>cv57 = 17</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-serifed'</code>, <code>cv57 = 18</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-almost-flat-top-serifless'</code>, <code>cv57 = 19</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-almost-flat-top-motion-serifed'</code>, <code>cv57 = 20</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-almost-flat-top-serifed'</code>, <code>cv57 = 21</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-flat-top-serifless'</code>, <code>cv57 = 22</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-flat-top-motion-serifed'</code>, <code>cv57 = 23</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-straight-vertical-sides-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-straight-vertical-sides-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'straight-vertical-sides-flat-top-serifed'</code>, <code>cv57 = 24</code></td></tr>
+    <tr><td><code>w</code> with straight body shape with vertical sides, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-serifless'</code>, <code>cv57 = 25</code></td></tr>
     <tr><td><code>w</code> with rounded body shape with vertical sides; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-motion-serifed'</code>, <code>cv57 = 22</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-motion-serifed'</code>, <code>cv57 = 26</code></td></tr>
     <tr><td><code>w</code> with rounded body shape with vertical sides, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-serifed'</code>, <code>cv57 = 23</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-serifed'</code>, <code>cv57 = 27</code></td></tr>
     <tr><td><code>w</code> with rounded body shape with vertical sides, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-almost-flat-top-serifless'</code>, <code>cv57 = 28</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-almost-flat-top-motion-serifed'</code>, <code>cv57 = 29</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-almost-flat-top-serifed'</code>, <code>cv57 = 30</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-flat-top-serifless'</code>, <code>cv57 = 31</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-flat-top-motion-serifed'</code>, <code>cv57 = 32</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-rounded-vertical-sides-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-rounded-vertical-sides-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'rounded-vertical-sides-flat-top-serifed'</code>, <code>cv57 = 33</code></td></tr>
+    <tr><td><code>w</code> with rounded body shape with vertical sides, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-serifless'</code>, <code>cv57 = 34</code></td></tr>
+    <tr><td><code>w</code> with curly body shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-motion-serifed'</code>, <code>cv57 = 35</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-serifed'</code>, <code>cv57 = 36</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-almost-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-almost-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-almost-flat-top-serifless'</code>, <code>cv57 = 37</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, and a middle stem almost aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-almost-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-almost-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-almost-flat-top-motion-serifed'</code>, <code>cv57 = 38</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, a middle stem almost aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-almost-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-almost-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-almost-flat-top-serifed'</code>, <code>cv57 = 39</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, a middle stem almost aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-flat-top-serifless'</code>, <code>cv57 = 40</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, and a middle stem aligned to the top; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-flat-top-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-flat-top-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-flat-top-motion-serifed'</code>, <code>cv57 = 41</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, a middle stem aligned to the top, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-flat-top-serifed'</code>, <code>cv57 = 42</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, a middle stem aligned to the top, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-asymmetric-serifless'</code>, <code>cv57 = 43</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, and asymmetric center; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-asymmetric-motion-serifed'</code>, <code>cv57 = 44</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, asymmetric center, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-curly-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-curly-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'curly-asymmetric-serifed'</code>, <code>cv57 = 45</code></td></tr>
+    <tr><td><code>w</code> with curly body shape, asymmetric center, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'cursive-serifless'</code>, <code>cv57 = 46</code></td></tr>
+    <tr><td><code>w</code> with cursive shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-w-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-w-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>w = 'cursive-serifed'</code>, <code>cv57 = 47</code></td></tr>
+    <tr><td><code>w</code> with cursive shape, and serifs</td></tr>
     </table></details>
   - Styles for `x`
     <details><summary>14 variants</summary>
@@ -2123,7 +2310,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <details><summary>40 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-serifless'</code>, <code>cv63 = 1</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-middle-serifed'</code>, <code>cv63 = 2</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-bottom-serifed'</code>, <code>cv63 = 3</code></td></tr>
@@ -2131,15 +2318,15 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-dual-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-dual-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-dual-serifed'</code>, <code>cv63 = 4</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and serif at middle and bottom</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-descending-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-descending-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-descending-serifless'</code>, <code>cv63 = 5</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and terminal descends baseline</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and terminal descends baseline; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-descending-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-descending-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-descending-middle-serifed'</code>, <code>cv63 = 6</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, terminal descends baseline, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-tailed-serifless'</code>, <code>cv63 = 7</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and terminal containing tail</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, and terminal containing tail; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-tailed-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-tailed-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-tailed-middle-serifed'</code>, <code>cv63 = 8</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional, Fraktur-like shape, terminal containing tail, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-serifless'</code>, <code>cv63 = 9</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook)</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook); without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-middle-serifed'</code>, <code>cv63 = 10</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-bottom-serifed'</code>, <code>cv63 = 11</code></td></tr>
@@ -2147,15 +2334,15 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-dual-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-dual-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-dual-serifed'</code>, <code>cv63 = 12</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and serif at middle and bottom</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-descending-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-descending-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-descending-serifless'</code>, <code>cv63 = 13</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and terminal descends baseline</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and terminal descends baseline; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-descending-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-descending-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-descending-middle-serifed'</code>, <code>cv63 = 14</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), terminal descends baseline, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-tailed-serifless'</code>, <code>cv63 = 15</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and terminal containing tail</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), and terminal containing tail; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-traditional-flat-hook-tailed-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-traditional-flat-hook-tailed-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'traditional-flat-hook-tailed-middle-serifed'</code>, <code>cv63 = 16</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with traditional Fraktur-like shape (containing a flat top hook), terminal containing tail, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-serifless'</code>, <code>cv63 = 17</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape (default for Sans Upright)</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape; without serifs (default for Sans Upright)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-middle-serifed'</code>, <code>cv63 = 18</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-middle-serifed-xh'</code>, <code>cv63 = 19</code></td></tr>
@@ -2167,19 +2354,19 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-dual-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-dual-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-dual-serifed-xh'</code>, <code>cv63 = 22</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and serif at middle (x-height) and bottom</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-descending-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-descending-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-descending-serifless'</code>, <code>cv63 = 23</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and terminal descends baseline</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and terminal descends baseline; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-descending-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-descending-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-descending-middle-serifed'</code>, <code>cv63 = 24</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, terminal descends baseline, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-descending-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-descending-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-descending-middle-serifed-xh'</code>, <code>cv63 = 25</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, terminal descends baseline, and serif at middle at x-height</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-tailed-serifless'</code>, <code>cv63 = 26</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and terminal containing tail (default for Italic)</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, and terminal containing tail; without serifs (default for Italic)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-tailed-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-tailed-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-tailed-middle-serifed'</code>, <code>cv63 = 27</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, terminal containing tail, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-sulzbacher-tailed-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-sulzbacher-tailed-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'sulzbacher-tailed-middle-serifed-xh'</code>, <code>cv63 = 28</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with more modern, beta-like shape, terminal containing tail, and serif at middle at x-height</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-serifless'</code>, <code>cv63 = 29</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code></td></tr>
+    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-middle-serifed'</code>, <code>cv63 = 30</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-middle-serifed-xh'</code>, <code>cv63 = 31</code></td></tr>
@@ -2191,13 +2378,13 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-dual-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-dual-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-dual-serifed-xh'</code>, <code>cv63 = 34</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and serif at middle (x-height) and bottom</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-descending-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-descending-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-descending-serifless'</code>, <code>cv63 = 35</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and terminal descends baseline</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and terminal descends baseline; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-descending-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-descending-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-descending-middle-serifed'</code>, <code>cv63 = 36</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, terminal descends baseline, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-descending-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-descending-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-descending-middle-serifed-xh'</code>, <code>cv63 = 37</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, terminal descends baseline, and serif at middle at x-height</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-tailed-serifless'</code>, <code>cv63 = 38</code></td></tr>
-    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and terminal containing tail</td></tr>
+    <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, and terminal containing tail; without serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-tailed-middle-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-tailed-middle-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-tailed-middle-serifed'</code>, <code>cv63 = 39</code></td></tr>
     <tr><td>Eszet (<code>ß</code>) with ligature of long-S (<code>ſ</code>) and <code>s</code>, terminal containing tail, and serif at middle</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-eszet-longs-s-lig-tailed-middle-serifed-xh.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-eszet-longs-s-lig-tailed-middle-serifed-xh.dark.svg#gh-dark-mode-only" width=32/></td><td><code>eszet = 'longs-s-lig-tailed-middle-serifed-xh'</code>, <code>cv63 = 40</code></td></tr>
@@ -2211,8 +2398,8 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eth-curly-bar.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eth-curly-bar.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eth = 'curly-bar'</code>, <code>cv64 = 2</code></td></tr>
     <tr><td>Lowercase Eth (<code>ð</code>) with a curly bar (default)</td></tr>
     </table></details>
-  - Styles for `Þ` (Capital Thorn (`Þ`))
-    <details><summary>3 variants</summary>
+  - Styles for `Þ` (Capital Thorn)
+    <details><summary>6 variants</summary>
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-thorn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-thorn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-thorn = 'serifless'</code>, <code>cv65 = 1</code></td></tr>
     <tr><td>Capital Thorn (<code>Þ</code>) without serifs (default for Sans)</td></tr>
@@ -2220,6 +2407,12 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td>Capital Thorn (<code>Þ</code>) with motion serifs</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-capital-thorn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-thorn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-thorn = 'serifed'</code>, <code>cv65 = 3</code></td></tr>
     <tr><td>Capital Thorn (<code>Þ</code>) with serifs (default for Slab)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-thorn-asymmetric-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-thorn-asymmetric-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-thorn = 'asymmetric-serifless'</code>, <code>cv65 = 4</code></td></tr>
+    <tr><td>Capital Thorn (<code>Þ</code>) with asymmetric shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-thorn-asymmetric-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-thorn-asymmetric-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-thorn = 'asymmetric-motion-serifed'</code>, <code>cv65 = 5</code></td></tr>
+    <tr><td>Capital Thorn (<code>Þ</code>) with asymmetric shape, and motion serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-thorn-asymmetric-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-thorn-asymmetric-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-thorn = 'asymmetric-serifed'</code>, <code>cv65 = 6</code></td></tr>
+    <tr><td>Capital Thorn (<code>Þ</code>) with asymmetric shape, and serifs</td></tr>
     </table></details>
   - Styles for `þ` (Lowercase Thorn (`þ`))
     <details><summary>3 variants</summary>
@@ -2246,885 +2439,1055 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and curly tail</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-tailed-serifed'</code>, <code>cv67 = 6</code></td></tr>
     <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and curly tail; with serifs at top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner'</code>, <code>cv67 = 7</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and earless (cornered top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner-serifed'</code>, <code>cv67 = 8</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (cornered top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner-tailed'</code>, <code>cv67 = 9</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (cornered top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded'</code>, <code>cv67 = 10</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and earless (rounded top-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded-serifed'</code>, <code>cv67 = 11</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (rounded top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded-tailed'</code>, <code>cv67 = 12</code></td></tr>
-    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (rounded top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut'</code>, <code>cv67 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut'</code>, <code>cv67 = 7</code></td></tr>
     <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and a diagonal cut at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut-serifed'</code>, <code>cv67 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut-serifed'</code>, <code>cv67 = 8</code></td></tr>
     <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, a diagonal cut at top, and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut-tailed'</code>, <code>cv67 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-top-cut-tailed'</code>, <code>cv67 = 9</code></td></tr>
     <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, a diagonal cut at top, and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner'</code>, <code>cv67 = 10</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and earless (cornered top-right)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner-serifed'</code>, <code>cv67 = 11</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (cornered top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-corner-tailed'</code>, <code>cv67 = 12</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (cornered top-right), and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded'</code>, <code>cv67 = 13</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, and earless (rounded top-right)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded-serifed'</code>, <code>cv67 = 14</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (rounded top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-alpha-barred-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-alpha-barred-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-alpha = 'barred-earless-rounded-tailed'</code>, <code>cv67 = 15</code></td></tr>
+    <tr><td>Greek lower Alpha (<code>α</code>) with straight right bar, earless (rounded top-right), and curly tail</td></tr>
     </table></details>
   - Styles for `β` (Greek lower Beta)
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-beta-standard.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-beta-standard.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-beta = 'standard'</code>, <code>VXAC = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-beta-standard.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-beta-standard.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-beta = 'standard'</code>, <code>cv68 = 1</code></td></tr>
     <tr><td>Greek lower Beta (<code>β</code>) with standard shape (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-beta-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-beta-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-beta = 'cursive'</code>, <code>VXAC = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-beta-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-beta-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-beta = 'cursive'</code>, <code>cv68 = 2</code></td></tr>
     <tr><td>Greek lower Beta (<code>β</code>) with cursive shape</td></tr>
     </table></details>
   - Styles for `Γ` (Greek capital Gamma)
     <details><summary>4 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'serifless'</code>, <code>cv68 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'serifless'</code>, <code>cv69 = 1</code></td></tr>
     <tr><td>Greek capital Gamma (<code>Γ</code>) without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'top-right-serifed'</code>, <code>cv68 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'top-right-serifed'</code>, <code>cv69 = 2</code></td></tr>
     <tr><td>Greek capital Gamma (<code>Γ</code>) with serifs at top right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'bottom-serifed'</code>, <code>cv68 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'bottom-serifed'</code>, <code>cv69 = 3</code></td></tr>
     <tr><td>Greek capital Gamma (<code>Γ</code>) with bottom serif</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'serifed'</code>, <code>cv68 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-gamma-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-gamma-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-gamma = 'serifed'</code>, <code>cv69 = 4</code></td></tr>
     <tr><td>Greek capital Gamma (<code>Γ</code>) with motion serifs at top and bottom (default for Slab)</td></tr>
     </table></details>
   - Styles for `γ` (Greek lower Gamma)
     <details><summary>3 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'straight'</code>, <code>VXAD = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'straight'</code>, <code>cv70 = 1</code></td></tr>
     <tr><td>Greek lower Gamma (<code>γ</code>) with straight shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'curly'</code>, <code>VXAD = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'curly'</code>, <code>cv70 = 2</code></td></tr>
     <tr><td>Greek lower Gamma (<code>γ</code>) with curly shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-casual.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-casual.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'casual'</code>, <code>VXAD = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-gamma-casual.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-gamma-casual.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-gamma = 'casual'</code>, <code>cv70 = 3</code></td></tr>
     <tr><td>Greek lower Gamma (<code>γ</code>) with casual shape (default)</td></tr>
     </table></details>
   - Styles for `Δ` (Greek capital Delta (`Δ`))
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-delta-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-delta-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-delta = 'straight'</code>, <code>cv69 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-delta-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-delta-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-delta = 'straight'</code>, <code>cv71 = 1</code></td></tr>
     <tr><td>Standard, straight Greek capital Delta (<code>Δ</code>) (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-delta-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-delta-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-delta = 'curly'</code>, <code>cv69 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-delta-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-delta-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-delta = 'curly'</code>, <code>cv71 = 2</code></td></tr>
     <tr><td>Slightly curly Greek capital Delta (<code>Δ</code>), like Iosevka 2.x</td></tr>
     </table></details>
   - Styles for `δ` (Greek lower Delta)
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-delta-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-delta-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-delta = 'rounded'</code>, <code>cv70 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-delta-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-delta-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-delta = 'rounded'</code>, <code>cv72 = 1</code></td></tr>
     <tr><td>Greek lower Delta (<code>δ</code>) with rounded top (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-delta-flat-top.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-delta-flat-top.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-delta = 'flat-top'</code>, <code>cv70 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-delta-flat-top.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-delta-flat-top.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-delta = 'flat-top'</code>, <code>cv72 = 2</code></td></tr>
     <tr><td>Greek lower Delta (<code>δ</code>) with flat top</td></tr>
+    </table></details>
+  - Styles for `η` (Greek lower Eta)
+    <details><summary>7 variants</summary>
+    <table>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'serifless'</code>, <code>VXAA = 1</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) without serifs (default for Sans)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'motion-serifed'</code>, <code>VXAA = 2</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with serif at top left (default for Slab)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'serifed'</code>, <code>VXAA = 3</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'earless-corner-serifless'</code>, <code>VXAA = 4</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with earless (corner top-left) body shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'earless-corner-serifed'</code>, <code>VXAA = 5</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with earless (corner top-left) body shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'earless-rounded-serifless'</code>, <code>VXAA = 6</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with earless (rounded top-left) body shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-eta-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-eta-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-eta = 'earless-rounded-serifed'</code>, <code>VXAA = 7</code></td></tr>
+    <tr><td>Greek lower Eta (<code>η</code>) with earless (rounded top-left) body shape, and serifs</td></tr>
+    </table></details>
+  - Styles for `θ` (Greek lower Theta)
+    <details><summary>4 variants</summary>
+    <table>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-theta-capsule.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-theta-capsule.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-theta = 'capsule'</code>, <code>cv73 = 1</code></td></tr>
+    <tr><td>Greek lower Theta (<code>θ</code>) with a capsule (O-like) body shape</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-theta-oval.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-theta-oval.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-theta = 'oval'</code>, <code>cv73 = 2</code></td></tr>
+    <tr><td>Greek lower Theta (<code>θ</code>) with a standard (oval) body shape (default)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-theta-diamond.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-theta-diamond.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-theta = 'diamond'</code>, <code>cv73 = 3</code></td></tr>
+    <tr><td>Greek lower Theta (<code>θ</code>) with a diamond body shape</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-theta-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-theta-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-theta = 'cursive'</code>, <code>cv73 = 4</code></td></tr>
+    <tr><td>Greek lower Theta (<code>θ</code>) with a cursive body shape</td></tr>
     </table></details>
   - Styles for `ι` (Greek lower Iota)
     <details><summary>12 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailless'</code>, <code>cv71 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailless'</code>, <code>cv74 = 1</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) like a straight line</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailless-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailless-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailless-serifed'</code>, <code>cv71 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailless-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailless-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailless-serifed'</code>, <code>cv74 = 2</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) like a straight line with top serif</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-hooky-bottom.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-hooky-bottom.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'hooky-bottom'</code>, <code>cv71 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-hooky-bottom.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-hooky-bottom.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'hooky-bottom'</code>, <code>cv74 = 3</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with a sharp-turning horizontal tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-zshaped.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-zshaped.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'zshaped'</code>, <code>cv71 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-zshaped.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-zshaped.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'zshaped'</code>, <code>cv74 = 4</code></td></tr>
     <tr><td>Z-shaped Greek lower Iota (<code>ι</code>)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailed'</code>, <code>cv71 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailed'</code>, <code>cv74 = 5</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailed-serifed'</code>, <code>cv71 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'tailed-serifed'</code>, <code>cv74 = 6</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with top serif and curly tail (default for Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'flat-tailed'</code>, <code>cv71 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'flat-tailed'</code>, <code>cv74 = 7</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with a curly-then-flat tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-flat-tailed'</code>, <code>cv71 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-flat-tailed'</code>, <code>cv74 = 8</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with top serif and a curly-then-flat tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'diagonal-tailed'</code>, <code>cv71 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'diagonal-tailed'</code>, <code>cv74 = 9</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with a diagonal tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-diagonal-tailed'</code>, <code>cv71 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-diagonal-tailed'</code>, <code>cv74 = 10</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with top serif and a diagonal tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'semi-tailed'</code>, <code>cv71 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'semi-tailed'</code>, <code>cv74 = 11</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with a slightly curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-semi-tailed'</code>, <code>cv71 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-iota-serifed-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-iota-serifed-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-iota = 'serifed-semi-tailed'</code>, <code>cv74 = 12</code></td></tr>
     <tr><td>Greek lower Iota (<code>ι</code>) with top serif and a slightly curly tail (default for Upright)</td></tr>
+    </table></details>
+  - Styles for `κ` (Greek lower Kappa)
+    <details><summary>32 variants</summary>
+    <table>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-serifless'</code>, <code>VXAB = 1</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape; without serifs (default for Sans)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-top-left-serifed'</code>, <code>VXAB = 2</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs at top left (default for Slab Italic)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-bottom-right-serifed'</code>, <code>VXAB = 3</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs at bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-top-left-and-bottom-right-serifed'</code>, <code>VXAB = 4</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-top-right-serifed'</code>, <code>VXAB = 5</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-tri-serifed'</code>, <code>VXAB = 6</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs at top left and both legs (default for Slab Upright)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-serifed'</code>, <code>VXAB = 7</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-straight-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-straight-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'straight-full-serifed'</code>, <code>VXAB = 8</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with standard shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-serifless'</code>, <code>VXAB = 9</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-top-left-serifed'</code>, <code>VXAB = 10</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs at top left</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-bottom-right-serifed'</code>, <code>VXAB = 11</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs at bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-top-left-and-bottom-right-serifed'</code>, <code>VXAB = 12</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-top-right-serifed'</code>, <code>VXAB = 13</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-tri-serifed'</code>, <code>VXAB = 14</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-serifed'</code>, <code>VXAB = 15</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-curly-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-curly-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'curly-full-serifed'</code>, <code>VXAB = 16</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with curly shape, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-serifless'</code>, <code>VXAB = 17</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-top-left-serifed'</code>, <code>VXAB = 18</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs at top left</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-bottom-right-serifed'</code>, <code>VXAB = 19</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs at bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-top-left-and-bottom-right-serifed'</code>, <code>VXAB = 20</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-top-right-serifed'</code>, <code>VXAB = 21</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-tri-serifed'</code>, <code>VXAB = 22</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-serifed'</code>, <code>VXAB = 23</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-touching-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-touching-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-touching-full-serifed'</code>, <code>VXAB = 24</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs touching the vertical bar, and full serifs at legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-serifless'</code>, <code>VXAB = 25</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-top-left-serifed'</code>, <code>VXAB = 26</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs at top left</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-bottom-right-serifed'</code>, <code>VXAB = 27</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs at bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-top-left-and-bottom-right-serifed'</code>, <code>VXAB = 28</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-top-right-serifed'</code>, <code>VXAB = 29</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-tri-serifed'</code>, <code>VXAB = 30</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-serifed'</code>, <code>VXAB = 31</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-kappa-symmetric-connected-full-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-kappa-symmetric-connected-full-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-kappa = 'symmetric-connected-full-serifed'</code>, <code>VXAB = 32</code></td></tr>
+    <tr><td>Greek lower Kappa (<code>κ</code>) with symmetric legs connected to the vertical bar, and full serifs at legs</td></tr>
     </table></details>
   - Styles for `Λ` (Greek capital Lambda (`Λ`))
     <details><summary>8 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-serifless'</code>, <code>cv72 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-serifless'</code>, <code>cv75 = 1</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with straight shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-top-serifed'</code>, <code>cv72 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-top-serifed'</code>, <code>cv75 = 2</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with straight shape, and serifs at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-base-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-base-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-base-serifed'</code>, <code>cv72 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-base-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-base-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-base-serifed'</code>, <code>cv75 = 3</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with straight shape, and serifs at base (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-tri-serifed'</code>, <code>cv72 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'straight-tri-serifed'</code>, <code>cv75 = 4</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with straight shape, and serifs at both top and base</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-serifless'</code>, <code>cv72 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-serifless'</code>, <code>cv75 = 5</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-top-serifed'</code>, <code>cv72 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-top-serifed'</code>, <code>cv75 = 6</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with curly shape, and serifs at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-base-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-base-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-base-serifed'</code>, <code>cv72 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-base-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-base-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-base-serifed'</code>, <code>cv75 = 7</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with curly shape, and serifs at base</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-tri-serifed'</code>, <code>cv72 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-capital-lambda-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-capital-lambda-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>capital-lambda = 'curly-tri-serifed'</code>, <code>cv75 = 8</code></td></tr>
     <tr><td>Greek capital Lambda (<code>Λ</code>) with curly shape, and serifs at both top and base</td></tr>
     </table></details>
   - Styles for `λ` (Greek lower Lambda)
     <details><summary>6 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'straight'</code>, <code>cv73 = 1</code></td></tr>
-    <tr><td>More-straight Greek lower Lambda (<code>λ</code>) (default for Sans Upright, Sans Italic, Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-straight-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-straight-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'straight-turn'</code>, <code>cv73 = 2</code></td></tr>
-    <tr><td>Greek lower Lambda (<code>λ</code>) with straight upper and a tail turns leftward (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-tailed-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-tailed-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'tailed-turn'</code>, <code>cv73 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'straight'</code>, <code>cv76 = 1</code></td></tr>
+    <tr><td>More-straight Greek lower Lambda (<code>λ</code>) (default for Sans)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-straight-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-straight-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'straight-turn'</code>, <code>cv76 = 2</code></td></tr>
+    <tr><td>Greek lower Lambda (<code>λ</code>) with straight upper and a tail turns leftward (default for Slab)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-tailed-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-tailed-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'tailed-turn'</code>, <code>cv76 = 3</code></td></tr>
     <tr><td>More curly Greek lower Lambda (<code>λ</code>), with a tail turns leftward at top and a tail turns right at bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly'</code>, <code>cv73 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly'</code>, <code>cv76 = 4</code></td></tr>
     <tr><td>More curly Greek lower Lambda (<code>λ</code>), like Iosevka 2.x</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly-turn'</code>, <code>cv73 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly-turn'</code>, <code>cv76 = 5</code></td></tr>
     <tr><td>More curly Greek lower Lambda (<code>λ</code>), like Iosevka 2.x, with a tail turns leftward</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly-tailed-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly-tailed-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly-tailed-turn'</code>, <code>cv73 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-lambda-curly-tailed-turn.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-lambda-curly-tailed-turn.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-lambda = 'curly-tailed-turn'</code>, <code>cv76 = 6</code></td></tr>
     <tr><td>More curly Greek lower Lambda (<code>λ</code>), with a tail turns leftward at top, a tail turns right at bottom-right, and curly bottom-left leg</td></tr>
     </table></details>
   - Styles for `μ` (Greek lower Mu)
     <details><summary>13 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-serifless'</code>, <code>cv74 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-serifless'</code>, <code>cv77 = 1</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothed shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-bottom-right-serifed'</code>, <code>cv74 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-bottom-right-serifed'</code>, <code>cv77 = 2</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothed shape, and serif at bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-motion-serifed'</code>, <code>cv74 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-motion-serifed'</code>, <code>cv77 = 3</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothed shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-serifed'</code>, <code>cv74 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothed-serifed'</code>, <code>cv77 = 4</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothed shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-serifless'</code>, <code>cv74 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-serifless'</code>, <code>cv77 = 5</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with tailed shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-motion-serifed'</code>, <code>cv74 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-motion-serifed'</code>, <code>cv77 = 6</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with tailed shape, and motion serifs at top-left and bottom-right (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-serifed'</code>, <code>cv74 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'tailed-serifed'</code>, <code>cv77 = 7</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with tailed shape, and serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-serifless'</code>, <code>cv74 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-serifless'</code>, <code>cv77 = 8</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (corner bottom-right) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-motion-serifed'</code>, <code>cv74 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-motion-serifed'</code>, <code>cv77 = 9</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (corner bottom-right) shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-serifed'</code>, <code>cv74 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-corner-serifed'</code>, <code>cv77 = 10</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (corner bottom-right) shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-serifless'</code>, <code>cv74 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-serifless'</code>, <code>cv77 = 11</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (rounded) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-motion-serifed'</code>, <code>cv74 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-motion-serifed'</code>, <code>cv77 = 12</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (rounded) shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-serifed'</code>, <code>cv74 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-mu-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-mu-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-mu = 'toothless-rounded-serifed'</code>, <code>cv77 = 13</code></td></tr>
     <tr><td>Greek lower Mu (<code>μ</code>) with toothless (rounded) shape, and serifs</td></tr>
     </table></details>
   - Styles for `ν` (Greek lower Nu)
-    <details><summary>3 variants</summary>
+    <details><summary>6 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'straight'</code>, <code>VXAE = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'straight'</code>, <code>cv78 = 1</code></td></tr>
     <tr><td>Greek lower Nu (<code>ν</code>) with straight shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'curly'</code>, <code>VXAE = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'straight-serifed'</code>, <code>cv78 = 2</code></td></tr>
+    <tr><td>Greek lower Nu (<code>ν</code>) with straight shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'curly'</code>, <code>cv78 = 3</code></td></tr>
     <tr><td>Greek lower Nu (<code>ν</code>) with curly shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-casual.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-casual.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'casual'</code>, <code>VXAE = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'curly-serifed'</code>, <code>cv78 = 4</code></td></tr>
+    <tr><td>Greek lower Nu (<code>ν</code>) with curly shape, and serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-casual.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-casual.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'casual'</code>, <code>cv78 = 5</code></td></tr>
     <tr><td>Greek lower Nu (<code>ν</code>) with casual shape (default)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-nu-casual-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-nu-casual-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-nu = 'casual-serifed'</code>, <code>cv78 = 6</code></td></tr>
+    <tr><td>Greek lower Nu (<code>ν</code>) with casual shape, and serifs</td></tr>
     </table></details>
   - Styles for `ξ` (Greek lower Xi)
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-xi-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-xi-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-xi = 'rounded'</code>, <code>cv75 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-xi-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-xi-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-xi = 'rounded'</code>, <code>cv79 = 1</code></td></tr>
     <tr><td>Greek lower Xi (<code>ξ</code>) with rounded top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-xi-flat-top.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-xi-flat-top.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-xi = 'flat-top'</code>, <code>cv75 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-xi-flat-top.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-xi-flat-top.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-xi = 'flat-top'</code>, <code>cv79 = 2</code></td></tr>
     <tr><td>Greek lower Xi (<code>ξ</code>) with flat top (default)</td></tr>
     </table></details>
   - Styles for `π` (Greek lower Pi)
     <details><summary>3 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'tailless'</code>, <code>cv76 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'tailless'</code>, <code>cv80 = 1</code></td></tr>
     <tr><td>Greek lower Pi (<code>π</code>) with a tailless shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'tailed'</code>, <code>cv76 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'tailed'</code>, <code>cv80 = 2</code></td></tr>
     <tr><td>Greek lower Pi (<code>π</code>) with a tailed shape (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-small-capital.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-small-capital.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'small-capital'</code>, <code>cv76 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-pi-small-capital.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-pi-small-capital.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-pi = 'small-capital'</code>, <code>cv80 = 3</code></td></tr>
     <tr><td>Greek lower Pi (<code>π</code>) with a small-capital shape</td></tr>
     </table></details>
   - Styles for `τ` (Greek lower Tau)
     <details><summary>6 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'tailless'</code>, <code>cv77 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-tailless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-tailless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'tailless'</code>, <code>cv81 = 1</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with a tailless shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-short-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-short-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'short-tailed'</code>, <code>cv77 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-short-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-short-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'short-tailed'</code>, <code>cv81 = 2</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with a very short tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'tailed'</code>, <code>cv77 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'tailed'</code>, <code>cv81 = 3</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with curly tail (default for Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'flat-tailed'</code>, <code>cv77 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-flat-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-flat-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'flat-tailed'</code>, <code>cv81 = 4</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with a flat tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'diagonal-tailed'</code>, <code>cv77 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-diagonal-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-diagonal-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'diagonal-tailed'</code>, <code>cv81 = 5</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with a diagonal tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'semi-tailed'</code>, <code>cv77 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-tau-semi-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-tau-semi-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-tau = 'semi-tailed'</code>, <code>cv81 = 6</code></td></tr>
     <tr><td>Greek lower Tau (<code>τ</code>) with a slightly curly tail (default for Upright)</td></tr>
     </table></details>
   - Styles for `υ` (Greek lower Upsilon)
     <details><summary>4 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'straight-serifless'</code>, <code>VXAF = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'straight-serifless'</code>, <code>cv82 = 1</code></td></tr>
     <tr><td>Greek lower Upsilon (<code>υ</code>) with straight shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'straight-serifed'</code>, <code>VXAF = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'straight-serifed'</code>, <code>cv82 = 2</code></td></tr>
     <tr><td>Greek lower Upsilon (<code>υ</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-casual-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-casual-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'casual-serifless'</code>, <code>VXAF = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-casual-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-casual-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'casual-serifless'</code>, <code>cv82 = 3</code></td></tr>
     <tr><td>Greek lower Upsilon (<code>υ</code>) with casual shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-casual-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-casual-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'casual-serifed'</code>, <code>VXAF = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-upsilon-casual-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-upsilon-casual-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-upsilon = 'casual-serifed'</code>, <code>cv82 = 4</code></td></tr>
     <tr><td>Greek lower Upsilon (<code>υ</code>) with casual shape, and serifs (default for Slab)</td></tr>
     </table></details>
   - Styles for `φ` (Greek lower Phi)
     <details><summary>3 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'straight'</code>, <code>VXAG = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'straight'</code>, <code>cv83 = 1</code></td></tr>
     <tr><td>Greek lower Phi (<code>φ</code>) with straight shape</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'cursive'</code>, <code>VXAG = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'cursive'</code>, <code>cv83 = 2</code></td></tr>
     <tr><td>Greek lower Phi (<code>φ</code>) with cursive shape (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-neo-hellenic.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-neo-hellenic.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'neo-hellenic'</code>, <code>VXAG = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-phi-neo-hellenic.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-phi-neo-hellenic.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-phi = 'neo-hellenic'</code>, <code>cv83 = 3</code></td></tr>
     <tr><td>Greek lower Phi (<code>φ</code>) with neo-hellenic shape</td></tr>
     </table></details>
   - Styles for `χ` (Greek lower Chi)
     <details><summary>13 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-serifless'</code>, <code>cv78 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-serifless'</code>, <code>cv84 = 1</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with straight shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-unilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-unilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-unilateral-motion-serifed'</code>, <code>cv78 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-unilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-unilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-unilateral-motion-serifed'</code>, <code>cv84 = 2</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with straight shape, and motion serifs at top-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-bilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-bilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-bilateral-motion-serifed'</code>, <code>cv78 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-bilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-bilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-bilateral-motion-serifed'</code>, <code>cv84 = 3</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with straight shape, and motion serifs at top-left and bottom-right (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-serifed'</code>, <code>cv78 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'straight-serifed'</code>, <code>cv84 = 4</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-serifless'</code>, <code>cv78 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-serifless'</code>, <code>cv84 = 5</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-unilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-unilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-unilateral-motion-serifed'</code>, <code>cv78 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-unilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-unilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-unilateral-motion-serifed'</code>, <code>cv84 = 6</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with curly shape, and motion serifs at top-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-bilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-bilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-bilateral-motion-serifed'</code>, <code>cv78 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-bilateral-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-bilateral-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-bilateral-motion-serifed'</code>, <code>cv84 = 7</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with curly shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-serifed'</code>, <code>cv78 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'curly-serifed'</code>, <code>cv84 = 8</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with curly shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-straight-serifless'</code>, <code>cv78 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-straight-serifless'</code>, <code>cv84 = 9</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with Semi-chancery shape with straight counter-leg; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-straight-serifed'</code>, <code>cv78 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-straight-serifed'</code>, <code>cv84 = 10</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with Semi-chancery shape with straight counter-leg, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-curly-serifless'</code>, <code>cv78 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-curly-serifless'</code>, <code>cv84 = 11</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with Semi-chancery shape with curly counter-leg; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-curly-serifed'</code>, <code>cv78 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-semi-chancery-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-semi-chancery-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'semi-chancery-curly-serifed'</code>, <code>cv84 = 12</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with Semi-chancery shape with curly counter-leg, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-chancery.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-chancery.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'chancery'</code>, <code>cv78 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-chi-chancery.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-chi-chancery.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-chi = 'chancery'</code>, <code>cv84 = 13</code></td></tr>
     <tr><td>Greek lower Chi (<code>χ</code>) with Chancery shape</td></tr>
     </table></details>
   - Styles for `ψ` (Greek lower Psi)
     <details><summary>4 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'serifless'</code>, <code>VXAH = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'serifless'</code>, <code>cv85 = 1</code></td></tr>
     <tr><td>Greek lower Psi (<code>ψ</code>) without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'serifed'</code>, <code>VXAH = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'serifed'</code>, <code>cv85 = 2</code></td></tr>
     <tr><td>Greek lower Psi (<code>ψ</code>) with serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'flat-top-serifless'</code>, <code>VXAH = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-flat-top-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-flat-top-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'flat-top-serifless'</code>, <code>cv85 = 3</code></td></tr>
     <tr><td>Greek lower Psi (<code>ψ</code>) with flat top; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'flat-top-serifed'</code>, <code>VXAH = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-lower-psi-flat-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-lower-psi-flat-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>lower-psi = 'flat-top-serifed'</code>, <code>cv85 = 4</code></td></tr>
     <tr><td>Greek lower Psi (<code>ψ</code>) with flat top, and serifs</td></tr>
+    </table></details>
+  - Styles for `∂` (Partial derivative symbol)
+    <details><summary>3 variants</summary>
+    <table>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-partial-derivative-straight-bar.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-partial-derivative-straight-bar.dark.svg#gh-dark-mode-only" width=32/></td><td><code>partial-derivative = 'straight-bar'</code>, <code>cv86 = 1</code></td></tr>
+    <tr><td>Partial derivative symbol (<code>∂</code>) with a straight bar</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-partial-derivative-curly-bar.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-partial-derivative-curly-bar.dark.svg#gh-dark-mode-only" width=32/></td><td><code>partial-derivative = 'curly-bar'</code>, <code>cv86 = 2</code></td></tr>
+    <tr><td>Partial derivative symbol (<code>∂</code>) with a curly bar (default)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-partial-derivative-closed-contour.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-partial-derivative-closed-contour.dark.svg#gh-dark-mode-only" width=32/></td><td><code>partial-derivative = 'closed-contour'</code>, <code>cv86 = 3</code></td></tr>
+    <tr><td>Partial derivative symbol (<code>∂</code>) with a full hook</td></tr>
     </table></details>
   - Styles for `а` (Cyrillic Lower A)
     <details><summary>24 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-serifless'</code>, <code>cv79 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-serifless'</code>, <code>cv87 = 1</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, and serifless hook; without serif at terminal (default for Sans Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-serifed'</code>, <code>cv79 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-serifed'</code>, <code>cv87 = 2</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifless hook, and serif at terminal (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-tailed'</code>, <code>cv79 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-tailed'</code>, <code>cv87 = 3</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifless hook, and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-toothless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-toothless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-toothless-corner'</code>, <code>cv79 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-toothless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-toothless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-toothless-corner'</code>, <code>cv87 = 4</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifless hook, and toothless (cornered bottom-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-toothless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-toothless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-toothless-rounded'</code>, <code>cv79 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-toothless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-toothless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-toothless-rounded'</code>, <code>cv87 = 5</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifless hook, and toothless (rounded bottom-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-serifless'</code>, <code>cv79 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-serifless'</code>, <code>cv87 = 6</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, and serifed hook; without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-serifed'</code>, <code>cv79 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-serifed'</code>, <code>cv87 = 7</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifed hook, and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-tailed'</code>, <code>cv79 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-tailed'</code>, <code>cv87 = 8</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifed hook, and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-toothless-corner'</code>, <code>cv79 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-toothless-corner'</code>, <code>cv87 = 9</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifed hook, and toothless (cornered bottom-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-toothless-rounded'</code>, <code>cv79 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-rounded.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-double-storey-hook-inward-serifed-toothless-rounded.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'double-storey-hook-inward-serifed-toothless-rounded'</code>, <code>cv87 = 10</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with double-storey body, serifed hook, and toothless (rounded bottom-right)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-serifless'</code>, <code>cv79 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-serifless'</code>, <code>cv87 = 11</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body; without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-serifed'</code>, <code>cv79 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-serifed'</code>, <code>cv87 = 12</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-double-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-double-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-double-serifed'</code>, <code>cv79 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-double-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-double-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-double-serifed'</code>, <code>cv87 = 13</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and serifs at top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-tailed'</code>, <code>cv79 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-tailed'</code>, <code>cv87 = 14</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and curly tail (default for Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-tailed-serifed'</code>, <code>cv79 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-tailed-serifed'</code>, <code>cv87 = 15</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and curly tail; with serifs at top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-serifless'</code>, <code>cv79 = 16</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and earless (cornered top-right); without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-serifed'</code>, <code>cv79 = 17</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (cornered top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-tailed'</code>, <code>cv79 = 18</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (cornered top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-serifless'</code>, <code>cv79 = 19</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and earless (rounded top-right); without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-serifed'</code>, <code>cv79 = 20</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (rounded top-right), and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-tailed'</code>, <code>cv79 = 21</code></td></tr>
-    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (rounded top-right), and curly tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-serifless'</code>, <code>cv79 = 22</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-serifless'</code>, <code>cv87 = 16</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and a diagonal cut at top; without serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-serifed'</code>, <code>cv79 = 23</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-serifed'</code>, <code>cv87 = 17</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, a diagonal cut at top, and serif at terminal</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-tailed'</code>, <code>cv79 = 24</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-top-cut-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-top-cut-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-top-cut-tailed'</code>, <code>cv87 = 18</code></td></tr>
     <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, a diagonal cut at top, and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-serifless'</code>, <code>cv87 = 19</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and earless (cornered top-right); without serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-serifed'</code>, <code>cv87 = 20</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (cornered top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-corner-tailed'</code>, <code>cv87 = 21</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (cornered top-right), and curly tail</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-serifless'</code>, <code>cv87 = 22</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, and earless (rounded top-right); without serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-serifed'</code>, <code>cv87 = 23</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (rounded top-right), and serif at terminal</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-a-single-storey-earless-rounded-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-a-single-storey-earless-rounded-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-a = 'single-storey-earless-rounded-tailed'</code>, <code>cv87 = 24</code></td></tr>
+    <tr><td>Cyrillic Lower A (<code>а</code>) with single-storey body, earless (rounded top-right), and curly tail</td></tr>
     </table></details>
   - Styles for `в` (Cyrillic Lower Ve)
     <details><summary>8 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-serifless'</code>, <code>cv80 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-serifless'</code>, <code>cv88 = 1</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body; without serifs (default for Sans Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-unilateral-serifed'</code>, <code>cv80 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-unilateral-serifed'</code>, <code>cv88 = 2</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body, and serifs at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-bilateral-serifed'</code>, <code>cv80 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-bilateral-serifed'</code>, <code>cv88 = 3</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body, and serifs at both top and bottom (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-serifless'</code>, <code>cv80 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-serifless'</code>, <code>cv88 = 4</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body, and interrupted middle bar; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-unilateral-serifed'</code>, <code>cv80 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-unilateral-serifed'</code>, <code>cv88 = 5</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body, interrupted middle bar, and serifs at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-bilateral-serifed'</code>, <code>cv80 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-standard-interrupted-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-standard-interrupted-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'standard-interrupted-bilateral-serifed'</code>, <code>cv88 = 6</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with standard body, interrupted middle bar, and serifs at both top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'cursive'</code>, <code>cv80 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'cursive'</code>, <code>cv88 = 7</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with cursive body (default for Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-cursive-tall.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-cursive-tall.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'cursive-tall'</code>, <code>cv80 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ve-cursive-tall.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ve-cursive-tall.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ve = 'cursive-tall'</code>, <code>cv88 = 8</code></td></tr>
     <tr><td>Cyrillic Lower Ve (<code>в</code>) with cursive body, and tall height</td></tr>
     </table></details>
   - Styles for `Ж` (Cyrillic Capital Zhe)
     <details><summary>5 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'straight'</code>, <code>cv81 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'straight'</code>, <code>cv89 = 1</code></td></tr>
     <tr><td>Cyrillic Capital Zhe (<code>Ж</code>) with straight legs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'curly'</code>, <code>cv81 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'curly'</code>, <code>cv89 = 2</code></td></tr>
     <tr><td>Cyrillic Capital Zhe (<code>Ж</code>) with curly legs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-symmetric-touching.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-symmetric-touching.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'symmetric-touching'</code>, <code>cv81 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-symmetric-touching.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-symmetric-touching.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'symmetric-touching'</code>, <code>cv89 = 3</code></td></tr>
     <tr><td>Cyrillic Capital Zhe (<code>Ж</code>) with symmetric legs touching the vertical bar</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-symmetric-connected.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-symmetric-connected.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'symmetric-connected'</code>, <code>cv81 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-symmetric-connected.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-symmetric-connected.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'symmetric-connected'</code>, <code>cv89 = 4</code></td></tr>
     <tr><td>Cyrillic Capital Zhe (<code>Ж</code>) with symmetric legs connected to the vertical bar (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'cursive'</code>, <code>cv81 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-zhe-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-zhe-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-zhe = 'cursive'</code>, <code>cv89 = 5</code></td></tr>
     <tr><td>Cyrillic Capital Zhe (<code>Ж</code>) with cursive legs</td></tr>
     </table></details>
   - Styles for `ж` (Cyrillic Lower Zhe)
     <details><summary>5 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'straight'</code>, <code>cv82 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'straight'</code>, <code>cv90 = 1</code></td></tr>
     <tr><td>Cyrillic Lower Zhe (<code>ж</code>) with straight legs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'curly'</code>, <code>cv82 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-curly.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-curly.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'curly'</code>, <code>cv90 = 2</code></td></tr>
     <tr><td>Cyrillic Lower Zhe (<code>ж</code>) with curly legs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-symmetric-touching.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-symmetric-touching.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'symmetric-touching'</code>, <code>cv82 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-symmetric-touching.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-symmetric-touching.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'symmetric-touching'</code>, <code>cv90 = 3</code></td></tr>
     <tr><td>Cyrillic Lower Zhe (<code>ж</code>) with symmetric legs touching the vertical bar</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-symmetric-connected.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-symmetric-connected.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'symmetric-connected'</code>, <code>cv82 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-symmetric-connected.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-symmetric-connected.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'symmetric-connected'</code>, <code>cv90 = 4</code></td></tr>
     <tr><td>Cyrillic Lower Zhe (<code>ж</code>) with symmetric legs connected to the vertical bar (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'cursive'</code>, <code>cv82 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-zhe-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-zhe-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-zhe = 'cursive'</code>, <code>cv90 = 5</code></td></tr>
     <tr><td>Cyrillic Lower Zhe (<code>ж</code>) with cursive legs</td></tr>
     </table></details>
   - Styles for `З` (Cyrillic Capital Ze)
     <details><summary>7 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'serifless'</code>, <code>cv83 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'serifless'</code>, <code>cv91 = 1</code></td></tr>
     <tr><td>Serifless Cyrillic Capital Ze (<code>З</code>) (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-serifed'</code>, <code>cv83 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-serifed'</code>, <code>cv91 = 2</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with serif at top (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-bottom-serifed'</code>, <code>cv83 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-bottom-serifed'</code>, <code>cv91 = 3</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'bilateral-serifed'</code>, <code>cv83 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'bilateral-serifed'</code>, <code>cv91 = 4</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with serif at both top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-inward-serifed'</code>, <code>cv83 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-inward-serifed'</code>, <code>cv91 = 5</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with inward serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-bottom-inward-serifed'</code>, <code>cv83 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'unilateral-bottom-inward-serifed'</code>, <code>cv91 = 6</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with inward serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'bilateral-inward-serifed'</code>, <code>cv83 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ze-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ze-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ze = 'bilateral-inward-serifed'</code>, <code>cv91 = 7</code></td></tr>
     <tr><td>Cyrillic Capital Ze (<code>З</code>) with inward serif at both top and bottom</td></tr>
     </table></details>
   - Styles for `з` (Cyrillic Lower Ze)
     <details><summary>7 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'serifless'</code>, <code>cv84 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'serifless'</code>, <code>cv92 = 1</code></td></tr>
     <tr><td>Serifless Cyrillic Lower Ze (<code>з</code>) (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-serifed'</code>, <code>cv84 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-serifed'</code>, <code>cv92 = 2</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with serif at top (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-bottom-serifed'</code>, <code>cv84 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-bottom-serifed'</code>, <code>cv92 = 3</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'bilateral-serifed'</code>, <code>cv84 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'bilateral-serifed'</code>, <code>cv92 = 4</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with serif at both top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-inward-serifed'</code>, <code>cv84 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-inward-serifed'</code>, <code>cv92 = 5</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with inward serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-bottom-inward-serifed'</code>, <code>cv84 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'unilateral-bottom-inward-serifed'</code>, <code>cv92 = 6</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with inward serif at bottom (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'bilateral-inward-serifed'</code>, <code>cv84 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ze-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ze-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ze = 'bilateral-inward-serifed'</code>, <code>cv92 = 7</code></td></tr>
     <tr><td>Cyrillic Lower Ze (<code>з</code>) with inward serif at both top and bottom</td></tr>
     </table></details>
   - Styles for `К` (Cyrillic Capital Ka)
-    <details><summary>20 variants</summary>
+    <details><summary>28 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-serifless'</code>, <code>cv85 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-serifless'</code>, <code>cv93 = 1</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-top-left-serifed'</code>, <code>cv85 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-top-left-serifed'</code>, <code>cv93 = 2</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-bottom-right-serifed'</code>, <code>cv85 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-bottom-right-serifed'</code>, <code>cv93 = 3</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-top-left-and-bottom-right-serifed'</code>, <code>cv85 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-top-left-and-bottom-right-serifed'</code>, <code>cv93 = 4</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-serifed'</code>, <code>cv85 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-serifed'</code>, <code>cv93 = 5</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-serifless'</code>, <code>cv85 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-serifless'</code>, <code>cv93 = 6</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-top-left-serifed'</code>, <code>cv85 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-top-left-serifed'</code>, <code>cv93 = 7</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-bottom-right-serifed'</code>, <code>cv85 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-bottom-right-serifed'</code>, <code>cv93 = 8</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-top-left-and-bottom-right-serifed'</code>, <code>cv85 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-top-left-and-bottom-right-serifed'</code>, <code>cv93 = 9</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-serifed'</code>, <code>cv85 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-serifed'</code>, <code>cv93 = 10</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-serifless'</code>, <code>cv85 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-serifless'</code>, <code>cv93 = 11</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-top-left-serifed'</code>, <code>cv85 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-top-left-serifed'</code>, <code>cv93 = 12</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-bottom-right-serifed'</code>, <code>cv85 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-bottom-right-serifed'</code>, <code>cv93 = 13</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-top-left-and-bottom-right-serifed'</code>, <code>cv85 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-top-left-and-bottom-right-serifed'</code>, <code>cv93 = 14</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-serifed'</code>, <code>cv85 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-serifed'</code>, <code>cv93 = 15</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-serifless'</code>, <code>cv85 = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-serifless'</code>, <code>cv93 = 16</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-top-left-serifed'</code>, <code>cv85 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-top-left-serifed'</code>, <code>cv93 = 17</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-bottom-right-serifed'</code>, <code>cv85 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-bottom-right-serifed'</code>, <code>cv93 = 18</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-top-left-and-bottom-right-serifed'</code>, <code>cv85 = 19</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-top-left-and-bottom-right-serifed'</code>, <code>cv93 = 19</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-serifed'</code>, <code>cv85 = 20</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-serifed'</code>, <code>cv93 = 20</code></td></tr>
     <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs (default for Slab)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-top-right-serifed'</code>, <code>cv93 = 21</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'straight-tri-serifed'</code>, <code>cv93 = 22</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with straight shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-top-right-serifed'</code>, <code>cv93 = 23</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'curly-tri-serifed'</code>, <code>cv93 = 24</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with curly shape, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-top-right-serifed'</code>, <code>cv93 = 25</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-touching-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-touching-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-touching-tri-serifed'</code>, <code>cv93 = 26</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs touching the vertical bar, and serifs at top left and both legs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-top-right-serifed'</code>, <code>cv93 = 27</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ka-symmetric-connected-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ka-symmetric-connected-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ka = 'symmetric-connected-tri-serifed'</code>, <code>cv93 = 28</code></td></tr>
+    <tr><td>Cyrillic Capital Ka (<code>К</code>) with symmetric legs connected to the vertical bar, and serifs at top left and both legs</td></tr>
     </table></details>
   - Styles for `к` (Cyrillic Lower Ka)
-    <details><summary>20 variants</summary>
+    <details><summary>28 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-serifless'</code>, <code>cv86 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-serifless'</code>, <code>cv94 = 1</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-top-left-serifed'</code>, <code>cv86 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-top-left-serifed'</code>, <code>cv94 = 2</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-bottom-right-serifed'</code>, <code>cv86 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-bottom-right-serifed'</code>, <code>cv94 = 3</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-top-left-and-bottom-right-serifed'</code>, <code>cv86 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-top-left-and-bottom-right-serifed'</code>, <code>cv94 = 4</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-serifed'</code>, <code>cv86 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-serifed'</code>, <code>cv94 = 5</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-serifless'</code>, <code>cv86 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-serifless'</code>, <code>cv94 = 6</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-top-left-serifed'</code>, <code>cv86 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-top-left-serifed'</code>, <code>cv94 = 7</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-bottom-right-serifed'</code>, <code>cv86 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-bottom-right-serifed'</code>, <code>cv94 = 8</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-top-left-and-bottom-right-serifed'</code>, <code>cv86 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-top-left-and-bottom-right-serifed'</code>, <code>cv94 = 9</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-serifed'</code>, <code>cv86 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-serifed'</code>, <code>cv94 = 10</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-serifless'</code>, <code>cv86 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-serifless'</code>, <code>cv94 = 11</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-top-left-serifed'</code>, <code>cv86 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-top-left-serifed'</code>, <code>cv94 = 12</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-bottom-right-serifed'</code>, <code>cv86 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-bottom-right-serifed'</code>, <code>cv94 = 13</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-top-left-and-bottom-right-serifed'</code>, <code>cv86 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-top-left-and-bottom-right-serifed'</code>, <code>cv94 = 14</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-serifed'</code>, <code>cv86 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-serifed'</code>, <code>cv94 = 15</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-serifless'</code>, <code>cv86 = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-serifless'</code>, <code>cv94 = 16</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-top-left-serifed'</code>, <code>cv86 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-top-left-serifed'</code>, <code>cv94 = 17</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs at top left (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-bottom-right-serifed'</code>, <code>cv86 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-bottom-right-serifed'</code>, <code>cv94 = 18</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs at bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-top-left-and-bottom-right-serifed'</code>, <code>cv86 = 19</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-and-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-top-left-and-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-top-left-and-bottom-right-serifed'</code>, <code>cv94 = 19</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-serifed'</code>, <code>cv86 = 20</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-serifed'</code>, <code>cv94 = 20</code></td></tr>
     <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs (default for Slab Upright)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-top-right-serifed'</code>, <code>cv94 = 21</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-straight-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-straight-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'straight-tri-serifed'</code>, <code>cv94 = 22</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with straight shape, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-top-right-serifed'</code>, <code>cv94 = 23</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-curly-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-curly-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'curly-tri-serifed'</code>, <code>cv94 = 24</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with curly shape, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-top-right-serifed'</code>, <code>cv94 = 25</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-touching-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-touching-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-touching-tri-serifed'</code>, <code>cv94 = 26</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs touching the vertical bar, and serifs at top left and bottom right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-top-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-top-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-top-right-serifed'</code>, <code>cv94 = 27</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs at top right</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ka-symmetric-connected-tri-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ka-symmetric-connected-tri-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ka = 'symmetric-connected-tri-serifed'</code>, <code>cv94 = 28</code></td></tr>
+    <tr><td>Cyrillic Lower Ka (<code>к</code>) with symmetric legs connected to the vertical bar, and serifs at top left and bottom right</td></tr>
     </table></details>
   - Styles for `л` (Cyrillic Lower El)
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-el-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-el-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-el = 'straight'</code>, <code>cv87 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-el-straight.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-el-straight.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-el = 'straight'</code>, <code>cv95 = 1</code></td></tr>
     <tr><td>Cyrillic Lower El (<code>л</code>) with standard shape (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-el-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-el-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-el = 'tailed'</code>, <code>cv87 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-el-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-el-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-el = 'tailed'</code>, <code>cv95 = 2</code></td></tr>
     <tr><td>Cyrillic Lower El (<code>л</code>) with tail shape</td></tr>
     </table></details>
   - Styles for `м` (Cyrillic Lower Em)
     <details><summary>12 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-serifless'</code>, <code>cv88 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-serifless'</code>, <code>cv96 = 1</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle being hanging off baseline; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-motion-serifed'</code>, <code>cv88 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-motion-serifed'</code>, <code>cv96 = 2</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle being hanging off baseline, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-serifed'</code>, <code>cv88 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-hanging-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-hanging-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'hanging-serifed'</code>, <code>cv96 = 3</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle being hanging off baseline, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-serifless'</code>, <code>cv88 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-serifless'</code>, <code>cv96 = 4</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle aligned to baseline; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-motion-serifed'</code>, <code>cv88 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-motion-serifed'</code>, <code>cv96 = 5</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle aligned to baseline, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-serifed'</code>, <code>cv88 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-flat-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-flat-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'flat-bottom-serifed'</code>, <code>cv96 = 6</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with middle aligned to baseline, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-serifless'</code>, <code>cv88 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-serifless'</code>, <code>cv96 = 7</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, and middle being hanging off baseline; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-motion-serifed'</code>, <code>cv88 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-motion-serifed'</code>, <code>cv96 = 8</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, middle being hanging off baseline, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-serifed'</code>, <code>cv88 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-hanging-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-hanging-serifed'</code>, <code>cv96 = 9</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, middle being hanging off baseline, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-serifless'</code>, <code>cv88 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-serifless'</code>, <code>cv96 = 10</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, and middle aligned to baseline; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-motion-serifed'</code>, <code>cv88 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-motion-serifed'</code>, <code>cv96 = 11</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, middle aligned to baseline, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-serifed'</code>, <code>cv88 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-em-slanted-sides-flat-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-em = 'slanted-sides-flat-bottom-serifed'</code>, <code>cv96 = 12</code></td></tr>
     <tr><td>Cyrillic Lower Em (<code>м</code>) with slanted sides, middle aligned to baseline, and serifs</td></tr>
     </table></details>
   - Styles for `Н` (Cyrillic Capital En)
     <details><summary>4 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'serifless'</code>, <code>VXAA = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'serifless'</code>, <code>cv97 = 1</code></td></tr>
     <tr><td>Cyrillic Capital En (<code>Н</code>) without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'top-left-serifed'</code>, <code>VXAA = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'top-left-serifed'</code>, <code>cv97 = 2</code></td></tr>
     <tr><td>Cyrillic Capital En (<code>Н</code>) with serif only at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-top-left-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-top-left-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'top-left-bottom-right-serifed'</code>, <code>VXAA = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-top-left-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-top-left-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'top-left-bottom-right-serifed'</code>, <code>cv97 = 3</code></td></tr>
     <tr><td>Cyrillic Capital En (<code>Н</code>) with serif only at top left and bottom right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'serifed'</code>, <code>VXAA = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-en-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-en-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-en = 'serifed'</code>, <code>cv97 = 4</code></td></tr>
     <tr><td>Cyrillic Capital En (<code>Н</code>) with serifs (default for Slab)</td></tr>
     </table></details>
   - Styles for `н` (Cyrillic Lower En)
     <details><summary>7 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'serifless'</code>, <code>cv89 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'serifless'</code>, <code>cv98 = 1</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'top-left-serifed'</code>, <code>cv89 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'top-left-serifed'</code>, <code>cv98 = 2</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-top-left-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-top-left-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'top-left-bottom-right-serifed'</code>, <code>cv89 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-top-left-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-top-left-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'top-left-bottom-right-serifed'</code>, <code>cv98 = 3</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with serifs at top left and bottom right (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'serifed'</code>, <code>cv89 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'serifed'</code>, <code>cv98 = 4</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-serifless'</code>, <code>cv89 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-serifless'</code>, <code>cv98 = 5</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-top-left-serifed'</code>, <code>cv89 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-top-left-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-top-left-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-top-left-serifed'</code>, <code>cv98 = 6</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with tail, and serifs at top left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-serifed'</code>, <code>cv89 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-en-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-en-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-en = 'tailed-serifed'</code>, <code>cv98 = 7</code></td></tr>
     <tr><td>Cyrillic Lower En (<code>н</code>) with tail, and serifs</td></tr>
     </table></details>
   - Styles for `Р` (Cyrillic Capital Er)
     <details><summary>6 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-serifless'</code>, <code>VXAB = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-serifless'</code>, <code>cv99 = 1</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with closed shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-motion-serifed'</code>, <code>VXAB = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-motion-serifed'</code>, <code>cv99 = 2</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with closed shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-serifed'</code>, <code>VXAB = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-closed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-closed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'closed-serifed'</code>, <code>cv99 = 3</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with closed shape, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-serifless'</code>, <code>VXAB = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-serifless'</code>, <code>cv99 = 4</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with open shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-motion-serifed'</code>, <code>VXAB = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-motion-serifed'</code>, <code>cv99 = 5</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with open shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-serifed'</code>, <code>VXAB = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-er-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-er-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-er = 'open-serifed'</code>, <code>cv99 = 6</code></td></tr>
     <tr><td>Cyrillic Capital Er (<code>Р</code>) with open shape, and serifs</td></tr>
     </table></details>
   - Styles for `р` (Cyrillic Lower Er)
     <details><summary>7 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-serifless'</code>, <code>cv90 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-serifless'</code>, <code>VAAA = 1</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with eared shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-motion-serifed'</code>, <code>cv90 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-motion-serifed'</code>, <code>VAAA = 2</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with eared shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-serifed'</code>, <code>cv90 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-eared-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-eared-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'eared-serifed'</code>, <code>VAAA = 3</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with eared shape, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-corner-serifless'</code>, <code>cv90 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-corner-serifless'</code>, <code>VAAA = 4</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with earless (cornered) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-corner-serifed'</code>, <code>cv90 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-corner-serifed'</code>, <code>VAAA = 5</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with earless (cornered) shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-rounded-serifless'</code>, <code>cv90 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-rounded-serifless'</code>, <code>VAAA = 6</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with earless (rounded) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-rounded-serifed'</code>, <code>cv90 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-er-earless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-er-earless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-er = 'earless-rounded-serifed'</code>, <code>VAAA = 7</code></td></tr>
     <tr><td>Cyrillic Lower Er (<code>р</code>) with earless (rounded) shape, and serifs</td></tr>
     </table></details>
   - Styles for `У` (Cyrillic Capital U)
     <details><summary>18 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-serifless'</code>, <code>cv91 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-serifless'</code>, <code>VAAB = 1</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-motion-serifed'</code>, <code>cv91 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-motion-serifed'</code>, <code>VAAB = 2</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-serifed'</code>, <code>cv91 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-serifed'</code>, <code>VAAB = 3</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-serifless'</code>, <code>cv91 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-serifless'</code>, <code>VAAB = 4</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape, and a tail turns leftward; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-motion-serifed'</code>, <code>cv91 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-motion-serifed'</code>, <code>VAAB = 5</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape, a tail turns leftward, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-serifed'</code>, <code>cv91 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-straight-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-straight-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'straight-turn-serifed'</code>, <code>VAAB = 6</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with straight shape, a tail turns leftward, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-serifless'</code>, <code>cv91 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-serifless'</code>, <code>VAAB = 7</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-motion-serifed'</code>, <code>cv91 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-motion-serifed'</code>, <code>VAAB = 8</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-serifed'</code>, <code>cv91 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-serifed'</code>, <code>VAAB = 9</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-serifless'</code>, <code>cv91 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-serifless'</code>, <code>VAAB = 10</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape, and a tail turns leftward; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-motion-serifed'</code>, <code>cv91 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-motion-serifed'</code>, <code>VAAB = 11</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape, a tail turns leftward, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-serifed'</code>, <code>cv91 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-curly-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-curly-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'curly-turn-serifed'</code>, <code>VAAB = 12</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with curly shape, a tail turns leftward, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-serifless'</code>, <code>cv91 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-serifless'</code>, <code>VAAB = 13</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-motion-serifed'</code>, <code>cv91 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-motion-serifed'</code>, <code>VAAB = 14</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-serifed'</code>, <code>cv91 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-serifed'</code>, <code>VAAB = 15</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-serifless'</code>, <code>cv91 = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-serifless'</code>, <code>VAAB = 16</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape, and a flat terminal hook; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-motion-serifed'</code>, <code>cv91 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-motion-serifed'</code>, <code>VAAB = 17</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape, a flat terminal hook, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-serifed'</code>, <code>cv91 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-u-cursive-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-u = 'cursive-flat-hook-serifed'</code>, <code>VAAB = 18</code></td></tr>
     <tr><td>Cyrillic Capital U (<code>У</code>) with cursive shape, a flat terminal hook, and serifs</td></tr>
     </table></details>
   - Styles for `у` (Cyrillic Lower U)
     <details><summary>18 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-serifless'</code>, <code>cv92 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-serifless'</code>, <code>VAAC = 1</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape; without serifs (default for Sans Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-motion-serifed'</code>, <code>cv92 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-motion-serifed'</code>, <code>VAAC = 2</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-serifed'</code>, <code>cv92 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-serifed'</code>, <code>VAAC = 3</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-serifless'</code>, <code>cv92 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-serifless'</code>, <code>VAAC = 4</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape, and a tail turns leftward; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-motion-serifed'</code>, <code>cv92 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-motion-serifed'</code>, <code>VAAC = 5</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape, a tail turns leftward, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-serifed'</code>, <code>cv92 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-straight-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-straight-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'straight-turn-serifed'</code>, <code>VAAC = 6</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with straight shape, a tail turns leftward, and serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-serifless'</code>, <code>cv92 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-serifless'</code>, <code>VAAC = 7</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-motion-serifed'</code>, <code>cv92 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-motion-serifed'</code>, <code>VAAC = 8</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-serifed'</code>, <code>cv92 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-serifed'</code>, <code>VAAC = 9</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-serifless'</code>, <code>cv92 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-serifless'</code>, <code>VAAC = 10</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape, and a tail turns leftward; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-motion-serifed'</code>, <code>cv92 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-motion-serifed'</code>, <code>VAAC = 11</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape, a tail turns leftward, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-serifed'</code>, <code>cv92 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-curly-turn-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-curly-turn-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'curly-turn-serifed'</code>, <code>VAAC = 12</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with curly shape, a tail turns leftward, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-serifless'</code>, <code>cv92 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-serifless'</code>, <code>VAAC = 13</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape; without serifs (default for Sans Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-motion-serifed'</code>, <code>cv92 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-motion-serifed'</code>, <code>VAAC = 14</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape, and motion serifs (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-serifed'</code>, <code>cv92 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-serifed'</code>, <code>VAAC = 15</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-serifless'</code>, <code>cv92 = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-serifless'</code>, <code>VAAC = 16</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape, and a flat terminal hook; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-motion-serifed'</code>, <code>cv92 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-motion-serifed'</code>, <code>VAAC = 17</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape, a flat terminal hook, and motion serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-serifed'</code>, <code>cv92 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-u-cursive-flat-hook-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-u-cursive-flat-hook-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-u = 'cursive-flat-hook-serifed'</code>, <code>VAAC = 18</code></td></tr>
     <tr><td>Cyrillic Lower U (<code>у</code>) with cursive shape, a flat terminal hook, and serifs</td></tr>
     </table></details>
   - Styles for `ф` (Cyrillic Lower Ef)
     <details><summary>10 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'serifless'</code>, <code>cv93 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'serifless'</code>, <code>VAAD = 1</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with straight bar; without serifs (default for Sans Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'top-serifed'</code>, <code>cv93 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'top-serifed'</code>, <code>VAAD = 2</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with straight bar, and serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'serifed'</code>, <code>cv93 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'serifed'</code>, <code>VAAD = 3</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with straight bar, and serifs at top and bottom (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'cursive'</code>, <code>cv93 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'cursive'</code>, <code>VAAD = 4</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with cursive bar (default for Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-serifless'</code>, <code>cv93 = 5</code></td></tr>
-    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, and straight bar; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-top-serifed'</code>, <code>cv93 = 6</code></td></tr>
-    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, straight bar, and serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-serifed'</code>, <code>cv93 = 7</code></td></tr>
-    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, straight bar, and serifs at top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-cursive'</code>, <code>cv93 = 8</code></td></tr>
-    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, and cursive bar</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-diagonal-tailed-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-diagonal-tailed-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'diagonal-tailed-cursive'</code>, <code>cv93 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-diagonal-tailed-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-diagonal-tailed-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'diagonal-tailed-cursive'</code>, <code>VAAD = 5</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with cursive bar, and diagonal tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-diagonal-tailed-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-diagonal-tailed-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-diagonal-tailed-cursive'</code>, <code>cv93 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-serifless'</code>, <code>VAAD = 6</code></td></tr>
+    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, and straight bar; without serifs</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-top-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-top-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-top-serifed'</code>, <code>VAAD = 7</code></td></tr>
+    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, straight bar, and serif at top</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-serifed'</code>, <code>VAAD = 8</code></td></tr>
+    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, straight bar, and serifs at top and bottom</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-cursive'</code>, <code>VAAD = 9</code></td></tr>
+    <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, and cursive bar</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ef-split-diagonal-tailed-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ef-split-diagonal-tailed-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ef = 'split-diagonal-tailed-cursive'</code>, <code>VAAD = 10</code></td></tr>
     <tr><td>Cyrillic Lower Ef (<code>ф</code>) with split bowl, and cursive bar, and diagonal tail</td></tr>
     </table></details>
   - Styles for `ч` (Cyrillic Lower Che)
     <details><summary>2 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-che-standard.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-che-standard.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-che = 'standard'</code>, <code>cv94 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-che-standard.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-che-standard.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-che = 'standard'</code>, <code>VAAE = 1</code></td></tr>
     <tr><td>Cyrillic Lower Che (<code>ч</code>) with standard shape (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-che-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-che-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-che = 'tailed'</code>, <code>cv94 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-che-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-che-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-che = 'tailed'</code>, <code>VAAE = 2</code></td></tr>
     <tr><td>Cyrillic Lower Che (<code>ч</code>) with tail</td></tr>
     </table></details>
   - Styles for `ь`, `ъ` (Cyrillic Lower Yeri and related letters)
     <details><summary>3 variants</summary>
     <table>
-    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-corner.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-corner.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'corner'</code>, <code>cv95 = 1</code></td></tr>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-corner.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-corner.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'corner'</code>, <code>VAAF = 1</code></td></tr>
     <tr><td>Cyrillic Lower Yeri (<code>ь</code>) with corner at bottom left (default for Upright)</td></tr>
-    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-round.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-round.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'round'</code>, <code>cv95 = 2</code></td></tr>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-round.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-round.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'round'</code>, <code>VAAF = 2</code></td></tr>
     <tr><td>Cyrillic Lower Yeri (<code>ь</code>) with rounded shape (default for Sans Italic)</td></tr>
-    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-cursive.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-cursive.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'cursive'</code>, <code>cv95 = 3</code></td></tr>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-cyrl-yeri-cursive.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-cyrl-yeri-cursive.dark.svg#gh-dark-mode-only" width=64/></td><td><code>cyrl-yeri = 'cursive'</code>, <code>VAAF = 3</code></td></tr>
     <tr><td>Cyrillic Lower Yeri (<code>ь</code>) with cursive shape (default for Slab Italic)</td></tr>
     </table></details>
   - Styles for `ы` (Cyrillic Lower Yery)
     <details><summary>6 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'corner'</code>, <code>cv96 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-corner.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-corner.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'corner'</code>, <code>VAAG = 1</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with corner at bottom left (default for Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'corner-tailed'</code>, <code>cv96 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-corner-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-corner-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'corner-tailed'</code>, <code>VAAG = 2</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with corner at bottom left and tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-round.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-round.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'round'</code>, <code>cv96 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-round.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-round.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'round'</code>, <code>VAAG = 3</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with rounded shape (default for Sans Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-round-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-round-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'round-tailed'</code>, <code>cv96 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-round-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-round-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'round-tailed'</code>, <code>VAAG = 4</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with rounded shape and tail</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'cursive'</code>, <code>cv96 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-cursive.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-cursive.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'cursive'</code>, <code>VAAG = 5</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with cursive shape (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-cursive-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-cursive-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'cursive-tailed'</code>, <code>cv96 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-yery-cursive-tailed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-yery-cursive-tailed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-yery = 'cursive-tailed'</code>, <code>VAAG = 6</code></td></tr>
     <tr><td>Cyrillic Lower Yery (<code>ы</code>) with cursive shape and tail</td></tr>
     </table></details>
   - Styles for `Э` (Cyrillic Capital E (`Э`))
-    <details><summary>7 variants</summary>
+    <details><summary>13 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'serifless'</code>, <code>cv97 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'serifless'</code>, <code>VAAH = 1</code></td></tr>
     <tr><td>Serifless Cyrillic Capital E (<code>Э</code>) (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-serifed'</code>, <code>cv97 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-serifed'</code>, <code>VAAH = 2</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with serif at top (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-serifed'</code>, <code>cv97 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-serifed'</code>, <code>VAAH = 3</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-serifed'</code>, <code>cv97 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-serifed'</code>, <code>VAAH = 4</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with serifs at both top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-inward-serifed'</code>, <code>cv97 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-inward-serifed'</code>, <code>VAAH = 5</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-inward-serifed'</code>, <code>cv97 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-inward-serifed'</code>, <code>VAAH = 6</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-inward-serifed'</code>, <code>cv97 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-inward-serifed'</code>, <code>VAAH = 7</code></td></tr>
     <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at both top and bottom</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-mid-serifed'</code>, <code>VAAH = 8</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with serif at top and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-mid-serifed'</code>, <code>VAAH = 9</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with serif at bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-mid-serifed'</code>, <code>VAAH = 10</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with serifs at both top, bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-inward-mid-serifed'</code>, <code>VAAH = 11</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at top and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-unilateral-bottom-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'unilateral-bottom-inward-mid-serifed'</code>, <code>VAAH = 12</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-e-bilateral-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-e-bilateral-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-e = 'bilateral-inward-mid-serifed'</code>, <code>VAAH = 13</code></td></tr>
+    <tr><td>Cyrillic Capital E (<code>Э</code>) with inward serif at both top, bottom and center</td></tr>
     </table></details>
   - Styles for `э` (Cyrillic Lower E (`э`))
-    <details><summary>7 variants</summary>
+    <details><summary>13 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'serifless'</code>, <code>cv98 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'serifless'</code>, <code>VAAI = 1</code></td></tr>
     <tr><td>Serifless Cyrillic Lower E (<code>э</code>) (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-serifed'</code>, <code>cv98 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-serifed'</code>, <code>VAAI = 2</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with serif at top (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-serifed'</code>, <code>cv98 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-serifed'</code>, <code>VAAI = 3</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with serif at bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-serifed'</code>, <code>cv98 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-serifed'</code>, <code>VAAI = 4</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with serifs at both top and bottom</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-inward-serifed'</code>, <code>cv98 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-inward-serifed'</code>, <code>VAAI = 5</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at top</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-inward-serifed'</code>, <code>cv98 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-inward-serifed'</code>, <code>VAAI = 6</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at bottom (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-inward-serifed'</code>, <code>cv98 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-inward-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-inward-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-inward-serifed'</code>, <code>VAAI = 7</code></td></tr>
     <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at both top and bottom</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-mid-serifed'</code>, <code>VAAI = 8</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with serif at top and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-mid-serifed'</code>, <code>VAAI = 9</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with serif at bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-mid-serifed'</code>, <code>VAAI = 10</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with serifs at both top, bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-inward-mid-serifed'</code>, <code>VAAI = 11</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at top and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-unilateral-bottom-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-unilateral-bottom-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'unilateral-bottom-inward-mid-serifed'</code>, <code>VAAI = 12</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at bottom and center</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-e-bilateral-inward-mid-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-e-bilateral-inward-mid-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-e = 'bilateral-inward-mid-serifed'</code>, <code>VAAI = 13</code></td></tr>
+    <tr><td>Cyrillic Lower E (<code>э</code>) with inward serif at both top, bottom and center</td></tr>
     </table></details>
   - Styles for `Я` (Cyrillic Capital Ya)
     <details><summary>18 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-serifless'</code>, <code>cv99 = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-serifless'</code>, <code>VAAJ = 1</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-motion-serifed'</code>, <code>cv99 = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-motion-serifed'</code>, <code>VAAJ = 2</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-serifed'</code>, <code>cv99 = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-serifed'</code>, <code>VAAJ = 3</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-serifless'</code>, <code>cv99 = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-serifless'</code>, <code>VAAJ = 4</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg, and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-motion-serifed'</code>, <code>cv99 = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-motion-serifed'</code>, <code>VAAJ = 5</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg, open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-serifed'</code>, <code>cv99 = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-straight-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-straight-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'straight-open-serifed'</code>, <code>VAAJ = 6</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with straight leg, open contour, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-serifless'</code>, <code>cv99 = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-serifless'</code>, <code>VAAJ = 7</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-motion-serifed'</code>, <code>cv99 = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-motion-serifed'</code>, <code>VAAJ = 8</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-serifed'</code>, <code>cv99 = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-serifed'</code>, <code>VAAJ = 9</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-serifless'</code>, <code>cv99 = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-serifless'</code>, <code>VAAJ = 10</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg, and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-motion-serifed'</code>, <code>cv99 = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-motion-serifed'</code>, <code>VAAJ = 11</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg, open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-serifed'</code>, <code>cv99 = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-curly-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-curly-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'curly-open-serifed'</code>, <code>VAAJ = 12</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with curly leg, open contour, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-serifless'</code>, <code>cv99 = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-serifless'</code>, <code>VAAJ = 13</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica); without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-motion-serifed'</code>, <code>cv99 = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-motion-serifed'</code>, <code>VAAJ = 14</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica), and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-serifed'</code>, <code>cv99 = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-serifed'</code>, <code>VAAJ = 15</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica), and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-serifless'</code>, <code>cv99 = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-serifless'</code>, <code>VAAJ = 16</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica), and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-motion-serifed'</code>, <code>cv99 = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-motion-serifed'</code>, <code>VAAJ = 17</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica), open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-serifed'</code>, <code>cv99 = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-capital-ya-standing-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-capital-ya-standing-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-capital-ya = 'standing-open-serifed'</code>, <code>VAAJ = 18</code></td></tr>
     <tr><td>Cyrillic Capital Ya (<code>Я</code>) with standing leg (like Helvetica), open contour, and serifs</td></tr>
     </table></details>
   - Styles for `я` (Cyrillic Lower Ya)
     <details><summary>36 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-serifless'</code>, <code>VAAA = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-serifless'</code>, <code>VAAK = 1</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg; without serifs (default for Sans)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-motion-serifed'</code>, <code>VAAA = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-motion-serifed'</code>, <code>VAAK = 2</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-serifed'</code>, <code>VAAA = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-serifed'</code>, <code>VAAK = 3</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, and serifs (default for Slab)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-serifless'</code>, <code>VAAA = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-serifless'</code>, <code>VAAK = 4</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-motion-serifed'</code>, <code>VAAA = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-motion-serifed'</code>, <code>VAAK = 5</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-serifed'</code>, <code>VAAA = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-tailed-serifed'</code>, <code>VAAK = 6</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, tail, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-serifless'</code>, <code>VAAA = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-serifless'</code>, <code>VAAK = 7</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-motion-serifed'</code>, <code>VAAA = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-motion-serifed'</code>, <code>VAAK = 8</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-serifed'</code>, <code>VAAA = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-serifed'</code>, <code>VAAK = 9</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, open contour, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-serifless'</code>, <code>VAAA = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-serifless'</code>, <code>VAAK = 10</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, open contour, and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-motion-serifed'</code>, <code>VAAA = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-motion-serifed'</code>, <code>VAAK = 11</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, open contour, tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-serifed'</code>, <code>VAAA = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-straight-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-straight-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'straight-open-tailed-serifed'</code>, <code>VAAK = 12</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with straight leg, open contour, tail, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-serifless'</code>, <code>VAAA = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-serifless'</code>, <code>VAAK = 13</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-motion-serifed'</code>, <code>VAAA = 14</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-motion-serifed'</code>, <code>VAAK = 14</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-serifed'</code>, <code>VAAA = 15</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-serifed'</code>, <code>VAAK = 15</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-serifless'</code>, <code>VAAA = 16</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-serifless'</code>, <code>VAAK = 16</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-motion-serifed'</code>, <code>VAAA = 17</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-motion-serifed'</code>, <code>VAAK = 17</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-serifed'</code>, <code>VAAA = 18</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-tailed-serifed'</code>, <code>VAAK = 18</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, tail, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-serifless'</code>, <code>VAAA = 19</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-serifless'</code>, <code>VAAK = 19</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-motion-serifed'</code>, <code>VAAA = 20</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-motion-serifed'</code>, <code>VAAK = 20</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-serifed'</code>, <code>VAAA = 21</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-serifed'</code>, <code>VAAK = 21</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, open contour, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-serifless'</code>, <code>VAAA = 22</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-serifless'</code>, <code>VAAK = 22</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, open contour, and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-motion-serifed'</code>, <code>VAAA = 23</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-motion-serifed'</code>, <code>VAAK = 23</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, open contour, tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-serifed'</code>, <code>VAAA = 24</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-curly-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-curly-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'curly-open-tailed-serifed'</code>, <code>VAAK = 24</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with curly leg, open contour, tail, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-serifless'</code>, <code>VAAA = 25</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-serifless'</code>, <code>VAAK = 25</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica); without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-motion-serifed'</code>, <code>VAAA = 26</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-motion-serifed'</code>, <code>VAAK = 26</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-serifed'</code>, <code>VAAA = 27</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-serifed'</code>, <code>VAAK = 27</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-serifless'</code>, <code>VAAA = 28</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-serifless'</code>, <code>VAAK = 28</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-motion-serifed'</code>, <code>VAAA = 29</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-motion-serifed'</code>, <code>VAAK = 29</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-serifed'</code>, <code>VAAA = 30</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-tailed-serifed'</code>, <code>VAAK = 30</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), tail, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-serifless'</code>, <code>VAAA = 31</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-serifless'</code>, <code>VAAK = 31</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), and open contour; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-motion-serifed'</code>, <code>VAAA = 32</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-motion-serifed'</code>, <code>VAAK = 32</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), open contour, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-serifed'</code>, <code>VAAA = 33</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-serifed'</code>, <code>VAAK = 33</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), open contour, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-serifless'</code>, <code>VAAA = 34</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-serifless'</code>, <code>VAAK = 34</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), open contour, and tail; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-motion-serifed'</code>, <code>VAAA = 35</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-motion-serifed'</code>, <code>VAAK = 35</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), open contour, tail, and motion serifs at bottom-left</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-serifed'</code>, <code>VAAA = 36</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cyrl-ya-standing-open-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cyrl-ya-standing-open-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cyrl-ya = 'standing-open-tailed-serifed'</code>, <code>VAAK = 36</code></td></tr>
     <tr><td>Cyrillic Lower Ya (<code>я</code>) with standing leg (like Helvetica), open contour, tail, and serifs</td></tr>
     </table></details>
   - Styles for `ij` (Dots in letters “i” and “j” in particular)
@@ -3211,7 +3574,7 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-caret-high.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-caret-high.dark.svg#gh-dark-mode-only" width=32/></td><td><code>caret = 'high'</code>, <code>VSAD = 1</code></td></tr>
     <tr><td>Higher circumflex <code>^</code></td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-caret-medium.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-caret-medium.dark.svg#gh-dark-mode-only" width=32/></td><td><code>caret = 'medium'</code>, <code>VSAD = 2</code></td></tr>
-    <tr><td>Lower circumflex <code>^</code> (default)</td></tr>
+    <tr><td>Medium circumflex <code>^</code> (default)</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-caret-low.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-caret-low.dark.svg#gh-dark-mode-only" width=32/></td><td><code>caret = 'low'</code>, <code>VSAD = 3</code></td></tr>
     <tr><td>Lower circumflex <code>^</code></td></tr>
     </table></details>
@@ -3328,26 +3691,26 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'open'</code>, <code>VSAM = 1</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with vertical bar, open contour, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'through'</code>, <code>VSAM = 2</code></td></tr>
-    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, strike-through vertical bar, and normal height (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'interrupted'</code>, <code>VSAM = 3</code></td></tr>
-    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, interrupted strike-through vertical bar, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'open-cap'</code>, <code>VSAM = 4</code></td></tr>
-    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, open contour, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'through-cap'</code>, <code>VSAM = 5</code></td></tr>
-    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, strike-through vertical bar, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'interrupted-cap'</code>, <code>VSAM = 6</code></td></tr>
-    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, interrupted strike-through vertical bar, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-open'</code>, <code>VSAM = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-open'</code>, <code>VSAM = 2</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, open contour, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-through'</code>, <code>VSAM = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'through'</code>, <code>VSAM = 3</code></td></tr>
+    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, strike-through vertical bar, and normal height (default)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-through'</code>, <code>VSAM = 4</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, strike-through vertical bar, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-interrupted'</code>, <code>VSAM = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'interrupted'</code>, <code>VSAM = 5</code></td></tr>
+    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, interrupted strike-through vertical bar, and normal height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-interrupted'</code>, <code>VSAM = 6</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, interrupted strike-through vertical bar, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-open-cap'</code>, <code>VSAM = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'open-cap'</code>, <code>VSAM = 7</code></td></tr>
+    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, open contour, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-open-cap'</code>, <code>VSAM = 8</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, open contour, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-through-cap'</code>, <code>VSAM = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'through-cap'</code>, <code>VSAM = 9</code></td></tr>
+    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, strike-through vertical bar, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-through-cap'</code>, <code>VSAM = 10</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, strike-through vertical bar, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'interrupted-cap'</code>, <code>VSAM = 11</code></td></tr>
+    <tr><td>Dollar symbol (<code>$</code>) with vertical bar, interrupted strike-through vertical bar, and cap height</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-dollar-slanted-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-dollar-slanted-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>dollar = 'slanted-interrupted-cap'</code>, <code>VSAM = 12</code></td></tr>
     <tr><td>Dollar symbol (<code>$</code>) with slanted bar, interrupted strike-through vertical bar, and cap height</td></tr>
     </table></details>
@@ -3356,26 +3719,26 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <table>
     <tr><td rowspan="2" width="60"><img src="../images/cv-cent-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'open'</code>, <code>VSAN = 1</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with vertical bar, open contour, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'through'</code>, <code>VSAN = 2</code></td></tr>
-    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar all through the <code>c</code> part, and normal height (default)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-bar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-bar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'bar-interrupted'</code>, <code>VSAN = 3</code></td></tr>
-    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar breaks at center, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'open-cap'</code>, <code>VSAN = 4</code></td></tr>
-    <tr><td>Cent sign (<code>¢</code>) with vertical bar, open contour, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'through-cap'</code>, <code>VSAN = 5</code></td></tr>
-    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar all through the <code>c</code> part, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-bar-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-bar-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'bar-interrupted-cap'</code>, <code>VSAN = 6</code></td></tr>
-    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar breaks at center, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-open'</code>, <code>VSAN = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-open.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-open.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-open'</code>, <code>VSAN = 2</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, open contour, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-through'</code>, <code>VSAN = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'through'</code>, <code>VSAN = 3</code></td></tr>
+    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar all through the <code>c</code> part, and normal height (default)</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-through.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-through.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-through'</code>, <code>VSAN = 4</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, vertical bar all through the <code>c</code> part, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-bar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-bar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-bar-interrupted'</code>, <code>VSAN = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-bar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-bar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'bar-interrupted'</code>, <code>VSAN = 5</code></td></tr>
+    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar breaks at center, and normal height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-bar-interrupted.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-bar-interrupted.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-bar-interrupted'</code>, <code>VSAN = 6</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, vertical bar breaks at center, and normal height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-open-cap'</code>, <code>VSAN = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'open-cap'</code>, <code>VSAN = 7</code></td></tr>
+    <tr><td>Cent sign (<code>¢</code>) with vertical bar, open contour, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-open-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-open-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-open-cap'</code>, <code>VSAN = 8</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, open contour, and cap height</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-through-cap'</code>, <code>VSAN = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'through-cap'</code>, <code>VSAN = 9</code></td></tr>
+    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar all through the <code>c</code> part, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-through-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-through-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-through-cap'</code>, <code>VSAN = 10</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, vertical bar all through the <code>c</code> part, and cap height</td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-cent-bar-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-bar-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'bar-interrupted-cap'</code>, <code>VSAN = 11</code></td></tr>
+    <tr><td>Cent sign (<code>¢</code>) with vertical bar, vertical bar breaks at center, and cap height</td></tr>
     <tr><td rowspan="2" width="60"><img src="../images/cv-cent-slanted-bar-interrupted-cap.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-cent-slanted-bar-interrupted-cap.dark.svg#gh-dark-mode-only" width=32/></td><td><code>cent = 'slanted-bar-interrupted-cap'</code>, <code>VSAN = 12</code></td></tr>
     <tr><td>Cent sign (<code>¢</code>) with slanted bar, vertical bar breaks at center, and cap height</td></tr>
     </table></details>
@@ -3419,43 +3782,45 @@ Subsection `variants` is used to configure character variants in the font. Prope
     <tr><td rowspan="2" width="60"><img src="../images/cv-pilcrow-curved.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-pilcrow-curved.dark.svg#gh-dark-mode-only" width=32/></td><td><code>pilcrow = 'curved'</code>, <code>VSAR = 3</code></td></tr>
     <tr><td>Curved pilcrow sign <code>¶</code></td></tr>
     </table></details>
-  - Styles for `∂` (Partial derivative symbol)
-    <details><summary>2 variants</summary>
-    <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-partial-derivative-straight-bar.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-partial-derivative-straight-bar.dark.svg#gh-dark-mode-only" width=32/></td><td><code>partial-derivative = 'straight-bar'</code>, <code>VSAS = 1</code></td></tr>
-    <tr><td>The upper bar of the partial derivative symbol is straight</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-partial-derivative-curly-bar.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-partial-derivative-curly-bar.dark.svg#gh-dark-mode-only" width=32/></td><td><code>partial-derivative = 'curly-bar'</code>, <code>VSAS = 2</code></td></tr>
-    <tr><td>The upper bar of the partial derivative symbol is curly (default)</td></tr>
-    </table></details>
   - Styles for `µ` (Micro sign)
     <details><summary>13 variants</summary>
     <table>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-serifless'</code>, <code>VSAT = 1</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-serifless'</code>, <code>VSAS = 1</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothed shape; without serifs (default for Sans Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-bottom-right-serifed'</code>, <code>VSAT = 2</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-bottom-right-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-bottom-right-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-bottom-right-serifed'</code>, <code>VSAS = 2</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothed shape, and serif at bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-motion-serifed'</code>, <code>VSAT = 3</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-motion-serifed'</code>, <code>VSAS = 3</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothed shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-serifed'</code>, <code>VSAT = 4</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothed-serifed'</code>, <code>VSAS = 4</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothed shape, and serifs (default for Slab Upright)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-serifless'</code>, <code>VSAT = 5</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-serifless'</code>, <code>VSAS = 5</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with tailed shape; without serifs (default for Sans Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-motion-serifed'</code>, <code>VSAT = 6</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-motion-serifed'</code>, <code>VSAS = 6</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with tailed shape, and motion serifs at top-left and bottom-right (default for Slab Italic)</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-serifed'</code>, <code>VSAT = 7</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-tailed-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-tailed-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'tailed-serifed'</code>, <code>VSAS = 7</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with tailed shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-serifless'</code>, <code>VSAT = 8</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-serifless'</code>, <code>VSAS = 8</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (corner bottom-right) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-motion-serifed'</code>, <code>VSAT = 9</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-motion-serifed'</code>, <code>VSAS = 9</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (corner bottom-right) shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-serifed'</code>, <code>VSAT = 10</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-corner-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-corner-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-corner-serifed'</code>, <code>VSAS = 10</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (corner bottom-right) shape, and serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-serifless'</code>, <code>VSAT = 11</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-serifless.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-serifless.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-serifless'</code>, <code>VSAS = 11</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (rounded) shape; without serifs</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-motion-serifed'</code>, <code>VSAT = 12</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-motion-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-motion-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-motion-serifed'</code>, <code>VSAS = 12</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (rounded) shape, and motion serifs at top-left and bottom-right</td></tr>
-    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-serifed'</code>, <code>VSAT = 13</code></td></tr>
+    <tr><td rowspan="2" width="60"><img src="../images/cv-micro-sign-toothless-rounded-serifed.light.svg#gh-light-mode-only" width=32/><img src="../images/cv-micro-sign-toothless-rounded-serifed.dark.svg#gh-dark-mode-only" width=32/></td><td><code>micro-sign = 'toothless-rounded-serifed'</code>, <code>VSAS = 13</code></td></tr>
     <tr><td>Micro Sign (<code>µ</code>) with toothless (rounded) shape, and serifs</td></tr>
+    </table></details>
+  - Styles for `❮`, `❯` (Decorative angle brackets (U+276C...U+2771))
+    <details><summary>3 variants</summary>
+    <table>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-decorative-angle-brackets-tall.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-decorative-angle-brackets-tall.dark.svg#gh-dark-mode-only" width=64/></td><td><code>decorative-angle-brackets = 'tall'</code>, <code>VSAT = 1</code></td></tr>
+    <tr><td>Tall decorative angle brackets, sharing same height as conventional brackets</td></tr>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-decorative-angle-brackets-middle.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-decorative-angle-brackets-middle.dark.svg#gh-dark-mode-only" width=64/></td><td><code>decorative-angle-brackets = 'middle'</code>, <code>VSAT = 2</code></td></tr>
+    <tr><td>Middle-height decorative angle brackets (default)</td></tr>
+    <tr><td rowspan="2" width="92"><img src="../images/cv-decorative-angle-brackets-short.light.svg#gh-light-mode-only" width=64/><img src="../images/cv-decorative-angle-brackets-short.dark.svg#gh-dark-mode-only" width=64/></td><td><code>decorative-angle-brackets = 'short'</code>, <code>VSAT = 3</code></td></tr>
+    <tr><td>Short decorative angle brackets, sharing same height as guillemts</td></tr>
     </table></details>
   - Styles for `<=`, `>=` (Less-equal and Greater-equal ligations)
     <details><summary>2 variants</summary>
@@ -3579,12 +3944,31 @@ featureTag = 'calt'
 sequence = '<*>'
 ```
 
-#### Excluding Characters
+#### Limiting the Character Set
 
-Use the `excludeChars` configuration to exclude character ranges from the font.
+Use the `subset` configuration to limit the character set in the final font. The `subset` subsection is an object with either `include` or `exclude` property.
+
+ - When `include` is used, only the characters in the list will be included in the final font.
+ - When `exclude` is used, all characters except those in the list will be included in the final font.
+ - When both `include` and `exclude` are used, the final font will include only the characters in `include`, and without those in `exclude`.
+
+In `include` or `exclude`, we could specify the character set in thre ways:
+
+ - `textFile`: the path to a text file containing the characters to include/exclude. The file should be in UTF-8 encoding.
+ - `text`: a string containing the characters to include/exclude.
+ - `ranges`: a list of ranges of code points to include/exclude. Each range is a list of two integers, representing the start and end code points (inclusive).
+
+Sample of `include`:
 
 ```toml
-[buildPlans.iosevkaCustom.excludeChars]
+[buildPlans.iosevkaCustom.subset.include]
+textFile = "agl.txt"
+```
+
+Sample of `exclude`:
+
+```toml
+[buildPlans.iosevkaCustom.subset.exclude]
 ranges = [[10003, 10008]]
 ```
 
@@ -3618,6 +4002,7 @@ Subsection `metricOverride` provides ability to override certain metric values, 
 | `essRatioQuestion` | (*ratio*) | (*varies, 1.12 for Regular*) | Ratio of the thickness of the neck of `?`, to the normal stroke width. |
 | `archDepth` | emu | (*varies, 195 for Regular*) | Depth of the curve segment of arches / O rings in capital letters. |
 | `smallArchDepth` | emu | (*varies, 200 for Regular*) | Depth of the curve segment of arches / O rings in small letters. |
+| `advanceScaleSp` | (*ratio*) | (*varies, 1.0 for monospace, 0.58333 for quasi-proportional*) | The advance width ratio of space character, relative to the width of digit `0`. |
 
 The values of each item could be either a number, or a string representing an expression so that it could be different for different instance fonts, or depending on default values. The syntax of valid expressions are:
 
@@ -3673,7 +4058,9 @@ The properties in the `namingOverride` section could be uase to override menu na
  - `urlDesigner`: Name ID 12, URL of typeface designer.
  - `license` (or alternatively `licence`): Name ID 13, license description.
  - `licenseURL` (or alternatively `licenceURL`): Name ID 14, license Info URL.
+ - `sampleText`: Name ID 19, sample text for the font.
  - `version`: Override font version. The version number should follow [SemVer](https://semver.org/), like being `1.0.0`.
+ - `vendorIdTag`: Four-character vendor ID tag in OS/2 table.
 
 Additionally, the `namingOverride` section now supports a `menuNameMap` configuration property. This property allows for the customization of menu names based on specific attributes related to the font's style and characteristics. The `menuNameMap` configuration is structured as follows:
 
@@ -3713,6 +4100,20 @@ It is possible to create a customized TTC build by using the following method:
  2. Run build with the following command:
   - `npm run build -- ttc::IosevkaCustom`: Create TTCs from collection `IosevkaCustom`; The file will be saved into `dist/.ttc`.
   - `npm run build -- super-ttc::IosevkaCustom`: Create a single-file TTC from collection `IosevkaCustom`; The file will be saved into `dist/.super-ttc`.
+
+#### Single-Group TTCs (SGr)
+
+When your collection contains multiple groups (e.g. different spacing variants), you can also build separate TTCs for each group individually:
+
+  - `npm run build -- sgr-ttc::IosevkaCustom`: Create individual TTCs for each group in collection `IosevkaCustom`; Files will be saved into `dist/.ttc/SGr-<group>/`.
+  - `npm run build -- sgr-super-ttc::IosevkaCustom`: Create individual single-file TTCs for each group in collection `IosevkaCustom`; Files will be saved into `dist/.super-ttc/`.
+
+To build both bundled and single-group TTCs in one command:
+
+  - `npm run build -- all-ttc::IosevkaCustom`: Create both bundled and separate SGr TTCs.
+  - `npm run build -- all-super-ttc::IosevkaCustom`: Create both bundled and separate SGr Super TTCs.
+
+Note: SGR commands require the collection to have more than one group in the `from` array, since they'd otherwise be equivalent to the regular bundled TTCs.
 
 ### Baking other OpenType features
 

@@ -28,7 +28,7 @@ glyph-block Symbol-Punctuation-Dashes : begin
 			high          { (-Stroke) }
 			low           { Descender }
 
-		define joiningOverlap (-Width / 6)
+		define joiningOverlap : (-Width) / 6
 
 		foreach { suffix { yBar } } [Object.entries UnderScoreConfig] : do
 			create-glyph "underscore.\(suffix)" : HBar.b SB RightSB yBar
@@ -48,11 +48,11 @@ glyph-block Symbol-Punctuation-Dashes : begin
 		select-variant 'doubleUnderscore' 0x2017 (follow -- 'underscore')
 
 	create-glyph 'hyphen' '-' : glyph-proc
-		local df : include : DivFrame para.diversityF
+		local df : include : DivFrame para.advanceScaleF
 		include : HBar.m df.leftSB df.rightSB SymbolMid
 
 	create-glyph 'armn/hyphen' 0x58A : glyph-proc
-		local df : include : DivFrame para.diversityF
+		local df : include : DivFrame para.advanceScaleF
 		include : dispiro
 			widths.center
 			g4 df.leftSB  SymbolMid [heading Rightward]
@@ -66,9 +66,6 @@ glyph-block Symbol-Punctuation-Dashes : begin
 
 	create-glyph 'figureDash' 0x2012 : HBar.m SB RightSB SymbolMid
 	create-glyph 'overline' 0x203E : HBar.t SB RightSB CAP
-	create-glyph 'mdfUnaspirated' 0x2ED : composite-proc
-		HBar.t SB RightSB  CAP
-		HBar.t SB RightSB (CAP - openBoxGap)
 
 	create-glyph 'enDash' 0x2013 : glyph-proc
 		set-width Width
@@ -84,15 +81,15 @@ glyph-block Symbol-Punctuation-Dashes : begin
 
 		create-glyph [MangleName 'spear'] [MangleUnicode 0x2E43] : glyph-proc
 			set-width emDashWidth
-			local yExt : (RightSB - SB) * 0.55
-			local adb : SmallArchDepthB * ((yExt * 2) / XH)
+			local bot : SymbolMid - HalfStroke
+			local top : SymbolMid + (RightSB - SB) * 0.55
 			include : dispiro
-				widths.center
-				flat (SB + [HSwToV HalfStroke] + OX) (SymbolMid + yExt) [heading Downward]
-				curl (SB + [HSwToV HalfStroke] + OX) (SymbolMid + [Math.min adb : yExt - TINY])
+				widths.lhs
+				flat (SB + OX) top [heading Downward]
+				curl (SB + OX) [Math.min (bot + SmallArchDepthB) (top - TINY)]
 				arcvh
-				flat (Middle + [HSwToV HalfStroke]) SymbolMid
-				curl (emDashWidth - SB - OX) SymbolMid [heading Rightward]
+				flat Middle bot
+				curl (emDashWidth - SB) bot [heading Rightward]
 
 	derive-multi-part-glyphs 'hyphenDieresis' 0x2E1A { 'figureDash' 'dieresisAbove'}
 		function [src sel] : composite-proc
@@ -102,6 +99,6 @@ glyph-block Symbol-Punctuation-Dashes : begin
 			clear-anchors
 
 	create-glyph 'dblHyphen' 0x2E40 : glyph-proc
-		local df : include : DivFrame para.diversityF
+		local df : include : DivFrame para.advanceScaleF
 		include : HBar.m df.leftSB df.rightSB (SymbolMid + EqualHalfSpace)
 		include : HBar.m df.leftSB df.rightSB (SymbolMid - EqualHalfSpace)
