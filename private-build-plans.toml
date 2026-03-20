@@ -91,14 +91,11 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 
 
-[buildPlans.CambridgeSans.subset.include]
-ranges = "[[0000-0530]],[[058F-058F]],[[0E3F-0E3F]],[[1E00-1FFF]],[[2000-2189]],[[FB00-FB04]]"
-
 [collectPlans.CambridgeSans]
 from = ["CambridgeSans"]
 
 [buildPlans.CambridgeSans.metricOverride]
-leading = 1250
+leading = 1080
 cap = 700
 xHeight = 530
 sb = 'default_sb * 0.83'
@@ -196,12 +193,10 @@ css   = "normal"   # "font-stretch' property of webfont CSS.
 
 
 
-[buildPlans.CambridgeMono.subset.include]
-ranges = "[[0000-0530]],[[058F-058F]],[[0E3F-0E3F]],[[1E00-1FFF]],[[2000-2189]],[[FB00-FB04]]"
 
 
 [buildPlans.CambridgeMono.metricOverride]
-leading = 1250
+leading = 1080
 cap = 700
 xHeight = 530
 sb = 'default_sb * 0.83'
