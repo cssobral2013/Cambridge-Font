@@ -103,6 +103,7 @@ cap = 700
 xHeight = 530
 sb = 'default_sb * 0.83'
 symbolMid = 300
+essRatioLower = 'default_essRatio * 0.93'
 
 
 
@@ -205,6 +206,7 @@ cap = 700
 xHeight = 530
 sb = 'default_sb * 0.83'
 symbolMid = 300
+essRatioLower = 'default_essRatio * 0.93'
 
 [collectPlans.CambridgeMono]
 from = ["CambridgeMono"]
