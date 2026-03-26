@@ -15,60 +15,122 @@ webfontFormats = ['ttf', 'woff2']
 zero = 'oval-unslashed'
 one = 'base'
 two = 'straight-neck-serifless'
-three = 'flat-top-serifless'
-four = 'semi-open-serifless'
-five = 'oblique-flat-serifless'
-six = 'straight-bar'
-seven = 'straight-serifless'
+three = 'two-arcs'
+four = 'closed-serifless'
+five = 'upright-arched-serifless'
+six = 'closed-contour'
+seven = 'bend-serifless'
 eight = 'two-circles'
-nine = 'straight-bar'
+nine = 'closed-contour'
+capital-a = 'straight-serifless'
+capital-b = 'standard-serifless'
+capital-c = 'serifless'
 capital-d = 'more-rounded-serifless'
-capital-g = 'toothless-corner-serifless-hooked'
-capital-i = 'serifless'
+capital-e = 'serifless'
+capital-f = 'serifless'
+capital-g = 'toothless-rounded-serifless-hooked'
+capital-h = 'serifless'
+capital-i = 'short-serifed'
 capital-j = 'serifless'
-capital-q = 'crossing-baseline'
+capital-k = 'straight-serifless'
+capital-l = 'serifless'
+capital-m = 'hanging-serifless'
+capital-n = 'standard-serifless'
+capital-p = 'closed-serifless'
+capital-q = 'curly-tailed'
+capital-r = 'straight-serifless'
+capital-s = 'serifless'
+capital-t = 'serifless'
+capital-u = 'toothless-rounded-serifless'
+capital-v = 'straight-serifless'
 capital-w = 'straight-almost-flat-top-serifless'
+capital-x = 'straight-serifless'
+capital-y = 'straight-serifless'
+capital-z = 'straight-serifless'
+a = 'double-storey-serifless'
+b = 'toothed-serifless'
+c = 'serifless'
+d = 'toothed-serifless'
+e = 'flat-crossbar'
 f = 'flat-hook-serifless-crossbar-at-x-height'
-g = 'double-storey'
-i = 'serifless'
-l = 'serifless'
-j = 'flat-hook-serifless'
-r = 'compact-serifless'
-t = 'flat-hook-short-neck2'
-w = 'straight-almost-flat-top-serifless'
-capital-eszet = 'corner-serifless'
-long-s = 'flat-hook-middle-serifed-xh'
-eszet = 'sulzbacher-middle-serifed-xh'
-lower-eth = 'straight-bar'
-lower-iota = 'flat-tailed'
-lower-tau = 'tailless'
-lower-gamma = 'straight'
-lower-upsilon = 'straight-serifless'
-lower-pi = 'tailless'
-lower-nu = 'straight'
-lower-phi = 'straight'
-lower-chi = 'straight-serifless'
-cyrl-capital-zhe = 'symmetric-touching'
-cyrl-zhe = 'symmetric-touching'
-cyrl-capital-ka = 'symmetric-touching-serifless'
-cyrl-ka = 'symmetric-touching-serifless'
-cyrl-capital-u = 'straight-serifless'
-cyrl-u = 'straight-serifless'
-cyrl-ef = 'serifless'
-brace = 'straight'
-guillemet = 'straight'
-number-sign = 'slanted'
-ampersand = 'et-toothless-rounded'
-at = 'fourfold'
-dollar = 'open-cap'
-cent = 'open-cap'
-percent = 'rings-continuous-slash-also-connected'
-question = 'corner'
-
-
-[buildPlans.CambridgeSans.variants.oblique]
-a = 'single-storey-serifless'
 g = 'single-storey-serifless'
+h = 'straight-serifless'
+i = 'serifless'
+j = 'flat-hook-serifless'
+k = 'straight-serifless'
+l = 'serifless'
+m = 'serifless'
+n = 'straight-serifless'
+p = 'eared-serifless'
+q = 'straight-serifless'
+r = 'compact-serifless'
+s = 'serifless'
+t = 'flat-hook'
+u = 'toothed-serifless'
+v = 'straight-serifless'
+w = 'straight-flat-top-serifless'
+x = 'straight-serifless'
+y = 'straight-turn-serifless'
+z = 'straight-serifless'
+capital-eszet = 'rounded-serifless'
+long-s = 'flat-hook-serifless'
+eszet = 'longs-s-lig-serifless'
+lower-eth = 'curly-bar'
+capital-thorn = 'serifless'
+capital-gamma = 'serifless'
+capital-delta = 'straight'
+capital-lambda = 'straight-serifless'
+lower-thorn = 'serifless'
+lower-alpha = 'crossing'
+lower-beta = 'standard'
+lower-delta = 'rounded'
+lower-eta = 'serifless'
+lower-iota = 'flat-tailed'
+lower-kappa = 'straight-serifless'
+lower-lambda = 'straight-turn'
+lower-tau = 'flat-tailed'
+lower-theta = 'oval'
+lower-gamma = 'casual'
+lower-pi = 'tailed'
+lower-mu = 'tailed-serifless'
+lower-nu = 'casual'
+lower-phi = 'cursive'
+lower-upsilon = 'casual-serifless'
+lower-xi = 'rounded'
+lower-psi = 'serifless'
+lower-chi = 'straight-serifless'
+cyrl-a = 'double-storey-serifless'
+cyrl-ve = 'standard-serifless'
+cyrl-capital-zhe = 'straight'
+cyrl-zhe = 'straight'
+cyrl-capital-ze = 'serifless'
+cyrl-ze = 'serifless'
+cyrl-capital-ka = 'straight-serifless'
+cyrl-ka = 'straight-serifless'
+cyrl-em = 'hanging-serifless'
+cyrl-capital-en = 'serifless'
+cyrl-en = 'serifless'
+cyrl-capital-er = 'closed-serifless'
+cyrl-er = 'eared-serifless'
+cyrl-capital-u = 'straight-turn-serifless'
+cyrl-u = 'straight-turn-serifless'
+cyrl-ef = 'split-serifless'
+cyrl-capital-e = 'serifless'
+cyrl-e = 'serifless'
+cyrl-capital-ya = 'straight-serifless'
+cyrl-ya = 'straight-serifless'
+partial-derivative = 'curly-bar'
+tittle = 'square'
+diacritic-dot = 'square'
+punctuation-dot = 'square'
+braille-dot = 'square'
+asterisk = 'penta-low'
+brace = 'straight'
+caret = 'high'
+guillemet = 'straight'
+at = 'fourfold'
+percent = 'rings-continuous-slash'
+micro-sign = 'toothed-serifless'
 
 
 [buildPlans.CambridgeSans.slopes.Upright]
@@ -78,7 +140,7 @@ menu  = "upright"     # Slope grade used for naming.           `upright` | `obli
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
 
 [buildPlans.CambridgeSans.slopes.Italic]
-angle = 13
+angle = 11.3
 shape = "oblique"
 menu  = "italic"
 css   = "italic"
@@ -90,17 +152,57 @@ menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
 
+[buildPlans.CambridgeSans.weights.Thin]
+shape = 100  
+menu  = 100  
+css   = 100
+
+[buildPlans.CambridgeSans.weights.ExtraLight]
+shape = 220  
+menu  = 200  
+css   = 200 
+
+[buildPlans.CambridgeSans.weights.Light]
+shape = 340  
+menu  = 300  
+css   = 300 
+
+[buildPlans.CambridgeSans.weights.Regular]
+shape = 460  
+menu  = 400  
+css   = 400  
+
+[buildPlans.CambridgeSans.weights.Medium]
+shape = 570
+menu  = 500  
+css   = 500
+
+[buildPlans.CambridgeSans.weights.SemiBold]
+shape = 680
+menu  = 700
+css   = 700
+
+[buildPlans.CambridgeSans.weights.Bold]
+shape = 790
+menu  = 700
+css   = 700
+
+[buildPlans.CambridgeSans.weights.ExtraBold]
+shape = 900
+menu  = 800
+css   = 800
 
 [collectPlans.CambridgeSans]
 from = ["CambridgeSans"]
 
 [buildPlans.CambridgeSans.metricOverride]
-leading = 1080
-cap = 700
-xHeight = 530
+leading = 1000
+cap = 637
+ascender = 637
+xHeight = 456
 sb = 'default_sb * 0.83'
-symbolMid = 300
-essRatioLower = 'default_essRatio * 0.93'
+symbolMid = 273
+essRatioLower = 'default_essRatio * 0.85'
 
 
 
@@ -117,60 +219,127 @@ webfontFormats = ['ttf', 'woff2']
 
 
 [buildPlans.CambridgeMono.variants.design]
-zero = 'oval-slashed'
+zero = 'slashed'
 one = 'base'
-two = 'straight-neck-serifless'
-three = 'flat-top-serifless'
-four = 'semi-open-serifless'
-five = 'oblique-flat-serifless'
-six = 'straight-bar'
-seven = 'straight-serifless'
+two = 'straight-neck-serifed'
+three = 'two-arcs'
+four = 'closed-serifed'
+five = 'upright-arched-serifless'
+six = 'closed-contour'
+seven = 'bend-serifed'
 eight = 'two-circles'
-nine = 'straight-bar'
+nine = 'closed-contour'
+capital-a = 'straight-serifless'
+capital-b = 'standard-serifless'
+capital-c = 'unilateral-serifed'
 capital-d = 'more-rounded-serifless'
-capital-g = 'toothless-corner-serifless-hooked'
+capital-e = 'serifless'
+capital-f = 'serifless'
+capital-g = 'toothless-rounded-serifed-hooked'
+capital-h = 'serifless'
+capital-i = 'serifed'
 capital-j = 'serifless'
-capital-q = 'crossing-baseline'
-capital-w = 'straight-almost-flat-top-serifless'
-f = 'flat-hook-serifless-crossbar-at-x-height'
-g = 'double-storey'
-j = 'flat-hook-serifless'
-r = 'compact-serifless'
-t = 'flat-hook-short-neck2'
-w = 'straight-almost-flat-top-serifless'
-capital-eszet = 'corner-serifless'
-long-s = 'flat-hook-middle-serifed-xh'
-eszet = 'sulzbacher-middle-serifed-xh'
-lower-eth = 'straight-bar'
-lower-iota = 'flat-tailed'
-lower-tau = 'tailless'
-lower-gamma = 'straight'
-lower-upsilon = 'straight-serifless'
-lower-pi = 'tailless'
-lower-nu = 'straight'
-lower-phi = 'straight'
-lower-chi = 'straight-serifless'
-cyrl-capital-zhe = 'symmetric-touching'
-cyrl-zhe = 'symmetric-touching'
-cyrl-capital-ka = 'symmetric-touching-serifless'
-cyrl-ka = 'symmetric-touching-serifless'
-cyrl-capital-u = 'straight-serifless'
-cyrl-u = 'straight-serifless'
-cyrl-ef = 'serifless'
-brace = 'straight'
-guillemet = 'straight'
-number-sign = 'slanted'
-ampersand = 'et-toothless-rounded'
-at = 'fourfold'
-dollar = 'open-cap'
-cent = 'open-cap'
-percent = 'rings-continuous-slash-also-connected'
-question = 'corner'
-
-
-[buildPlans.CambridgeMono.variants.oblique]
-a = 'single-storey-serifless'
+capital-k = 'straight-serifless'
+capital-l = 'serifless'
+capital-m = 'hanging-serifless'
+capital-n = 'standard-serifless'
+capital-p = 'closed-serifless'
+capital-q = 'curly-tailed'
+capital-r = 'straight-serifless'
+capital-s = 'bilateral-serifed'
+capital-t = 'serifed'
+capital-u = 'toothless-rounded-serifless'
+capital-v = 'straight-serifless'
+capital-w = 'straight-serifless'
+capital-x = 'straight-serifed'
+capital-y = 'straight-serifed'
+capital-z = 'straight-serifed'
+a = 'double-storey-serifless'
+b = 'toothed-serifless'
+c = 'unilateral-serifed'
+d = 'toothed-top-serifed'
+e = 'flat-crossbar'
+f = 'flat-hook-serifed-crossbar-at-x-height'
 g = 'single-storey-serifless'
+h = 'straight-serifless'
+i = 'serifed'
+j = 'serifed'
+k = 'straight-serifless'
+l = 'serifed'
+m = 'serifless'
+n = 'straight-serifless'
+p = 'eared-serifless'
+q = 'straight-serifless'
+r = 'hookless-serifed'
+s = 'serifless'
+t = 'bent-hook'
+u = 'toothed-serifless'
+v = 'straight-serifless'
+w = 'straight-flat-top-serifless'
+x = 'straight-serifed'
+y = 'straight-turn-serifless'
+z = 'straight-serifed'
+capital-eszet = 'rounded-serifless'
+long-s = 'flat-hook-serifless'
+eszet = 'longs-s-lig-serifless'
+lower-eth = 'curly-bar'
+capital-thorn = 'serifless'
+capital-gamma = 'serifless'
+capital-delta = 'straight'
+capital-lambda = 'straight-serifless'
+lower-thorn = 'serifless'
+lower-alpha = 'crossing'
+lower-beta = 'standard'
+lower-delta = 'rounded'
+lower-eta = 'motion-serifed'
+lower-iota = 'serifed-flat-tailed'
+lower-kappa = 'straight-serifless'
+lower-lambda = 'straight-turn'
+lower-tau = 'flat-tailed'
+lower-theta = 'oval'
+lower-gamma = 'casual'
+lower-pi = 'tailed'
+lower-mu = 'tailed-serifless'
+lower-nu = 'casual'
+lower-phi = 'cursive'
+lower-upsilon = 'casual-serifless'
+lower-xi = 'rounded'
+lower-psi = 'serifless'
+lower-chi = 'straight-serifless'
+cyrl-a = 'double-storey-serifless'
+cyrl-ve = 'standard-serifless'
+cyrl-capital-zhe = 'straight'
+cyrl-zhe = 'straight'
+cyrl-capital-ze = 'unilateral-serifed'
+cyrl-ze = 'serifless'
+cyrl-capital-ka = 'straight-serifless'
+cyrl-ka = 'straight-serifless'
+cyrl-em = 'hanging-serifless'
+cyrl-capital-en = 'serifless'
+cyrl-en = 'serifless'
+cyrl-capital-er = 'closed-serifless'
+cyrl-er = 'eared-serifless'
+cyrl-capital-u = 'straight-turn-serifless'
+cyrl-u = 'straight-turn-serifless'
+cyrl-ef = 'split-serifless'
+cyrl-capital-e = 'unilateral-serifed'
+cyrl-e = 'serifless'
+cyrl-capital-ya = 'straight-serifless'
+cyrl-ya = 'straight-serifless'
+partial-derivative = 'curly-bar'
+tittle = 'square'
+diacritic-dot = 'square'
+punctuation-dot = 'square'
+braille-dot = 'square'
+asterisk = 'penta-low'
+brace = 'straight'
+caret = 'high'
+guillemet = 'straight'
+at = 'fourfold'
+percent = 'rings-continuous-slash'
+micro-sign = 'toothed-serifless'
+
+
 
 
 [buildPlans.CambridgeMono.slopes.Upright]
@@ -180,7 +349,7 @@ menu  = "upright"     # Slope grade used for naming.           `upright` | `obli
 css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
 
 [buildPlans.CambridgeMono.slopes.Italic]
-angle = 13
+angle = 11.3
 shape = "oblique"
 menu  = "italic"
 css   = "italic"
@@ -192,16 +361,56 @@ menu  = 5          # Width grade for the font's names.
 css   = "normal"   # "font-stretch' property of webfont CSS.
 
 
+[buildPlans.CambridgeMono.weights.Thin]
+shape = 100  
+menu  = 100  
+css   = 100
+
+[buildPlans.CambridgeMono.weights.ExtraLight]
+shape = 220  
+menu  = 200  
+css   = 200 
+
+[buildPlans.CambridgeMono.weights.Light]
+shape = 340  
+menu  = 300  
+css   = 300 
+
+[buildPlans.CambridgeMono.weights.Regular]
+shape = 460  
+menu  = 400  
+css   = 400  
+
+[buildPlans.CambridgeMono.weights.Medium]
+shape = 570
+menu  = 500  
+css   = 500
+
+[buildPlans.CambridgeMono.weights.SemiBold]
+shape = 680
+menu  = 700
+css   = 700
+
+[buildPlans.CambridgeMono.weights.Bold]
+shape = 790
+menu  = 700
+css   = 700
+
+[buildPlans.CambridgeMono.weights.ExtraBold]
+shape = 900
+menu  = 800
+css   = 800
 
 
 
 [buildPlans.CambridgeMono.metricOverride]
-leading = 1080
-cap = 700
-xHeight = 530
+leading = 1000
+cap = 637
+ascender = 637
+xHeight = 456
 sb = 'default_sb * 0.83'
-symbolMid = 300
-essRatioLower = 'default_essRatio * 0.93'
+symbolMid = 273
+essRatioLower = 'default_essRatio * 0.85'
 
 [collectPlans.CambridgeMono]
 from = ["CambridgeMono"]
