@@ -113,7 +113,7 @@ essRatioLower = 'default_essRatio * 0.93'
 
 [buildPlans.CambridgeMono]      # <CambridgeSans> is your plan name
 family = "Cambridge Mono"        # Font menu family name
-spacing = "fontconfig-mono"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+spacing = "fixed"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
 copyright = "Copyright 2026 The Cambridge Project Authors"
 designer = "Cristiano Sobral, Belleve Invis"
 serifs = "sans"                  # Optional; Values: `sans` or `slab`
