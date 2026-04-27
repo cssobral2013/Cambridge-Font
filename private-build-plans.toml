@@ -15,7 +15,8 @@ inherits = 'ss09'
 
 [buildPlans.CambridgeSans.variants.design]
 zero = 'oval-unslashed'
-four = 'semi-open-serifless'
+seven = 'straight-serifless'
+eight = 'two-circles' 
 capital-i = 'serifless'
 capital-j = 'serifless'
 capital-k = 'straight-serifless'
@@ -128,7 +129,8 @@ inherits = 'ss09'
 
 [buildPlans.CambridgeMono.variants.design]
 zero = 'slashed'
-four = 'semi-open-serifless'
+seven = 'straight-serifless'
+eight = 'two-circles'
 capital-m = 'slanted-sides-hanging-serifless'
 capital-q = 'crossing-baseline'
 capital-w = 'straight-almost-flat-top-serifless'
