@@ -36,6 +36,8 @@ t = 'flat-hook'
 w = 'straight-almost-flat-top-serifless'
 long-s = 'flat-hook-serifless'
 lower-iota = 'flat-tailed'
+question = 'corner'
+asterisk = 'penta-high'
 percent = 'rings-continuous-slash'
 
 [buildPlans.CambridgeSans.variants.oblique]
@@ -138,6 +140,7 @@ g = 'single-storey-serifless'
 i = 'serifed'
 l = 'serifed'
 w = 'straight-almost-flat-top-serifless'
+question = 'corner'
 [buildPlans.CambridgeMono.variants.oblique]
 a = 'single-storey-serifless'
 cyrl-a = 'single-storey-serifless'
