@@ -219,3 +219,106 @@ essRatioLower = 'default_essRatio * 0.85'
 [collectPlans.CambridgeMono]
 from = ["CambridgeMono"]
 
+
+[buildPlans.Cambridge]      # <CambridgeSans> is your plan name
+family = "Cambridge"        # Font menu family name
+spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+copyright = "Copyright 2026 The Cambridge Project Authors"
+designer = "Cristiano Sobral, Belleve Invis"
+serifs = "sans"                  # Optional; Values: `sans` or `slab`
+exportGlyphNames = false       # Set this to true for ligature support in Kitty (increased file size)
+noCvSs = true
+webfontFormats = ['ttf', 'woff2']
+
+[buildPlans.Cambridge.variants]
+inherits = 'ss09'
+
+[buildPlans.Cambridge.variants.design]
+zero = 'slashed'
+seven = 'straight-serifless'
+eight = 'two-circles'
+capital-m = 'slanted-sides-hanging-serifless'
+capital-q = 'crossing-baseline'
+capital-w = 'straight-almost-flat-top-serifless'
+g = 'single-storey-serifless'
+i = 'serifed'
+l = 'serifed'
+w = 'straight-almost-flat-top-serifless'
+question = 'corner'
+[buildPlans.Cambridge.variants.oblique]
+a = 'single-storey-serifless'
+cyrl-a = 'single-storey-serifless'
+
+
+
+
+[buildPlans.Cambridge.slopes.Upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+
+[buildPlans.Cambridge.slopes.Italic]
+angle = 11.3
+shape = "oblique"
+menu  = "italic"
+css   = "italic"
+
+
+[buildPlans.Cambridge.widths.Normal]
+shape = 600        # Unit Width, measured in 1/1000 em.
+menu  = 5          # Width grade for the font's names.
+css   = "normal"   # "font-stretch' property of webfont CSS.
+
+
+[buildPlans.Cambridge.weights.Thin]
+shape = 100
+menu  = 100
+css   = 100
+
+[buildPlans.Cambridge.weights.ExtraLight]
+shape = 220
+menu  = 200
+css   = 200
+
+[buildPlans.Cambridge.weights.Light]
+shape = 340
+menu  = 300
+css   = 300
+
+[buildPlans.Cambridge.weights.Regular]
+shape = 460
+menu  = 400
+css   = 400
+
+[buildPlans.Cambridge.weights.Medium]
+shape = 570
+menu  = 500
+css   = 500
+
+[buildPlans.Cambridge.weights.SemiBold]
+shape = 680
+menu  = 700
+css   = 700
+
+[buildPlans.Cambridge.weights.Bold]
+shape = 790
+menu  = 700
+css   = 700
+
+[buildPlans.Cambridge.weights.ExtraBold]
+shape = 900
+menu  = 800
+css   = 800
+
+
+
+[buildPlans.Cambridge.metricOverride]
+cap = 700
+xHeight = 530
+sb = 'default_sb * 0.83'
+symbolMid = 307
+essRatioLower = 'default_essRatio * 0.85'
+
+[collectPlans.Cambridge]
+from = ["Cambridge"]
